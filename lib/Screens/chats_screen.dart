@@ -1,14 +1,10 @@
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 
-var chatsImageData = [
-  ['Image 1'],
-  ['Image 2']
-];
-
 var chatsPersonData = [
-  ['Chat 1 Name'],
-  ['Chat 2 Name']
+  ['Image 1', 'Chat Name 1'],
+  ['Image 2', 'Chat Name 2'],
+  ['Image 3', 'Chat Name 3'],
 ];
 
 class ChatsScreen extends StatefulWidget {
@@ -35,18 +31,19 @@ class _ChatsScreenState extends State<ChatsScreen> {
         child: Stack(
           children: [
             ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
                   child: chatsCard(
-                      chatsImageData[index][0], chatsPersonData[index][0]),
+                      chatsPersonData[index][0], chatsPersonData[index][1]),
                   onTap: () {
                     debugPrint('a');
                   },
                   borderRadius: BorderRadius.circular(20),
                 );
               },
-              itemCount: chatsImageData.length,
+              itemCount: chatsPersonData.length,
             ),
           ],
         ),
