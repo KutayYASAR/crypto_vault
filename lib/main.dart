@@ -1,4 +1,7 @@
-import 'package:crypto_vault/Screens/Welcome/welcome_screen.dart';
+// ignore_for_file: prefer_const_constructors
+
+import 'package:crypto_vault/Screens/signin_screen.dart';
+import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 
