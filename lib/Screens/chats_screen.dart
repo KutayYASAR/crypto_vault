@@ -23,13 +23,12 @@ class _ChatsScreenState extends State<ChatsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          centerTitle: true,
           elevation: 0,
           backgroundColor: kPrimaryLightColor,
-          title: const Center(
-            child: Text(
-              'Chats',
-              style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
-            ),
+          title: Text(
+            'Chats',
+            style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
           )),
       body: SingleChildScrollView(
         child: Stack(

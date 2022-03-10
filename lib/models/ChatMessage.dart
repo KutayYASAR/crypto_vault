@@ -50,7 +50,7 @@ List demeChatMessages = [
   ),
   ChatMessage(
     senderName: "You",
-    text: "Asd",
+    text: "Wow",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     isSender: true,

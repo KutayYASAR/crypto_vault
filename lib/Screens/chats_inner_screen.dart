@@ -18,7 +18,8 @@ AppBar appBarChatsInnerScreen() {
     foregroundColor: kPrimaryColor,
     elevation: 0.0,
     backgroundColor: kPrimaryLightColor,
-    title: Text(appBarText, style: TextStyle(color: Colors.black)),
+    title:
+        Text(appBarText, style: TextStyle(color: Colors.black, fontSize: 14)),
     actions: [
       Padding(
         padding: const EdgeInsets.fromLTRB(10, 9, 30, 9),
@@ -205,7 +206,11 @@ class TextMessage extends StatelessWidget {
                 border: message.isSender
                     ? Border.all(color: kPrimaryColor)
                     : Border.all(color: Colors.white)),
-            child: Text(message.text, style: TextStyle(color: Colors.black45))),
+            child: Container(
+                constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width * 0.40),
+                child: Text(message.text,
+                    style: TextStyle(color: Colors.black45)))),
       ],
     );
   }
