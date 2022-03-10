@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:crypto_vault/constants.dart';
+import 'package:crypto_vault/resetPassword.dart';
 import 'package:flutter/material.dart';
 
 var privateKeyData = [
@@ -23,17 +26,6 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: kPrimaryColor,
-        elevation: 0.0,
-        title: Text(
-          'Your Private Key',
-          style: TextStyle(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700),
-          textAlign: TextAlign.left,
-        ),
-      ),
       body: Container(
         height: size.height,
         width: double.infinity,
@@ -45,21 +37,51 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
                     color: kPrimaryColor,
                     borderRadius:
                         BorderRadius.vertical(bottom: Radius.circular(20))),
-                height: size.height / 2),
+                height: size.height / 2.37),
             Container(
-              margin: EdgeInsets.only(left: 30, right: 30),
               alignment: Alignment.center,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'SAVE THIS KEY! Your Data is Encrypted using this key. You will need it to access your encrypted data in the case that you lose your password ',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400),
-                    textAlign: TextAlign.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 30,
+                      right: 30,
+                      top: 70,
+                    ),
+                    child: Center(
+                      child: Text(
+                        'YOUR PRIVATE KEY',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
+                  Padding(
+                      padding: EdgeInsets.only(left: 30, right: 30, top: 12),
+                      child: RichText(
+                        text: TextSpan(
+                            text: 'SAVE THIS KEY! ',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            children: [
+                              TextSpan(
+                                text:
+                                    'Your data is Encrypted using this key. You will need it to access your encypted data in the case that you lose your password.',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ]),
+                        textAlign: TextAlign.center,
+                      ))
                 ],
               ),
             ),
@@ -67,9 +89,8 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 47),
+                  padding: const EdgeInsets.only(top: 150),
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.83,
                     width: MediaQuery.of(context).size.width * 0.90,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -78,7 +99,6 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 10),
                           child: ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -91,32 +111,175 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
                             itemCount: privateKeyData.length,
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: 10),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            CreateAccountPrivateKeyScreen()));
-                              },
-                              child: Text('I SAVED İT',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600)),
-                              style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10))),
-                                  backgroundColor:
-                                      MaterialStateProperty.all(kPrimaryColor)),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20, bottom: 15),
+                          child: Container(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20))),
+                                            contentPadding:
+                                                EdgeInsets.only(top: 10),
+                                            content: Container(
+                                              child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                              .fromLTRB(
+                                                          15, 15, 15, 10),
+                                                      child: Text(
+                                                        'CAUTION !',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 36,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 20,
+                                                          right: 20,
+                                                          bottom: 10),
+                                                      child: Text(
+                                                        'LOSING THIS KEY WILL RESULT IN LOSING ACCESS TO YOUR DATA. ARE YOU SURE THAT YOU SAVED THE KEY?',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  10,
+                                                                  10,
+                                                                  20,
+                                                                  20),
+                                                          child: SizedBox(
+                                                            height: 40,
+                                                            width: size.width *
+                                                                0.3,
+                                                            child:
+                                                                ElevatedButton(
+                                                              onPressed: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                ResetPasswordScreen()));
+                                                              },
+                                                              child: Text(
+                                                                  'GO BACK',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600)),
+                                                              style: ButtonStyle(
+                                                                  shape: MaterialStateProperty.all<
+                                                                          RoundedRectangleBorder>(
+                                                                      RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              10))),
+                                                                  backgroundColor:
+                                                                      MaterialStateProperty
+                                                                          .all(
+                                                                              kPrimaryColor)),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  20,
+                                                                  10,
+                                                                  10,
+                                                                  20),
+                                                          child: SizedBox(
+                                                            height: 40,
+                                                            width: size.width *
+                                                                0.3,
+                                                            child:
+                                                                ElevatedButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Text(
+                                                                  'SAVED IT',
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                          kPrimaryColor,
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600)),
+                                                              style: ButtonStyle(
+                                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              10),
+                                                                      side: BorderSide(
+                                                                          color:
+                                                                              kPrimaryColor,
+                                                                          width:
+                                                                              2))),
+                                                                  backgroundColor:
+                                                                      MaterialStateProperty.all(
+                                                                          Colors
+                                                                              .white)),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ]),
+                                            ),
+                                          ));
+                                },
+                                child: Text('I SAVED IT',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600)),
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10))),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        kPrimaryColor)),
+                              ),
                             ),
                           ),
                         )
@@ -142,17 +305,20 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.35,
             child: Card(
-              elevation: 5,
+              color: kPrimaryLightColor,
+              elevation: 0,
               clipBehavior: Clip.antiAlias,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+                  borderRadius: BorderRadius.circular(10)),
               child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                  padding: const EdgeInsets.fromLTRB(15, 9, 15, 9),
                   child: Center(
                     child: Text(
                       privateKeyText1,
                       style: const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 16),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: kTextDarkColor),
                     ),
                   )),
             ),
@@ -160,17 +326,20 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.35,
             child: Card(
-              elevation: 5,
+              color: kPrimaryLightColor,
+              elevation: 0,
               clipBehavior: Clip.antiAlias,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+                  borderRadius: BorderRadius.circular(10)),
               child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                  padding: const EdgeInsets.fromLTRB(15, 9, 15, 9),
                   child: Center(
                     child: Text(
                       privateKeyText2,
                       style: const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 16),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: kTextDarkColor),
                     ),
                   )),
             ),
