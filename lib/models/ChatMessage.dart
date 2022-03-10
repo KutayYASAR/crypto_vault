@@ -56,7 +56,7 @@ List demeChatMessages = [
     isSender: true,
   ),
   ChatMessage(
-    senderName: "Semih YILMAZ",
+    senderName: "Kutay Yaşar",
     text: "Wow, that's nice!",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,

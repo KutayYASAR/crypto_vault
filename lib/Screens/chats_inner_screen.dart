@@ -188,7 +188,7 @@ class TextMessage extends StatelessWidget {
         Row(
           children: [
             Text(
-              message.isSender ? '' : 'Example Name',
+              message.isSender ? '' : message.senderName,
               style: TextStyle(
                   fontSize: 14,
                   color: kPrimaryColor,
@@ -227,7 +227,7 @@ class AudioMessage extends StatelessWidget {
         Row(
           children: [
             Text(
-              message.isSender ? '' : 'Example Name',
+              message.isSender ? '' : message.senderName,
               style: TextStyle(
                   fontSize: 14,
                   color: kPrimaryColor,
