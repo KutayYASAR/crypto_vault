@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
 import 'package:crypto_vault/Screens/chats_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';

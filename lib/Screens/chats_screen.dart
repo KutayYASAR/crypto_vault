@@ -1,3 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
+import 'package:crypto_vault/Screens/chats_inner_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +24,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
     return Scaffold(
       appBar: AppBar(
           elevation: 0,
-          backgroundColor: kBackgroundColor,
+          backgroundColor: kPrimaryLightColor,
           title: const Center(
             child: Text(
               'Chats',
@@ -35,10 +39,13 @@ class _ChatsScreenState extends State<ChatsScreen> {
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
-                  child: chatsCard(
-                      chatsPersonData[index][0], chatsPersonData[index][1]),
+                  child: chatsCard(context, chatsPersonData[index][0],
+                      chatsPersonData[index][1]),
                   onTap: () {
-                    debugPrint('a');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ChatsInnerScreen()));
                   },
                   borderRadius: BorderRadius.circular(20),
                 );
@@ -68,14 +75,14 @@ class _ChatsScreenState extends State<ChatsScreen> {
             label: 'Chats',
           ),
         ],
-        backgroundColor: kPrimaryColor,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white,
+        backgroundColor: Colors.white,
+        selectedItemColor: kPrimaryColor,
+        unselectedItemColor: kPrimaryColor,
       ),
     );
   }
 
-  Padding chatsCard(String image, String chatName) {
+  Padding chatsCard(BuildContext context, String image, String chatName) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Card(
