@@ -1,6 +1,8 @@
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 
+import 'create_account_private_key_screen.dart';
+
 var privateKeyData = [
   ['pkt1', 'pkt2'],
   ['pkt3', 'pkt4'],
@@ -16,8 +18,8 @@ var privateKeyData = [
   ['pkt23', 'pkt24'],
 ];
 
-class CreateAccountPrivateKeyScreen extends StatelessWidget {
-  const CreateAccountPrivateKeyScreen({Key? key}) : super(key: key);
+class ResetPasswordScreen extends StatelessWidget {
+  const ResetPasswordScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +30,14 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
         backgroundColor: kPrimaryColor,
         elevation: 0.0,
         title: Text(
-          'Your Private Key',
+          'Enter Your Private Key',
           style: TextStyle(
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700),
           textAlign: TextAlign.left,
         ),
       ),
-      body: Container(
-        height: size.height,
-        width: double.infinity,
+      body: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
         child: Stack(
           alignment: Alignment.topCenter,
           children: <Widget>[
@@ -53,7 +54,7 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
                   Text(
-                    'SAVE THIS KEY! Your Data is Encrypted using this key. You will need it to access your encrypted data in the case that you lose your password ',
+                    'Please enter your private key to reset  your password',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -83,10 +84,7 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: (BuildContext context, int index) {
-                              return createAccountPrivateKeyCard(
-                                  context,
-                                  privateKeyData[index][0],
-                                  privateKeyData[index][1]);
+                              return createAccountPrivateKeyCard(context);
                             },
                             itemCount: privateKeyData.length,
                           ),
@@ -104,7 +102,7 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
                                         builder: (context) =>
                                             CreateAccountPrivateKeyScreen()));
                               },
-                              child: Text('I SAVED İT',
+                              child: const Text('I SAVED İT',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -132,8 +130,7 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
     );
   }
 
-  Padding createAccountPrivateKeyCard(
-      BuildContext context, String privateKeyText1, privateKeyText2) {
+  Padding createAccountPrivateKeyCard(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 2),
       child: Row(
@@ -146,15 +143,21 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
               clipBehavior: Clip.antiAlias,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                  child: Center(
-                    child: Text(
-                      privateKeyText1,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 16),
-                    ),
-                  )),
+              child: Container(
+                height: 38,
+                width: 20,
+                child: const Padding(
+                    padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    child: Center(
+                        child: TextField(
+                      textInputAction: TextInputAction.next,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'word',
+                      ),
+                    ))),
+              ),
             ),
           ),
           SizedBox(
@@ -164,15 +167,21 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
               clipBehavior: Clip.antiAlias,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                  child: Center(
-                    child: Text(
-                      privateKeyText2,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 16),
-                    ),
-                  )),
+              child: Container(
+                height: 38,
+                width: 20,
+                child: const Padding(
+                    padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                    child: Center(
+                        child: TextField(
+                      textInputAction: TextInputAction.next,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'word',
+                      ),
+                    ))),
+              ),
             ),
           ),
         ],
