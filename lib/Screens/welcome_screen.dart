@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:crypto_vault/Screens/create_vault_screen.dart';
 import 'package:crypto_vault/Screens/signin_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +83,7 @@ class WelcomeScreen extends StatelessWidget {
                           child: SizedBox(
                             width: double.infinity,
                             height: 70,
-                            child: ElevatedButton(onPressed: (){}, child: Text('CREATE A VAULT',style:TextStyle(color: kPrimaryColor,fontSize: 16,fontWeight: FontWeight.w600)),
+                            child: ElevatedButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateVaultScreen()));}, child: Text('CREATE A VAULT',style:TextStyle(color: kPrimaryColor,fontSize: 16,fontWeight: FontWeight.w600)),
                             style: ButtonStyle(
                               shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),side: BorderSide(color: kPrimaryColor,width: 2))),
                               backgroundColor: MaterialStateProperty.all(Colors.white)
