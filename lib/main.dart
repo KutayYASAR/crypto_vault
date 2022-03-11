@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
+
+import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/constants.dart';
-import 'package:crypto_vault/create_account_private_key_screen.dart';
-import 'package:crypto_vault/resetPassword.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,9 +17,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-          primaryColor: kPrimaryColor,
-          scaffoldBackgroundColor: kPrimaryLightColor),
-      home: ResetPasswordScreen(),
+
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: kPrimaryLightColor
+      ),
+      home: WelcomeScreen(),
     );
   }
 }
