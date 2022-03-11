@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:crypto_vault/Screens/invite_people.dart';
+import 'package:crypto_vault/Screens/people_screen.dart';
 import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
