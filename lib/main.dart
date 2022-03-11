@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:crypto_vault/Screens/signin_screen.dart';
 import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: kPrimaryLightColor
       ),
