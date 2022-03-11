@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/constants.dart';
@@ -15,9 +16,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: kPrimaryLightColor
       ),
