@@ -20,8 +20,8 @@ var privateKeyData = [
   ['pkt23', 'pkt24'],
 ];
 
-class ResetPasswordScreen extends StatelessWidget {
-  const ResetPasswordScreen({Key? key}) : super(key: key);
+class ResetPasswordKeyScreen extends StatelessWidget {
+  const ResetPasswordKeyScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

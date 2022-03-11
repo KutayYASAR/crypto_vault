@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:crypto_vault/constants.dart';
-import 'package:crypto_vault/resetPassword.dart';
+import 'package:crypto_vault/Screens/resetPassword.dart';
 import 'package:flutter/material.dart';
 
 var privateKeyData = [
@@ -185,12 +185,8 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
                                                             child:
                                                                 ElevatedButton(
                                                               onPressed: () {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                ResetPasswordScreen()));
+                                                                Navigator.pop(
+                                                                    context);
                                                               },
                                                               child: Text(
                                                                   'GO BACK',

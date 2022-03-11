@@ -112,15 +112,20 @@ class _InvitePeopleState extends State<InvitePeopleScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          margin: EdgeInsets.only(top: 20),
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: sizeWidth / 20,
-            ),
-            child: Text(
-              'PERMISSIONS',
-              style: TextStyle(color: Colors.black54, fontSize: 12),
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Container(
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: sizeWidth / 20,
+              ),
+              child: Text(
+                'PERMISSIONS',
+                style: TextStyle(
+                    color: kPrimaryColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ),
@@ -143,35 +148,37 @@ class _InvitePeopleState extends State<InvitePeopleScreen> {
   InkWell permissionsContainer(
       BuildContext context, double sizeWidth, index, String permissionName) {
     return InkWell(
-      child: Container(
-          margin: EdgeInsets.only(top: 1),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 15,
-          decoration: BoxDecoration(
-              color: Colors.white, border: Border.all(color: Colors.white)),
-          child: Padding(
-            padding:
-                EdgeInsets.only(left: sizeWidth / 13, right: sizeWidth / 13),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(permissionName,
-                    style: TextStyle(color: Colors.black, fontSize: 16)),
-                FlutterSwitch(
-                    width: MediaQuery.of(context).size.width / 5,
-                    height: MediaQuery.of(context).size.height / 20,
-                    toggleSize: MediaQuery.of(context).size.height / 24,
-                    value: _isSelectedPermissions[index],
-                    borderRadius: 20.0,
-                    activeColor: kPrimaryColor,
-                    onToggle: (val) {
-                      setState(() {
-                        _isSelectedPermissions[index] = val;
-                      });
-                    }),
-              ],
-            ),
-          )),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 1),
+        child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 15,
+            decoration: BoxDecoration(
+                color: Colors.white, border: Border.all(color: Colors.white)),
+            child: Padding(
+              padding:
+                  EdgeInsets.only(left: sizeWidth / 13, right: sizeWidth / 13),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(permissionName,
+                      style: TextStyle(color: Colors.black, fontSize: 16)),
+                  FlutterSwitch(
+                      width: MediaQuery.of(context).size.width / 5,
+                      height: MediaQuery.of(context).size.height / 20,
+                      toggleSize: MediaQuery.of(context).size.height / 24,
+                      value: _isSelectedPermissions[index],
+                      borderRadius: 20.0,
+                      activeColor: kPrimaryColor,
+                      onToggle: (val) {
+                        setState(() {
+                          _isSelectedPermissions[index] = val;
+                        });
+                      }),
+                ],
+              ),
+            )),
+      ),
     );
   }
 
@@ -179,15 +186,20 @@ class _InvitePeopleState extends State<InvitePeopleScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          margin: EdgeInsets.only(top: 20),
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: sizeWidth / 20,
-            ),
-            child: Text(
-              'VAULTS THEY ARE IN',
-              style: TextStyle(color: Colors.black54, fontSize: 12),
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Container(
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: sizeWidth / 20,
+              ),
+              child: Text(
+                'VAULTS THEY ARE IN',
+                style: TextStyle(
+                    color: kPrimaryColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ),
@@ -210,69 +222,73 @@ class _InvitePeopleState extends State<InvitePeopleScreen> {
   InkWell vaultNamesContainer(
       BuildContext context, double sizeWidth, index, String vaultName) {
     return InkWell(
-      child: Container(
-          margin: EdgeInsets.only(top: 1),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 15,
-          decoration: BoxDecoration(
-              color: Colors.white, border: Border.all(color: Colors.white)),
-          child: Padding(
-            padding:
-                EdgeInsets.only(left: sizeWidth / 13, right: sizeWidth / 13),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(vaultName,
-                    style: TextStyle(color: Colors.black, fontSize: 16)),
-                FlutterSwitch(
-                    width: MediaQuery.of(context).size.width / 5,
-                    height: MediaQuery.of(context).size.height / 20,
-                    toggleSize: MediaQuery.of(context).size.height / 24,
-                    value: _isSelectedVaults[index],
-                    borderRadius: 20.0,
-                    activeColor: kPrimaryColor,
-                    onToggle: (val) {
-                      setState(() {
-                        _isSelectedVaults[index] = val;
-                      });
-                    }),
-              ],
-            ),
-          )),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 1),
+        child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 15,
+            decoration: BoxDecoration(
+                color: Colors.white, border: Border.all(color: Colors.white)),
+            child: Padding(
+              padding:
+                  EdgeInsets.only(left: sizeWidth / 13, right: sizeWidth / 13),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(vaultName,
+                      style: TextStyle(color: Colors.black, fontSize: 16)),
+                  FlutterSwitch(
+                      width: MediaQuery.of(context).size.width / 5,
+                      height: MediaQuery.of(context).size.height / 20,
+                      toggleSize: MediaQuery.of(context).size.height / 24,
+                      value: _isSelectedVaults[index],
+                      borderRadius: 20.0,
+                      activeColor: kPrimaryColor,
+                      onToggle: (val) {
+                        setState(() {
+                          _isSelectedVaults[index] = val;
+                        });
+                      }),
+                ],
+              ),
+            )),
+      ),
       onTap: () {},
     );
   }
 
-  Container memberContainer(double sizeWidth) {
-    return Container(
-      margin: EdgeInsets.only(top: 1),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 15,
-      decoration: BoxDecoration(
-          color: Colors.white, border: Border.all(color: Colors.white)),
-      child: Padding(
-        padding: EdgeInsets.only(left: sizeWidth / 13, right: sizeWidth / 13),
-        child: DropdownButton<String>(
-          isExpanded: true,
-          value: dropdownValue,
-          underline: Container(
-            height: 0,
+  Padding memberContainer(double sizeWidth) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 1),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 15,
+        decoration: BoxDecoration(
+            color: Colors.white, border: Border.all(color: Colors.white)),
+        child: Padding(
+          padding: EdgeInsets.only(left: sizeWidth / 13, right: sizeWidth / 13),
+          child: DropdownButton<String>(
+            isExpanded: true,
+            value: dropdownValue,
+            underline: Container(
+              height: 0,
+            ),
+            icon: Icon(Icons.arrow_drop_down),
+            elevation: 16,
+            style: TextStyle(color: Colors.black, fontSize: 16),
+            onChanged: (String? newValue) {
+              setState(() {
+                dropdownValue = newValue!;
+              });
+            },
+            items: <String>['Member', 'Admin']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
           ),
-          icon: Icon(Icons.arrow_drop_down),
-          elevation: 16,
-          style: TextStyle(color: Colors.black, fontSize: 16),
-          onChanged: (String? newValue) {
-            setState(() {
-              dropdownValue = newValue!;
-            });
-          },
-          items: <String>['Member', 'Admin']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
         ),
       ),
     );
