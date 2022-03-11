@@ -22,7 +22,7 @@ AppBar appBarChatsInnerScreen() {
         Text(appBarText, style: TextStyle(color: Colors.black, fontSize: 14)),
     actions: [
       Padding(
-        padding: const EdgeInsets.fromLTRB(10, 9, 30, 9),
+        padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
         child: Row(
           children: [
             IconButton(
@@ -31,15 +31,12 @@ AppBar appBarChatsInnerScreen() {
                   Icons.settings,
                   color: kPrimaryColor,
                 )),
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.search,
-                    color: kPrimaryColor,
-                  )),
-            ),
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.search,
+                  color: kPrimaryColor,
+                )),
           ],
         ),
       )
@@ -79,22 +76,17 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
       child: SafeArea(
           child: Row(
         children: [
-          Padding(
-              padding: const EdgeInsets.only(right: 15),
-              child: IconButton(
-                icon: Icon(
-                  Icons.photo_camera,
-                ),
-                color: kPrimaryColor,
-                onPressed: () {},
-              )),
+          IconButton(
+            icon: Icon(
+              Icons.photo_camera,
+            ),
+            color: kPrimaryColor,
+            onPressed: () {},
+          ),
           IconButton(
             onPressed: () {},
             icon: Icon(Icons.file_copy),
             color: kPrimaryColor,
-          ),
-          SizedBox(
-            width: 20,
           ),
           Expanded(
               child: Container(
