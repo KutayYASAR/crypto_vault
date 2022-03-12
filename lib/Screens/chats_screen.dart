@@ -11,6 +11,17 @@ var chatsPersonData = [
   ['Image 3', 'Chat Name 3'],
 ];
 
+AppBar AppBarChats() {
+  return AppBar(
+      centerTitle: true,
+      elevation: 0,
+      backgroundColor: kPrimaryLightColor,
+      title: Text(
+        'Chats',
+        style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
+      ));
+}
+
 class ChatsScreen extends StatefulWidget {
   const ChatsScreen({Key? key}) : super(key: key);
 
@@ -21,62 +32,28 @@ class ChatsScreen extends StatefulWidget {
 class _ChatsScreenState extends State<ChatsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: kPrimaryLightColor,
-          title: Text(
-            'Chats',
-            style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
-          )),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  child: chatsCard(context, chatsPersonData[index][0],
-                      chatsPersonData[index][1]),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChatsInnerScreen()));
-                  },
-                  borderRadius: BorderRadius.circular(20),
-                );
-              },
-              itemCount: chatsPersonData.length,
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor: Colors.white),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'Vaults',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'People',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble),
-            label: 'Chats',
+    return SingleChildScrollView(
+      child: Stack(
+        children: [
+          ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                child: chatsCard(context, chatsPersonData[index][0],
+                    chatsPersonData[index][1]),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChatsInnerScreen()));
+                },
+                borderRadius: BorderRadius.circular(20),
+              );
+            },
+            itemCount: chatsPersonData.length,
           ),
         ],
-        backgroundColor: Colors.white,
-        selectedItemColor: kPrimaryColor,
-        unselectedItemColor: kPrimaryColor,
       ),
     );
   }

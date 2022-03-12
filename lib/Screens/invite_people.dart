@@ -10,8 +10,6 @@ var vaultsData = [
   ['Family'],
   ['Estate'],
   ['ID\'s and Personal Data'],
-  ['Health'],
-  ['Archive'],
 ];
 
 var permissionData = [
@@ -40,72 +38,79 @@ class _InvitePeopleState extends State<InvitePeopleScreen> {
   Widget build(BuildContext context) {
     final sizeWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        foregroundColor: kPrimaryColor,
-        elevation: 0.0,
-        backgroundColor: kPrimaryLightColor,
-        centerTitle: true,
-        title: Text(
-          'Invite People',
-          style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
-            child: Row(
-              children: [
-                IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.settings,
-                      color: kPrimaryColor,
-                    )),
-              ],
-            ),
-          )
-        ],
-      ),
-      body: Stack(clipBehavior: Clip.none, children: [
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              Column(
+        appBar: AppBar(
+          foregroundColor: kPrimaryColor,
+          elevation: 0.0,
+          backgroundColor: kPrimaryLightColor,
+          centerTitle: true,
+          title: Text(
+            'Invite People',
+            style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
+              child: Row(
                 children: [
-                  memberContainer(sizeWidth),
-                  permissionsColumn(sizeWidth),
-                  vaultsTheyAreInColumn(sizeWidth)
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.settings,
+                        color: kPrimaryColor,
+                      )),
                 ],
               ),
-              Container(
-                height: 100,
-              ),
-            ],
-          ),
+            )
+          ],
         ),
-        Container(
-          alignment: Alignment.bottomCenter,
-          height: MediaQuery.of(context).size.height * 0.88,
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.55,
-            child: ElevatedButton(
-              onPressed: () {},
-              child: Text('CREATE INVITE LINK',
-                  style: TextStyle(
-                      color: kPrimaryColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600)),
-              style: ButtonStyle(
-                  elevation: MaterialStateProperty.all(5),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(color: kPrimaryColor, width: 1))),
-                  backgroundColor: MaterialStateProperty.all(Colors.white)),
+        body: LayoutBuilder(builder:
+            (BuildContext context, BoxConstraints viewPortConstraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(minHeight: viewPortConstraints.maxHeight),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      memberContainer(sizeWidth),
+                      permissionsColumn(sizeWidth),
+                      vaultsTheyAreInColumn(sizeWidth)
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.02,
+                        bottom: MediaQuery.of(context).size.height * 0.02),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.50,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: Text('CREATE INVITE LINK',
+                            style: TextStyle(
+                                color: kPrimaryColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600)),
+                        style: ButtonStyle(
+                            elevation: MaterialStateProperty.all(5),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    side: BorderSide(
+                                        color: kPrimaryColor, width: 1))),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white)),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        )
-      ]),
-    );
+          );
+        }));
   }
 
   Column permissionsColumn(double sizeWidth) {
