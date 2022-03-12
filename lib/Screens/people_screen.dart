@@ -11,6 +11,33 @@ var chatsPersonData = [
   ['Image 1', 'People Name 1'],
 ];
 
+AppBar AppBarPeople() {
+  return AppBar(
+    centerTitle: true,
+    elevation: 0,
+    backgroundColor: kPrimaryLightColor,
+    title: Text(
+      'People',
+      style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
+    ),
+    actions: [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
+        child: Row(
+          children: [
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.settings,
+                  color: kPrimaryColor,
+                )),
+          ],
+        ),
+      )
+    ],
+  );
+}
+
 class PeopleScreen extends StatefulWidget {
   const PeopleScreen({Key? key}) : super(key: key);
 
@@ -22,114 +49,63 @@ class _PeopleScreenState extends State<PeopleScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: kPrimaryLightColor,
-        title: Text(
-          'People',
-          style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
-            child: Row(
-              children: [
-                IconButton(
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewPortConstraints) {
+      return SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: viewPortConstraints.maxHeight),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                    child: chatsCard(context, chatsPersonData[index][0],
+                        chatsPersonData[index][1]),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChatsInnerScreen()));
+                    },
+                    borderRadius: BorderRadius.circular(20),
+                  );
+                },
+                itemCount: chatsPersonData.length,
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: size.height * 0.03, bottom: size.height * 0.03),
+                child: SizedBox(
+                  height: size.height * 0.05,
+                  width: size.width * 0.50,
+                  child: ElevatedButton(
                     onPressed: () {},
-                    icon: Icon(
-                      Icons.settings,
-                      color: kPrimaryColor,
-                    )),
-              ],
-            ),
-          )
-        ],
-      ),
-      body: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints viewPortConstraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints:
-                BoxConstraints(minHeight: viewPortConstraints.maxHeight),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    return InkWell(
-                      child: chatsCard(context, chatsPersonData[index][0],
-                          chatsPersonData[index][1]),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChatsInnerScreen()));
-                      },
-                      borderRadius: BorderRadius.circular(20),
-                    );
-                  },
-                  itemCount: chatsPersonData.length,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: size.height * 0.03, bottom: size.height * 0.03),
-                  child: SizedBox(
-                    height: size.height * 0.05,
-                    width: size.width * 0.50,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text('CREATE INVITE LINK',
-                          style: TextStyle(
-                              color: kPrimaryColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600)),
-                      style: ButtonStyle(
-                          elevation: MaterialStateProperty.all(5),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      side: BorderSide(
-                                          color: kPrimaryColor, width: 1))),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white)),
-                    ),
+                    child: Text('CREATE INVITE LINK',
+                        style: TextStyle(
+                            color: kPrimaryColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600)),
+                    style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(5),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    side: BorderSide(
+                                        color: kPrimaryColor, width: 1))),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white)),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      }),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor: Colors.white),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'Vaults',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'People',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble),
-            label: 'Chats',
-          ),
-        ],
-        backgroundColor: Colors.white,
-        selectedItemColor: kPrimaryColor,
-        unselectedItemColor: kPrimaryColor,
-      ),
-    );
+        ),
+      );
+    });
   }
 
   Padding chatsCard(BuildContext context, String image, String chatName) {
