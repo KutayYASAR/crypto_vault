@@ -1,7 +1,8 @@
 import 'package:crypto_vault/Screens/chats_screen.dart';
 import 'package:crypto_vault/Screens/homeScreen.dart';
 import 'package:crypto_vault/Screens/people_screen.dart';
-import 'package:crypto_vault/Screens/vaults_screen.dart';
+import 'package:crypto_vault/Screens/vaults_main_screen.dart';
+
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -17,14 +18,14 @@ class _pagesSelectorState extends State<pagesSelector> {
 
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    VaultsScreen(),
+    VaultsMainScreen(),
     PeopleScreen(),
     ChatsScreen()
   ];
 
   static List<AppBar> _appbarOptions = <AppBar>[
     AppBarHome(),
-    AppBarPeople(),
+    AppBarVaults(),
     AppBarPeople(),
     AppBarChats(),
   ];
