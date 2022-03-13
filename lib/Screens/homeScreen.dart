@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_local_variable, unused_element, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables
 
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +8,57 @@ var CardsCreate = [
   ['File Example1'],
   ['File Example2'],
   ['File Example3']
+];
+
+List<Map<String, dynamic>> progressItemsBackground = [
+  {'color': Color.fromRGBO(196, 196, 196, 1), 'progress': 1}
+];
+
+List<Map<String, dynamic>> progressItems = [
+  {
+    'color': Color(0xff3a49f6),
+    'progress': .3,
+  },
+  {
+    'color': Color(0xfff7bc48),
+    'progress': .1,
+  },
+  {
+    'color': Color(0xffef5b54),
+    'progress': .2,
+  },
+  {
+    'color': Color(0xff5dcb86),
+    'progress': .1,
+  },
+  {'color': Color.fromRGBO(196, 196, 196, 1), 'progress': .3}
+];
+
+List<Map<String, dynamic>> storageList = [
+  {
+    'name': 'ID\'s and Personal Info',
+    'color': Color(0xff3d4bf7),
+  },
+  {
+    'name': 'Passwords',
+    'color': Color(0xfff7b63a),
+  },
+  {
+    'name': 'Property & Household',
+    'color': Color(0xffef5b54),
+  },
+  {
+    'name': 'Estate',
+    'color': Color(0xff5dcb86),
+  },
+  {
+    'name': 'Family',
+    'color': Color(0xffa257df),
+  },
+  {
+    'name': 'Available Space',
+    'color': Color.fromRGBO(196, 196, 196, 1),
+  },
 ];
 
 AppBar AppBarHome() {
@@ -32,24 +83,183 @@ class HomeScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 30, top: 25),
-            child: Text(
-              'Available Vault Space',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w300),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 30, top: 100),
+              padding: const EdgeInsets.only(left: 30, top: 25, bottom: 20),
+              child: Text(
+                'Available Vault Space',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: size.width * 0.85,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 30,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.grey,
+                                    offset: Offset(0, 3),
+                                    blurRadius: 3.5,
+                                    spreadRadius: -1)
+                              ],
+                              borderRadius: BorderRadius.circular(15.0),
+                              color: Colors.white,
+                            ),
+                            child: LayoutBuilder(
+                              builder: (ctx, constraints) {
+                                return Stack(
+                                  children: [
+                                    Row(
+                                      children: List.generate(
+                                        progressItemsBackground.length,
+                                        (f) {
+                                          BorderRadius border;
+                                          border = BorderRadius.only(
+                                            bottomLeft: Radius.circular(30.0),
+                                            topLeft: Radius.circular(30.0),
+                                            bottomRight: Radius.circular(30.0),
+                                            topRight: Radius.circular(30.0),
+                                          );
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: border,
+                                              color: progressItemsBackground[f]
+                                                  ['color'],
+                                            ),
+                                            width: constraints.maxWidth *
+                                                progressItemsBackground[f]
+                                                    ['progress'],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    Row(
+                                      children: List.generate(
+                                        progressItems.length,
+                                        (f) {
+                                          BorderRadius border;
+                                          if (f == 0)
+                                            border = BorderRadius.only(
+                                              bottomLeft: Radius.circular(30.0),
+                                              topLeft: Radius.circular(30.0),
+                                            );
+                                          else if (f ==
+                                              progressItems.length - 1)
+                                            border = BorderRadius.only(
+                                              bottomRight:
+                                                  Radius.circular(30.0),
+                                              topRight: Radius.circular(30.0),
+                                            );
+                                          else if (f ==
+                                              progressItems.length - 2)
+                                            border = BorderRadius.only(
+                                              bottomRight:
+                                                  Radius.circular(30.0),
+                                              topRight: Radius.circular(30.0),
+                                            );
+                                          else
+                                            border = BorderRadius.zero;
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: border,
+                                              color: progressItems[f]['color'],
+                                            ),
+                                            width: constraints.maxWidth *
+                                                progressItems[f]['progress'],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          LayoutBuilder(
+                            builder: (ctx, constraints) {
+                              return Wrap(
+                                runSpacing: 9,
+                                children: List.generate(
+                                  6,
+                                  (f) {
+                                    return Container(
+                                      width: constraints.maxWidth,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Row(
+                                            children: [
+                                              Container(
+                                                width: 15,
+                                                height: 15,
+                                                decoration: BoxDecoration(
+                                                  color: storageList[f]
+                                                      ['color'],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          45.0),
+                                                ),
+                                              ),
+                                              SizedBox(width: 5.0),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Text(
+                                                      "${storageList[f]['name']}"),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          Text((() {
+                                            if (f == 0) {
+                                              return 'Total Space: 64 GB';
+                                            }
+                                            ;
+                                            if (f == 1) {
+                                              return 'Remaining : 18.75 GB';
+                                            }
+                                            return '';
+                                          })()),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 30),
               child: Text(
                 'Recent Files',
                 style: TextStyle(
@@ -59,42 +269,37 @@ class HomeScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            Container(
-              child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return createAccountPrivateKeyCard(
-                      context, CardsCreate[index][0]);
-                },
-                itemCount: CardsCreate.length,
-              ),
+            ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return createRecentFileCard(
+                    size, context, CardsCreate[index][0]);
+              },
+              itemCount: CardsCreate.length,
             ),
           ],
         ),
-        Container(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.50,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('EXPAND YOUR VAULT',
-                      style: TextStyle(
-                          color: kPrimaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600)),
-                  style: ButtonStyle(
-                      elevation: MaterialStateProperty.all(5),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              side:
-                                  BorderSide(color: kPrimaryColor, width: 1))),
-                      backgroundColor: MaterialStateProperty.all(Colors.white)),
-                ),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: SizedBox(
+              height: size.height * 0.05,
+              width: size.width * 0.50,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Text('EXPAND YOUR VAULT',
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600)),
+                style: ButtonStyle(
+                    elevation: MaterialStateProperty.all(5),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: kPrimaryColor, width: 1))),
+                    backgroundColor: MaterialStateProperty.all(Colors.white)),
               ),
             ),
           ),
@@ -104,20 +309,21 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-Padding createAccountPrivateKeyCard(BuildContext context, String cardText1) {
+Padding createRecentFileCard(
+    Size size, BuildContext context, String cardText1) {
   return Padding(
     padding: const EdgeInsets.only(top: 10),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.85,
+          width: size.width * 0.85,
           child: Card(
             color: Colors.white,
-            elevation: 0,
+            elevation: 3,
             clipBehavior: Clip.antiAlias,
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             child: Padding(
                 padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                 child: Center(
