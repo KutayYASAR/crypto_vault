@@ -62,7 +62,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
-                    child: chatsCard(context, chatsPersonData[index][0],
+                    child: peopleCard(context, chatsPersonData[index][0],
                         chatsPersonData[index][1]),
                     onTap: () {
                       Navigator.push(
@@ -70,7 +70,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                           MaterialPageRoute(
                               builder: (context) => ChatsInnerScreen()));
                     },
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(15),
                   );
                 },
                 itemCount: chatsPersonData.length,
@@ -93,7 +93,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(15),
                                     side: BorderSide(
                                         color: kPrimaryColor, width: 1))),
                         backgroundColor:
@@ -108,13 +108,13 @@ class _PeopleScreenState extends State<PeopleScreen> {
     });
   }
 
-  Padding chatsCard(BuildContext context, String image, String chatName) {
+  Padding peopleCard(BuildContext context, String image, String chatName) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: Card(
         elevation: 5,
         clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
             child: Row(

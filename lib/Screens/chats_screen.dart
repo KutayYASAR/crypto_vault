@@ -32,39 +32,45 @@ class ChatsScreen extends StatefulWidget {
 class _ChatsScreenState extends State<ChatsScreen> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Stack(
-        children: [
-          ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                child: chatsCard(context, chatsPersonData[index][0],
-                    chatsPersonData[index][1]),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ChatsInnerScreen()));
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewPortConstraints) {
+      return SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: viewPortConstraints.maxHeight),
+          child: Column(
+            children: [
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                    child: chatsCard(context, chatsPersonData[index][0],
+                        chatsPersonData[index][1]),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChatsInnerScreen()));
+                    },
+                    borderRadius: BorderRadius.circular(15),
+                  );
                 },
-                borderRadius: BorderRadius.circular(20),
-              );
-            },
-            itemCount: chatsPersonData.length,
+                itemCount: chatsPersonData.length,
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ),
+      );
+    });
   }
 
   Padding chatsCard(BuildContext context, String image, String chatName) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: Card(
         elevation: 5,
         clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
             child: Row(
