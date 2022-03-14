@@ -77,7 +77,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -282,7 +282,7 @@ class HomeScreen extends StatelessWidget {
         ),
         Center(
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 20),
+            padding: EdgeInsets.only(bottom: size.height * 0.03),
             child: SizedBox(
               height: size.height * 0.05,
               width: size.width * 0.50,

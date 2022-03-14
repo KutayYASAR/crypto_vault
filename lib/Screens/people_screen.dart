@@ -2,13 +2,14 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:crypto_vault/Screens/invite_people.dart';
+import 'package:crypto_vault/Screens/people_info_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 
 var chatsPersonData = [
-  ['Image 1', 'People Name 1'],
-  ['Image 2', 'People Name 2'],
-  ['Image 1', 'People Name 1'],
+  [Icons.family_restroom, 'People Name 1'],
+  [Icons.family_restroom, 'People Name 2'],
+  [Icons.family_restroom, 'People Name 1'],
 ];
 
 AppBar AppBarPeople() {
@@ -46,69 +47,81 @@ class PeopleScreen extends StatefulWidget {
 }
 
 class _PeopleScreenState extends State<PeopleScreen> {
+  IconData? iconData = Icons.abc;
+  String? stringData = 'NULL';
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints viewPortConstraints) {
-      return SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: viewPortConstraints.maxHeight),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    child: peopleCard(context, chatsPersonData[index][0],
-                        chatsPersonData[index][1]),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => InvitePeopleScreen()));
-                    },
-                    borderRadius: BorderRadius.circular(15),
-                  );
-                },
-                itemCount: chatsPersonData.length,
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    top: size.height * 0.03, bottom: size.height * 0.03),
-                child: SizedBox(
-                  height: size.height * 0.05,
-                  width: size.width * 0.50,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: Text('CREATE INVITE LINK',
-                        style: TextStyle(
-                            color: kPrimaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600)),
-                    style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(5),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    side: BorderSide(
-                                        color: kPrimaryColor, width: 1))),
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white)),
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewPortConstraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints:
+                BoxConstraints(minHeight: viewPortConstraints.maxHeight),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    iconData = chatsPersonData[index][0] as IconData?;
+                    stringData = chatsPersonData[index][1] as String?;
+                    return InkWell(
+                      child: peopleCard(context, iconData, stringData),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PeopleInfoScreen()));
+                      },
+                      borderRadius: BorderRadius.circular(15),
+                    );
+                  },
+                  itemCount: chatsPersonData.length,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: size.height * 0.03, bottom: size.height * 0.03),
+                  child: SizedBox(
+                    height: size.height * 0.05,
+                    width: size.width * 0.50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => InvitePeopleScreen()));
+                      },
+                      child: Text('INVITE PEOPLE',
+                          style: TextStyle(
+                              color: kPrimaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600)),
+                      style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(5),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      side: BorderSide(
+                                          color: kPrimaryColor, width: 1))),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.white)),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 
-  Padding peopleCard(BuildContext context, String image, String chatName) {
+  Padding peopleCard(BuildContext context, IconData? icon, String? chatName) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: Card(
@@ -119,11 +132,15 @@ class _PeopleScreenState extends State<PeopleScreen> {
             padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
             child: Row(
               children: [
-                Text(image),
+                Icon(
+                  icon,
+                  size: 32,
+                  color: kTextDarkColor,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: Text(
-                    chatName,
+                    chatName.toString(),
                     style: const TextStyle(
                         fontWeight: FontWeight.w700, fontSize: 16),
                   ),

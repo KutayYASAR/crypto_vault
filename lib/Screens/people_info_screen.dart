@@ -17,14 +17,14 @@ var permissionData = [
   ['Start Direct Messages'],
 ];
 
-class InvitePeopleScreen extends StatefulWidget {
-  const InvitePeopleScreen({Key? key}) : super(key: key);
+class PeopleInfoScreen extends StatefulWidget {
+  const PeopleInfoScreen({Key? key}) : super(key: key);
 
   @override
-  State<InvitePeopleScreen> createState() => _InvitePeopleState();
+  State<PeopleInfoScreen> createState() => _PeopleInfoScreenState();
 }
 
-class _InvitePeopleState extends State<InvitePeopleScreen> {
+class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
   String dropdownValue = 'Member';
   bool statusCreateVaults = false;
   bool statusStartDirectMessages = false;
@@ -45,7 +45,7 @@ class _InvitePeopleState extends State<InvitePeopleScreen> {
           backgroundColor: kPrimaryLightColor,
           centerTitle: true,
           title: Text(
-            'Invite People',
+            'People Name 1',
             style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
           ),
           actions: [
@@ -58,6 +58,7 @@ class _InvitePeopleState extends State<InvitePeopleScreen> {
                       icon: Icon(
                         Icons.settings,
                         color: kPrimaryColor,
+                        size: 30,
                       )),
                 ],
               ),
@@ -87,8 +88,13 @@ class _InvitePeopleState extends State<InvitePeopleScreen> {
                       height: sizeHeight * 0.05,
                       width: sizeWidth * 0.50,
                       child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text('CREATE INVITE LINK',
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChatsInnerScreen()));
+                        },
+                        child: Text('DIRECT MESSAGE',
                             style: TextStyle(
                                 color: kPrimaryColor,
                                 fontSize: 16,

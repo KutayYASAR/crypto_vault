@@ -6,9 +6,9 @@ import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 
 var chatsPersonData = [
-  ['Image 1', 'Chat Name 1'],
-  ['Image 2', 'Chat Name 2'],
-  ['Image 3', 'Chat Name 3'],
+  [Icons.chat_bubble, 'Chat Name 1'],
+  [Icons.chat_bubble, 'Chat Name 2'],
+  [Icons.chat_bubble, 'Chat Name 3'],
 ];
 
 AppBar AppBarChats() {
@@ -30,41 +30,48 @@ class ChatsScreen extends StatefulWidget {
 }
 
 class _ChatsScreenState extends State<ChatsScreen> {
+  IconData? iconData = Icons.abc;
+  String? stringData = 'NULL';
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints viewPortConstraints) {
-      return SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minHeight: viewPortConstraints.maxHeight),
-          child: Column(
-            children: [
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    child: chatsCard(context, chatsPersonData[index][0],
-                        chatsPersonData[index][1]),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChatsInnerScreen()));
-                    },
-                    borderRadius: BorderRadius.circular(15),
-                  );
-                },
-                itemCount: chatsPersonData.length,
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewPortConstraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints:
+                BoxConstraints(minHeight: viewPortConstraints.maxHeight),
+            child: Column(
+              children: [
+                ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    iconData = chatsPersonData[index][0] as IconData?;
+                    stringData = chatsPersonData[index][1] as String?;
+                    return InkWell(
+                      child: chatsCard(context, iconData, stringData),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ChatsInnerScreen()));
+                      },
+                      borderRadius: BorderRadius.circular(15),
+                    );
+                  },
+                  itemCount: chatsPersonData.length,
+                ),
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 
-  Padding chatsCard(BuildContext context, String image, String chatName) {
+  Padding chatsCard(BuildContext context, IconData? icon, String? chatName) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: Card(
@@ -75,11 +82,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
             padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
             child: Row(
               children: [
-                Text(image),
+                Icon(
+                  icon,
+                  size: 32,
+                  color: kTextDarkColor,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: Text(
-                    chatName,
+                    chatName.toString(),
                     style: const TextStyle(
                         fontWeight: FontWeight.w700, fontSize: 16),
                   ),

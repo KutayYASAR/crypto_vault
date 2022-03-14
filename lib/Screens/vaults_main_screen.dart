@@ -1,18 +1,18 @@
-
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:crypto_vault/Screens/vault_inner_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 
-var cardData =[
-[Icons.credit_card,'ID\'s and Personal Info'],
-[Icons.key,'Passwords'],
-[Icons.apartment,'Property & Household'],
-[Icons.real_estate_agent,'Estate'],
-[Icons.family_restroom,'Family'],
-[Icons.local_hospital,'Health'],
-[Icons.business_center_rounded,'Personal Business'],
-[Icons.folder_copy,'Archive'],
+var cardData = [
+  [Icons.credit_card, 'ID\'s and Personal Info'],
+  [Icons.key, 'Passwords'],
+  [Icons.apartment, 'Property & Household'],
+  [Icons.real_estate_agent, 'Estate'],
+  [Icons.family_restroom, 'Family'],
+  [Icons.local_hospital, 'Health'],
+  [Icons.business_center_rounded, 'Personal Business'],
+  [Icons.folder_copy, 'Archive'],
 ];
 
 AppBar AppBarVaults() {
@@ -53,15 +53,15 @@ class VaultsMainScreen extends StatelessWidget {
       children: [
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(left:25,right: 25,top: 25,bottom: 25),
+            padding:
+                const EdgeInsets.only(left: 25, right: 25, top: 25, bottom: 25),
             child: GridView.builder(
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 15,
-                crossAxisSpacing: 25,
-                childAspectRatio: 160/128
-              ),
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 25,
+                  childAspectRatio: 160 / 128),
               itemCount: cardData.length,
               itemBuilder: (BuildContext context, int index) {
                 iconData = cardData[index][0] as IconData?;
@@ -69,9 +69,14 @@ class VaultsMainScreen extends StatelessWidget {
                 return InkWell(
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 5),
-                    child: gridElement(iconData,stringData),
+                    child: gridElement(iconData, stringData),
                   ),
-                  onTap: (){},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VaultInnerScreen()));
+                  },
                 );
               },
             ),
@@ -83,19 +88,36 @@ class VaultsMainScreen extends StatelessWidget {
 
   Container gridElement(IconData? icon, String? text) {
     return Container(
-                decoration: BoxDecoration(
-                  boxShadow: [BoxShadow(color: kTextDarkColor,offset: Offset(0,5),blurRadius: 3,spreadRadius:-1)],
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: Colors.white,
-                ),
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(icon,size: 32,color: kTextDarkColor,),
-                    Text(text.toString(),style: TextStyle(color: kTextDarkColor,fontWeight: FontWeight.w500,fontSize:20),textAlign: TextAlign.center,)
-                  ],
-                ),
-              );
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+              color: kTextDarkColor,
+              offset: Offset(0, 5),
+              blurRadius: 3,
+              spreadRadius: -1)
+        ],
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        color: Colors.white,
+      ),
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Icon(
+            icon,
+            size: 32,
+            color: kTextDarkColor,
+          ),
+          Text(
+            text.toString(),
+            style: TextStyle(
+                color: kTextDarkColor,
+                fontWeight: FontWeight.w500,
+                fontSize: 20),
+            textAlign: TextAlign.center,
+          )
+        ],
+      ),
+    );
   }
 }
