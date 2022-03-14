@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:crypto_vault/Screens/chats_inner_screen.dart';
+import 'package:crypto_vault/Screens/invite_people.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +68,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ChatsInnerScreen()));
+                              builder: (context) => InvitePeopleScreen()));
                     },
                     borderRadius: BorderRadius.circular(15),
                   );

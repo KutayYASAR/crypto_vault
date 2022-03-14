@@ -30,12 +30,14 @@ AppBar appBarChatsInnerScreen() {
                 icon: Icon(
                   Icons.settings,
                   color: kPrimaryColor,
+                  size: 30,
                 )),
             IconButton(
                 onPressed: () {},
                 icon: Icon(
                   Icons.search,
                   color: kPrimaryColor,
+                  size: 30,
                 )),
           ],
         ),
