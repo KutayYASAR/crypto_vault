@@ -30,12 +30,14 @@ AppBar appBarChatsInnerScreen() {
                 icon: Icon(
                   Icons.settings,
                   color: kPrimaryColor,
+                  size: 30,
                 )),
             IconButton(
                 onPressed: () {},
                 icon: Icon(
                   Icons.search,
                   color: kPrimaryColor,
+                  size: 30,
                 )),
           ],
         ),
@@ -92,7 +94,7 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
               child: Container(
             height: 50,
             decoration: BoxDecoration(
-                color: kPrimaryColor.withOpacity(0.05),
+                color: Colors.white.withOpacity(0.9),
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(color: kPrimaryColor)),
             child: Row(
