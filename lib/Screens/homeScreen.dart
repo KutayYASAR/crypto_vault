@@ -334,7 +334,7 @@ Padding createRecentFileCard(
                           padding: const EdgeInsets.only(top: 9, bottom: 9),
                           child: Icon(
                             Icons.file_copy,
-                            color: kPrimaryColor,
+                            color: kTextDarkColor,
                             size: 44.0,
                           ),
                         ),

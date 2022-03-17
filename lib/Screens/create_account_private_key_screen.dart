@@ -96,190 +96,193 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: Colors.white,
                     ),
-                    child: Column(
-                      children: [
-                        Container(
-                          child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (BuildContext context, int index) {
-                              return createAccountPrivateKeyCard(
-                                  context,
-                                  privateKeyData[index][0],
-                                  privateKeyData[index][1]);
-                            },
-                            itemCount: privateKeyData.length,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20, bottom: 15),
-                          child: Container(
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              height: 50,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            contentPadding:
-                                                EdgeInsets.only(top: 10),
-                                            content: Container(
-                                              child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          15, 15, 15, 10),
-                                                      child: Text(
-                                                        'CAUTION !',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 36,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w900),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 20,
-                                                          right: 20,
-                                                          bottom: 10),
-                                                      child: Text(
-                                                        'LOSING THIS KEY WILL RESULT IN LOSING ACCESS TO YOUR DATA. ARE YOU SURE THAT YOU SAVED THE KEY?',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 24,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .fromLTRB(
-                                                                  10,
-                                                                  10,
-                                                                  20,
-                                                                  20),
-                                                          child: SizedBox(
-                                                            height: 40,
-                                                            width: size.width *
-                                                                0.3,
-                                                            child:
-                                                                ElevatedButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                  'GO BACK',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600)),
-                                                              style: ButtonStyle(
-                                                                  shape: MaterialStateProperty.all<
-                                                                          RoundedRectangleBorder>(
-                                                                      RoundedRectangleBorder(
-                                                                          borderRadius: BorderRadius.circular(
-                                                                              10))),
-                                                                  backgroundColor:
-                                                                      MaterialStateProperty
-                                                                          .all(
-                                                                              kPrimaryColor)),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .fromLTRB(
-                                                                  20,
-                                                                  10,
-                                                                  10,
-                                                                  20),
-                                                          child: SizedBox(
-                                                            height: 40,
-                                                            width: size.width *
-                                                                0.3,
-                                                            child:
-                                                                ElevatedButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                  'SAVED IT',
-                                                                  style: TextStyle(
-                                                                      color:
-                                                                          kPrimaryColor,
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600)),
-                                                              style: ButtonStyle(
-                                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10),
-                                                                      side: BorderSide(
-                                                                          color:
-                                                                              kPrimaryColor,
-                                                                          width:
-                                                                              2))),
-                                                                  backgroundColor:
-                                                                      MaterialStateProperty.all(
-                                                                          Colors
-                                                                              .white)),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    )
-                                                  ]),
-                                            ),
-                                          ));
-                                },
-                                child: Text('I SAVED IT',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600)),
-                                style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
-                                    backgroundColor: MaterialStateProperty.all(
-                                        kPrimaryColor)),
-                              ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top:20),
+                      child: Column(
+                        children: [
+                          Container(
+                            child: ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                return createAccountPrivateKeyCard(
+                                    context,
+                                    privateKeyData[index][0],
+                                    privateKeyData[index][1]);
+                              },
+                              itemCount: privateKeyData.length,
                             ),
                           ),
-                        )
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20, bottom: 15),
+                            child: Container(
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                height: 50,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(20))),
+                                              contentPadding:
+                                                  EdgeInsets.only(top: 10),
+                                              content: Container(
+                                                child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Padding(
+                                                        padding: const EdgeInsets
+                                                                .fromLTRB(
+                                                            15, 15, 15, 10),
+                                                        child: Text(
+                                                          'CAUTION !',
+                                                          style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 36,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w900),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding: EdgeInsets.only(
+                                                            left: 20,
+                                                            right: 20,
+                                                            bottom: 10),
+                                                        child: Text(
+                                                          'LOSING THIS KEY WILL RESULT IN LOSING ACCESS TO YOUR DATA. ARE YOU SURE THAT YOU SAVED THE KEY?',
+                                                          style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 24,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    10,
+                                                                    10,
+                                                                    20,
+                                                                    20),
+                                                            child: SizedBox(
+                                                              height: 40,
+                                                              width: size.width *
+                                                                  0.3,
+                                                              child:
+                                                                  ElevatedButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                    'GO BACK',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w600)),
+                                                                style: ButtonStyle(
+                                                                    shape: MaterialStateProperty.all<
+                                                                            RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                10))),
+                                                                    backgroundColor:
+                                                                        MaterialStateProperty
+                                                                            .all(
+                                                                                kPrimaryColor)),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    20,
+                                                                    10,
+                                                                    10,
+                                                                    20),
+                                                            child: SizedBox(
+                                                              height: 40,
+                                                              width: size.width *
+                                                                  0.3,
+                                                              child:
+                                                                  ElevatedButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                    'SAVED IT',
+                                                                    style: TextStyle(
+                                                                        color:
+                                                                            kPrimaryColor,
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w600)),
+                                                                style: ButtonStyle(
+                                                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                10),
+                                                                        side: BorderSide(
+                                                                            color:
+                                                                                kPrimaryColor,
+                                                                            width:
+                                                                                2))),
+                                                                    backgroundColor:
+                                                                        MaterialStateProperty.all(
+                                                                            Colors
+                                                                                .white)),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      )
+                                                    ]),
+                                              ),
+                                            ));
+                                  },
+                                  child: Text('I SAVED IT',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600)),
+                                  style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10))),
+                                      backgroundColor: MaterialStateProperty.all(
+                                          kPrimaryColor)),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
