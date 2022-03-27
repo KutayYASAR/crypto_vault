@@ -39,6 +39,7 @@ class _pagesSelectorState extends State<pagesSelector> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: _appbarOptions.elementAt(_selectedIndex),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(

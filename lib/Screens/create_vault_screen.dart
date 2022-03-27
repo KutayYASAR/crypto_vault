@@ -3,7 +3,9 @@
 import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CreateVaultScreen extends StatefulWidget {
   CreateVaultScreen({Key? key}) : super(key: key);
@@ -14,12 +16,14 @@ class CreateVaultScreen extends StatefulWidget {
 
 class _CreateVaultScreenState extends State<CreateVaultScreen> {
   final TextEditingController _emailController = TextEditingController();
+  bool _isEmailValid = false;
 
   final TextEditingController _nameSurnameController = TextEditingController();
 
   final TextEditingController _vaultNameController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordObscure = true;
 
   AuthService _authService = AuthService();
 
@@ -91,15 +95,45 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 45, 20, 0),
                           child: TextField(
-                            controller: _emailController,
-                            decoration: InputDecoration(
+                              controller: _emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(
+                                          width: 0, style: BorderStyle.none)),
+                                  fillColor: kPrimaryLightColor,
+                                  filled: true,
+                                  hintText: 'E-Mail',
+                                  contentPadding:
+                                      EdgeInsets.only(top: 25, bottom: 25),
+                                  hintStyle: TextStyle(
+                                      color: Color.fromRGBO(119, 119, 119, 1),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16),
+                                  prefixIcon: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 20, left: 20),
+                                    child: Icon(
+                                      Icons.mail_outline,
+                                      size: 24,
+                                      color: Color.fromRGBO(119, 119, 119, 1),
+                                    ),
+                                  )),
+                              textInputAction: TextInputAction.next),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                          child: TextField(
+                              controller: _nameSurnameController,
+                              decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
                                         width: 0, style: BorderStyle.none)),
                                 fillColor: kPrimaryLightColor,
                                 filled: true,
-                                hintText: 'E-Mail',
+                                hintText: 'Name / Surname',
                                 contentPadding:
                                     EdgeInsets.only(top: 25, bottom: 25),
                                 hintStyle: TextStyle(
@@ -110,76 +144,48 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
                                   padding: const EdgeInsets.only(
                                       right: 20, left: 20),
                                   child: Icon(
-                                    Icons.mail_outline,
+                                    Icons.face,
                                     size: 24,
                                     color: Color.fromRGBO(119, 119, 119, 1),
                                   ),
-                                )),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                          child: TextField(
-                            controller: _nameSurnameController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                      width: 0, style: BorderStyle.none)),
-                              fillColor: kPrimaryLightColor,
-                              filled: true,
-                              hintText: 'Name / Surname',
-                              contentPadding:
-                                  EdgeInsets.only(top: 25, bottom: 25),
-                              hintStyle: TextStyle(
-                                  color: Color.fromRGBO(119, 119, 119, 1),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16),
-                              prefixIcon: Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 20, left: 20),
-                                child: Icon(
-                                  Icons.face,
-                                  size: 24,
-                                  color: Color.fromRGBO(119, 119, 119, 1),
                                 ),
                               ),
-                            ),
-                          ),
+                              textInputAction: TextInputAction.next),
                         ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                           child: TextField(
-                            controller: _vaultNameController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                      width: 0, style: BorderStyle.none)),
-                              fillColor: kPrimaryLightColor,
-                              filled: true,
-                              hintText: 'Vault Name',
-                              contentPadding:
-                                  EdgeInsets.only(top: 25, bottom: 25),
-                              hintStyle: TextStyle(
-                                  color: Color.fromRGBO(119, 119, 119, 1),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16),
-                              prefixIcon: Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 20, left: 20),
-                                child: Icon(
-                                  Icons.lock,
-                                  size: 24,
-                                  color: Color.fromRGBO(119, 119, 119, 1),
+                              controller: _vaultNameController,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        width: 0, style: BorderStyle.none)),
+                                fillColor: kPrimaryLightColor,
+                                filled: true,
+                                hintText: 'Vault Name',
+                                contentPadding:
+                                    EdgeInsets.only(top: 25, bottom: 25),
+                                hintStyle: TextStyle(
+                                    color: Color.fromRGBO(119, 119, 119, 1),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16),
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 20, left: 20),
+                                  child: Icon(
+                                    Icons.lock,
+                                    size: 24,
+                                    color: Color.fromRGBO(119, 119, 119, 1),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
+                              textInputAction: TextInputAction.next),
                         ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                           child: TextField(
+                            obscureText: _isPasswordObscure,
                             controller: _passwordController,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
@@ -204,6 +210,18 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
                                   color: Color.fromRGBO(119, 119, 119, 1),
                                 ),
                               ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                    _isPasswordObscure
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Color.fromRGBO(119, 119, 119, 1)),
+                                onPressed: () {
+                                  setState(() {
+                                    _isPasswordObscure = !_isPasswordObscure;
+                                  });
+                                },
+                              ),
                             ),
                           ),
                         ),
@@ -214,20 +232,61 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
                             height: 70,
                             child: ElevatedButton(
                               onPressed: () {
-                                _authService
-                                    .createVault(
-                                        _emailController.text,
-                                        _nameSurnameController.text,
-                                        _vaultNameController.text,
-                                        _passwordController.text)
-                                    .then((value) {
-                                  return Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              CreateAccountPrivateKeyScreen()),
-                                      (route) => false);
-                                });
+                                _isEmailValid = EmailValidator.validate(
+                                    _emailController.text);
+                                if (_isEmailValid) {
+                                  _authService
+                                      .createVault(
+                                          _emailController.text,
+                                          _nameSurnameController.text,
+                                          _vaultNameController.text,
+                                          _passwordController.text)
+                                      .then((value) {
+                                    return Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CreateAccountPrivateKeyScreen()),
+                                        (route) => false);
+                                  });
+                                } else if (_emailController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: 'Email Alanı Boş Olamaz',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 1,
+                                      fontSize: 16.0);
+                                } else if (_nameSurnameController
+                                    .text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: 'İsim Soyisim Alanı Boş Olamaz',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 1,
+                                      fontSize: 16.0);
+                                } else if (_vaultNameController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: 'Kasa İsmi Alanı Boş Olamaz',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 1,
+                                      fontSize: 16.0);
+                                } else if (_passwordController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                      msg: 'Şifre Alanı Boş Olamaz',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 1,
+                                      fontSize: 16.0);
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          'Lütfen Geçerli Bir Mail Adresi Giriniz',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 1,
+                                      fontSize: 16.0);
+                                }
                               },
                               child: Text('CREATE A VAULT',
                                   style: TextStyle(
