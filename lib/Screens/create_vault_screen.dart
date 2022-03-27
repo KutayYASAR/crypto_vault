@@ -2,10 +2,26 @@
 
 import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
 import 'package:crypto_vault/constants.dart';
+import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
-class CreateVaultScreen extends StatelessWidget {
-  const CreateVaultScreen({Key? key}) : super(key: key);
+class CreateVaultScreen extends StatefulWidget {
+  CreateVaultScreen({Key? key}) : super(key: key);
+
+  @override
+  State<CreateVaultScreen> createState() => _CreateVaultScreenState();
+}
+
+class _CreateVaultScreenState extends State<CreateVaultScreen> {
+  final TextEditingController _emailController = TextEditingController();
+
+  final TextEditingController _nameSurnameController = TextEditingController();
+
+  final TextEditingController _vaultNameController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +31,7 @@ class CreateVaultScreen extends StatelessWidget {
         backgroundColor: kPrimaryColor,
         elevation: 0.0,
       ),
-      body: Container(
+      body: SizedBox(
         height: size.height,
         width: double.infinity,
         child: SingleChildScrollView(
@@ -75,6 +91,7 @@ class CreateVaultScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 45, 20, 0),
                           child: TextField(
+                            controller: _emailController,
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
@@ -103,6 +120,7 @@ class CreateVaultScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                           child: TextField(
+                            controller: _nameSurnameController,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -132,6 +150,7 @@ class CreateVaultScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                           child: TextField(
+                            controller: _vaultNameController,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -161,6 +180,7 @@ class CreateVaultScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                           child: TextField(
+                            controller: _passwordController,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -194,11 +214,20 @@ class CreateVaultScreen extends StatelessWidget {
                             height: 70,
                             child: ElevatedButton(
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            CreateAccountPrivateKeyScreen()));
+                                _authService
+                                    .createVault(
+                                        _emailController.text,
+                                        _nameSurnameController.text,
+                                        _vaultNameController.text,
+                                        _passwordController.text)
+                                    .then((value) {
+                                  return Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              CreateAccountPrivateKeyScreen()),
+                                      (route) => false);
+                                });
                               },
                               child: Text('CREATE A VAULT',
                                   style: TextStyle(

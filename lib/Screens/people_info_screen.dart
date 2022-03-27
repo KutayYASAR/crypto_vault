@@ -199,18 +199,16 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 20),
-          child: Container(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: sizeWidth / 20,
-              ),
-              child: Text(
-                'VAULTS THEY ARE IN',
-                style: TextStyle(
-                    color: kPrimaryColor,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold),
-              ),
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: sizeWidth / 20,
+            ),
+            child: Text(
+              'VAULTS THEY ARE IN',
+              style: TextStyle(
+                  color: kPrimaryColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ),

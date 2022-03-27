@@ -4,9 +4,21 @@ import 'package:crypto_vault/Screens/_page_selector.dart';
 import 'package:crypto_vault/Screens/reset_password_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:crypto_vault/services/auth_service.dart';
 
-class SignInScreen extends StatelessWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+class SignInScreen extends StatefulWidget {
+  SignInScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  final TextEditingController _emailController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +29,7 @@ class SignInScreen extends StatelessWidget {
         backgroundColor: kPrimaryColor,
         elevation: 0.0,
       ),
-      body: Container(
+      body: SizedBox(
         height: size.height,
         width: double.infinity,
         child: Stack(
@@ -76,6 +88,7 @@ class SignInScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 45, 20, 0),
                         child: TextField(
+                          controller: _emailController,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -104,6 +117,7 @@ class SignInScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                         child: TextField(
+                          controller: _passwordController,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -136,11 +150,16 @@ class SignInScreen extends StatelessWidget {
                           height: 70,
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => pagesSelector()),
-                                  (route) => false);
+                              _authService
+                                  .signIn(_emailController.text,
+                                      _passwordController.text)
+                                  .then((value) {
+                                return Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => pagesSelector()),
+                                    (route) => false);
+                              });
                             },
                             child: Text('SIGN IN',
                                 style: TextStyle(
