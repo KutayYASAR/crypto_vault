@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/constants.dart';
+import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -78,6 +81,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    AuthService _authService = AuthService();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -287,7 +291,7 @@ class HomeScreen extends StatelessWidget {
               height: size.height * 0.05,
               width: size.width * 0.50,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {},
                 child: Text('EXPAND YOUR VAULT',
                     style: TextStyle(
                         color: kPrimaryColor,

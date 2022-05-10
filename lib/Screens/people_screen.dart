@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_vault/Screens/add_user_screen.dart';
 import 'package:crypto_vault/Screens/invite_people.dart';
 import 'package:crypto_vault/Screens/people_info_screen.dart';
 import 'package:crypto_vault/constants.dart';
+import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 var chatsPersonData = [
@@ -47,6 +50,7 @@ class PeopleScreen extends StatefulWidget {
 }
 
 class _PeopleScreenState extends State<PeopleScreen> {
+  AuthService _authService = AuthService();
   IconData? iconData = Icons.abc;
   String? stringData = 'NULL';
   @override
@@ -82,6 +86,38 @@ class _PeopleScreenState extends State<PeopleScreen> {
                   },
                   itemCount: chatsPersonData.length,
                 ),
+                /*
+                FutureBuilder<List<String>>(
+                  future: _authService.getData1(),
+                  builder: (context, snapshot) {
+                    List<String> nameList = snapshot.data ?? [];
+                    if (snapshot.hasError) print(snapshot.error);
+                    return snapshot.hasData
+                        ? ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: nameList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              iconData = chatsPersonData[index][0] as IconData?;
+                              stringData = nameList[index].toString();
+                              return InkWell(
+                                child:
+                                    peopleCard(context, iconData, stringData),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PeopleInfoScreen()));
+                                },
+                                borderRadius: BorderRadius.circular(15),
+                              );
+                            },
+                          )
+                        : Center(child: CircularProgressIndicator());
+                  },
+                ),
+                */
                 Padding(
                   padding: EdgeInsets.only(
                       top: size.height * 0.03, bottom: size.height * 0.03),
@@ -93,7 +129,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => InvitePeopleScreen()));
+                                builder: (context) => AddUserScreen()));
                       },
                       child: Text('INVITE PEOPLE',
                           style: TextStyle(

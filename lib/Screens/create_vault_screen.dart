@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
+import 'package:crypto_vault/Screens/verify_email_page.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:email_validator/email_validator.dart';
@@ -246,7 +247,7 @@ class _CreateVaultScreenState extends State<CreateVaultScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                CreateAccountPrivateKeyScreen()),
+                                                VerifyEmailScreen()),
                                         (route) => false);
                                   });
                                 } else if (_emailController.text.isEmpty) {
