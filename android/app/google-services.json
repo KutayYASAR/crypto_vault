@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "719553370511",
+    "project_id": "crypto-vault-d861a",
+    "storage_bucket": "crypto-vault-d861a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:719553370511:android:db85b51d756d3efab953fa",
+        "android_client_info": {
+          "package_name": "com.example.crypto_vault"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "719553370511-9gc4edo394qcji6h998gqap6atsifgl6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxK9bLiQWSvLhCkh0w04EzFS0zQi0f8fU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "719553370511-9gc4edo394qcji6h998gqap6atsifgl6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
