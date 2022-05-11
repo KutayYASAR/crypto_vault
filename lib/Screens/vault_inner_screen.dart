@@ -154,6 +154,10 @@ class _VaultInnerState extends State<VaultInnerScreen> {
         file.delete();
         file2.delete();
       },
+      onLongPress: () async {
+        await filex.ref.delete();
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> VaultInnerScreen()));
+        },
     );
   Padding createRecentFileCard(
       Size size, BuildContext context, FirebaseFile filex) {
@@ -191,15 +195,17 @@ class _VaultInnerState extends State<VaultInnerScreen> {
                               color: kPrimaryLightColor,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Text(
-                              filex.name.substring(0,filex.name.lastIndexOf('.')),
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  color: kTextDarkColor),
+                          Flexible(
+                            child: Container(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Text(
+                                filex.name.substring(0,filex.name.lastIndexOf('.')),
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: kTextDarkColor),
+                              ),
                             ),
                           ),
                         ],
