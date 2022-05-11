@@ -3,6 +3,7 @@
 import 'package:crypto_vault/Screens/_page_selector.dart';
 import 'package:crypto_vault/Screens/reset_password_screen.dart';
 import 'package:crypto_vault/Screens/verify_email_page.dart';
+import 'package:crypto_vault/Screens/verify_email_signin_page.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_vault/services/auth_service.dart';
@@ -181,7 +182,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              VerifyEmailScreen()),
+                                              VerifyEmailSignInScreen()),
                                       (route) => false);
                                 });
                               } else if (_emailController.text.isEmpty) {

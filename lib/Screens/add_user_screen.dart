@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, curly_braces_in_flow_control_structures
 
 import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AddUserScreen extends StatefulWidget {
@@ -154,173 +155,188 @@ class _AddUserScreenState extends State<AddUserScreen> {
                             height: 70,
                             child: ElevatedButton(
                               onPressed: () {
-                                _isEmailValid = EmailValidator.validate(
-                                    _emailController.text);
-                                if (_isEmailValid) {
-                                  _authService.addUser(_emailController.text,
-                                      _nameSurnameController.text);
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            contentPadding:
-                                                EdgeInsets.only(top: 10),
-                                            content: Container(
-                                              child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          15, 15, 15, 10),
-                                                      child: Text(
-                                                        'CAUTION !',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 36,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w900),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 20,
-                                                          right: 20,
-                                                          bottom: 10),
-                                                      child: Text(
-                                                        'LOSING THIS KEY WILL RESULT IN LOSING ACCESS TO YOUR DATA. ARE YOU SURE THAT YOU SAVED THE KEY?',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 24,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .fromLTRB(
-                                                                  10,
-                                                                  10,
-                                                                  20,
-                                                                  20),
-                                                          child: SizedBox(
-                                                            height: 40,
-                                                            width: size.width *
-                                                                0.3,
-                                                            child:
-                                                                ElevatedButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Text(
-                                                                  'GO BACK',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600)),
-                                                              style: ButtonStyle(
-                                                                  shape: MaterialStateProperty.all<
-                                                                          RoundedRectangleBorder>(
-                                                                      RoundedRectangleBorder(
-                                                                          borderRadius: BorderRadius.circular(
-                                                                              10))),
-                                                                  backgroundColor:
-                                                                      MaterialStateProperty
-                                                                          .all(
-                                                                              kPrimaryColor)),
-                                                            ),
-                                                          ),
+                                {
+                                  _isEmailValid = EmailValidator.validate(
+                                      _emailController.text);
+                                  if (_isEmailValid) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(20))),
+                                              contentPadding:
+                                                  EdgeInsets.only(top: 10),
+                                              content: Container(
+                                                child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                15, 15, 15, 10),
+                                                        child: Text(
+                                                          'DıGGaD EdeSaN !',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 36,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w900),
                                                         ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .fromLTRB(
-                                                                  20,
-                                                                  10,
-                                                                  10,
-                                                                  20),
-                                                          child: SizedBox(
-                                                            height: 40,
-                                                            width: size.width *
-                                                                0.3,
-                                                            child:
-                                                                ElevatedButton(
-                                                              onPressed: () {},
-                                                              child: Text(
-                                                                  'SAVED IT',
-                                                                  style: TextStyle(
-                                                                      color:
-                                                                          kPrimaryColor,
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600)),
-                                                              style: ButtonStyle(
-                                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10),
-                                                                      side: BorderSide(
-                                                                          color:
-                                                                              kPrimaryColor,
-                                                                          width:
-                                                                              2))),
-                                                                  backgroundColor:
-                                                                      MaterialStateProperty.all(
-                                                                          Colors
-                                                                              .white)),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 20,
+                                                                right: 20,
+                                                                bottom: 10),
+                                                        child: Text(
+                                                          'eGeR BuRaYa BiRiNi EkLeYCeKSeN UyGuLaMaNıN YeNiDeN BaSLaMaSı LaZıMMıs GaRDaS',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 24,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    10,
+                                                                    10,
+                                                                    5,
+                                                                    20),
+                                                            child: SizedBox(
+                                                              height: 40,
+                                                              width:
+                                                                  size.width *
+                                                                      0.35,
+                                                              child:
+                                                                  ElevatedButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                    'Iptal Et',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                                style: ButtonStyle(
+                                                                    shape: MaterialStateProperty.all<
+                                                                            RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                10))),
+                                                                    backgroundColor:
+                                                                        MaterialStateProperty.all(
+                                                                            kPrimaryColor)),
+                                                              ),
                                                             ),
                                                           ),
-                                                        )
-                                                      ],
-                                                    )
-                                                  ]),
-                                            ),
-                                          ));
-                                } else if (_emailController.text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: 'Email Alanı Boş Olamaz',
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.TOP,
-                                      timeInSecForIosWeb: 1,
-                                      fontSize: 16.0);
-                                } else if (_nameSurnameController
-                                    .text.isEmpty) {
-                                  Fluttertoast.showToast(
-                                      msg: 'İsim Soyisim Alanı Boş Olamaz',
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.TOP,
-                                      timeInSecForIosWeb: 1,
-                                      fontSize: 16.0);
-                                } else {
-                                  Fluttertoast.showToast(
-                                      msg:
-                                          'Lütfen Geçerli Bir Mail Adresi Giriniz',
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.TOP,
-                                      timeInSecForIosWeb: 1,
-                                      fontSize: 16.0);
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    5,
+                                                                    10,
+                                                                    10,
+                                                                    20),
+                                                            child: SizedBox(
+                                                              height: 40,
+                                                              width:
+                                                                  size.width *
+                                                                      0.35,
+                                                              child:
+                                                                  ElevatedButton(
+                                                                onPressed:
+                                                                    () async {
+                                                                  await _authService.addUser(
+                                                                      _emailController
+                                                                          .text,
+                                                                      _nameSurnameController
+                                                                          .text);
+
+                                                                  await Phoenix
+                                                                      .rebirth(
+                                                                          context);
+                                                                },
+                                                                child: Text(
+                                                                    'Yeniden Baslat',
+                                                                    style: TextStyle(
+                                                                        color:
+                                                                            kPrimaryColor,
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                                style: ButtonStyle(
+                                                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                10),
+                                                                        side: BorderSide(
+                                                                            color:
+                                                                                kPrimaryColor,
+                                                                            width:
+                                                                                2))),
+                                                                    backgroundColor:
+                                                                        MaterialStateProperty.all(
+                                                                            Colors.white)),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      )
+                                                    ]),
+                                              ),
+                                            ));
+                                  } else if (_emailController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Email Alanı Boş Olamaz',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 1,
+                                        fontSize: 16.0);
+                                  } else if (_nameSurnameController
+                                      .text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: 'İsim Soyisim Alanı Boş Olamaz',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 1,
+                                        fontSize: 16.0);
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            'Lütfen Geçerli Bir Mail Adresi Giriniz',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 1,
+                                        fontSize: 16.0);
+                                  }
                                 }
                               },
                               child: Text('Add User',

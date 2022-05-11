@@ -42,6 +42,7 @@ dependencies:
   email_validator: ^2.0.0-nullsafety
   fluttertoast: ^8.0.9
   flutter_riverpod: ^2.0.0-dev.5
+  flutter_phoenix: ^1.0.0
 
 dev_dependencies:
   flutter_test:

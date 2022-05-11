@@ -1,8 +1,12 @@
+// ignore_for_file: prefer_const_constructors, unnecessary_new
+
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class AuthService {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -142,6 +146,9 @@ class AuthService {
 
   //çıkış yap fonksiyonu
   Future<void> signOut() async {
-    return _auth.signOut();
+    FirebaseAuth.instance.signOut();
+    runApp(new MaterialApp(
+      home: new WelcomeScreen(),
+    ));
   }
 }
