@@ -4,11 +4,15 @@ import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(Phoenix(child: MyApp()));
+
 }
 
 class MyApp extends StatelessWidget {
@@ -19,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Crypto Vault',
       theme: ThemeData(
           primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: kPrimaryLightColor),
