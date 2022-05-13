@@ -112,12 +112,6 @@ class AuthService {
     });
   }
 
-  Future<void> getPeopleName() async {
-    final docRef =
-        await _firestore.collection("Vaults").doc(getCurrentUser()?.uid);
-    docRef.get();
-  }
-
   Future<List<String>> getData() async {
     List<String> name = [];
     await _firestore
@@ -137,6 +131,39 @@ class AuthService {
         .collection("Vaults")
         .doc(user.uid)
         .update({'Vault Name': vaultName});
+  }
+
+  Future<List<String>> getVaultName() async {
+    final user = getCurrentUser()?.uid;
+    List<String> name = [];
+    await FirebaseFirestore.instance
+        .collection('Vaults')
+        .where('uid', isEqualTo: '$user')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        name.add(doc['Vault Name']);
+        print(name);
+      }
+    });
+    return name;
+  }
+
+  Future<List<String>> getPeopleName() async {
+    final user = getCurrentUser()?.uid;
+    List<String> name = [];
+    await FirebaseFirestore.instance
+        .collection('Vaults')
+        .doc(user)
+        .collection('Users')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        name.add(doc['name']);
+      }
+      print(name);
+    });
+    return name;
   }
 
   //Kayıtlı olan kullanıcıyı alan fonksiyon

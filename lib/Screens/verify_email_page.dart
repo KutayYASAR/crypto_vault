@@ -137,41 +137,60 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(bottom: 0),
+                              padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
                               child: SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 18,
-                                  width:
-                                      MediaQuery.of(context).size.width / 2.5,
-                                  child: ElevatedButton.icon(
-                                    style: ElevatedButton.styleFrom(
-                                      minimumSize: Size.fromHeight(50),
-                                    ),
-                                    icon: Icon(Icons.email, size: 32),
-                                    label: Text('Resent Email',
-                                        style: TextStyle(fontSize: 15)),
-                                    onPressed: sendVerificationEmail,
-                                  )),
+                                width: double.infinity,
+                                height: 70,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    sendVerificationEmail;
+                                  },
+                                  child: Text('Resend Email',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600)),
+                                  style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10))),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              kPrimaryColor)),
+                                ),
+                              ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
+                              padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                               child: SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 18,
-                                  width:
-                                      MediaQuery.of(context).size.width / 2.5,
-                                  child: ElevatedButton.icon(
-                                      style: ElevatedButton.styleFrom(
-                                        minimumSize: Size.fromHeight(50),
-                                      ),
-                                      icon: Icon(Icons.fork_left_outlined,
-                                          size: 32),
-                                      label: Text('Go Back',
-                                          style: TextStyle(fontSize: 16)),
-                                      onPressed: () async {
-                                        await Phoenix.rebirth(context);
-                                      })),
-                            ),
+                                width: double.infinity,
+                                height: 70,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    await Phoenix.rebirth(context);
+                                  },
+                                  child: Text('Go Back',
+                                      style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600)),
+                                  style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              side: BorderSide(
+                                                  color: kPrimaryColor,
+                                                  width: 2))),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.white)),
+                                ),
+                              ),
+                            )
                           ]),
                     ),
                   ),

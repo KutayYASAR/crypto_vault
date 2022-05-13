@@ -20,21 +20,21 @@ List<Map<String, dynamic>> progressItemsBackground = [
 List<Map<String, dynamic>> progressItems = [
   {
     'color': Color(0xff3a49f6),
-    'progress': .3,
+    'progress': .1,
   },
   {
     'color': Color(0xfff7bc48),
-    'progress': .1,
+    'progress': .3,
   },
   {
     'color': Color(0xffef5b54),
-    'progress': .2,
+    'progress': .1,
   },
   {
     'color': Color(0xff5dcb86),
-    'progress': .1,
+    'progress': .4,
   },
-  {'color': Color.fromRGBO(196, 196, 196, 1), 'progress': .3}
+  {'color': Color.fromRGBO(196, 196, 196, 1), 'progress': .1}
 ];
 
 List<Map<String, dynamic>> storageList = [
