@@ -73,38 +73,62 @@ class WelcomeScreen extends StatelessWidget {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w800)),
                       ),
-
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(50,25,50,0),
-                          child: Text('Please sign in to your vault of if it\'s your first time feel free to create a new vault!',style: TextStyle(color: Color.fromRGBO(129, 129, 129, 1),fontSize: 14,fontWeight: FontWeight.w300),textAlign: TextAlign.center,),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(50, 25, 50, 0),
+                        child: Text(
+                          'Please sign in to your vault of if it\'s your first time feel free to create a new vault!',
+                          style: TextStyle(
+                              color: Color.fromRGBO(129, 129, 129, 1),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w300),
+                          textAlign: TextAlign.center,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(40,40,40,0),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
                           child: SizedBox(
                             width: double.infinity,
                             height: 70,
-                            child: ElevatedButton(onPressed: () async {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> SignInScreen()));
-                            }, child: Text('SIGN IN',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w600)),
-                            style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10))),
-                                backgroundColor:
-                                    MaterialStateProperty.all(kPrimaryColor)),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(40,20,40,0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: 70,
-                            child: ElevatedButton(onPressed: () async {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateVaultScreen()));
-                              }, child: Text('CREATE A VAULT',style:TextStyle(color: kPrimaryColor,fontSize: 16,fontWeight: FontWeight.w600)),
-
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SignInScreen()));
+                              },
+                              child: Text('SIGN IN',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600)),
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10))),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(kPrimaryColor)),
+                            ),
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 70,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CreateVaultScreen()));
+                            },
+                            child: Text('CREATE A VAULT',
+                                style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600)),
                             style: ButtonStyle(
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
