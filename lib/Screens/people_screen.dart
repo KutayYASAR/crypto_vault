@@ -131,7 +131,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                             MaterialPageRoute(
                                 builder: (context) => AddUserScreen()));
                       },
-                      child: Text('INVITE PEOPLE',
+                      child: Text('ADD USER',
                           style: TextStyle(
                               color: kPrimaryColor,
                               fontSize: 16,

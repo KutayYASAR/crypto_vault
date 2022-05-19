@@ -164,6 +164,20 @@ class AuthService {
     return name;
   }
 
+  Future<String> getFileUid() async {
+    String uid = "";
+    await _firestore
+        .collection('Users')
+        .where('userUid', isEqualTo: getCurrentUser()?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        uid = doc['vault_uid'].toString();
+      }
+    });
+    return uid;
+  }
+
   Future<List<String>> getPeopleName() async {
     String uid = "";
     await _firestore

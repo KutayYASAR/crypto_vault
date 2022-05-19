@@ -48,7 +48,8 @@ AppBar AppBarVaults() {
 }
 
 class VaultsMainScreen extends StatelessWidget {
-  const VaultsMainScreen({Key? key}) : super(key: key);
+  VaultsMainScreen({Key? key}) : super(key: key);
+  AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +77,12 @@ class VaultsMainScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 5),
                     child: gridElement(iconData, stringData),
                   ),
-                  onTap: () {
+                  onTap: () async {
+                    var uid = await _authService.getFileUid();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => VaultInnerScreen()));
+                            builder: (context) => VaultInnerScreen(uid: uid)));
                   },
                 );
               },
