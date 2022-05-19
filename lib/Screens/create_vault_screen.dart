@@ -365,9 +365,9 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                                 if (_isEmailValid) {
                                   _authService
                                       .createVault(
-                                          _emailController.text.trim(),
-                                          _nameSurnameController.text.trim(),
-                                          _vaultNameController.text.trim(),
+                                          _emailController.text,
+                                          _nameSurnameController.text,
+                                          _vaultNameController.text,
                                           _passwordController.text)
                                       .then((value) {
                                     return Navigator.pushAndRemoveUntil(

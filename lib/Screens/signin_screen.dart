@@ -175,7 +175,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   _emailController.text);
                               if (_isEmailValid) {
                                 _authService
-                                    .signIn(_emailController.text.trim(),
+                                    .signIn(_emailController.text,
                                         _passwordController.text)
                                     .then((value) {
                                   return Navigator.pushAndRemoveUntil(
