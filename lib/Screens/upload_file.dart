@@ -137,11 +137,24 @@ class _uploadFileState extends State<uploadFile> {
             final snap = snapshot.data!;
             final progress = snap.bytesTransferred / snap.totalBytes;
             final percentage = (progress * 100).toStringAsFixed(2);
-
-            return Text(
+            if (percentage == '100.00') {
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(20,0,20,0),
+                child: Text(
+                'Upload Completed. You can go back or upload a new file!',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+                textAlign: TextAlign.center,
+            ),
+              );
+            }
+            else
+            {
+              return Text(
               'Uploading: $percentage%',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+              textAlign: TextAlign.center,
             );
+            }
           } else {
             return Container();
           }
