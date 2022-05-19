@@ -3,9 +3,11 @@
 
 import 'dart:io';
 
+import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
 import 'package:crypto_vault/Screens/upload_file.dart';
 import 'package:crypto_vault/models/api/firebase_api.dart';
 import 'package:crypto_vault/models/firebase_file.dart';
+import 'package:crypto_vault/services/auth_service.dart';
 import 'package:crypto_vault/src/keyGenerator.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -18,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
-
 
 AppBar AppBarVaultsInnerScreen() {
   return AppBar(
@@ -50,80 +51,89 @@ AppBar AppBarVaultsInnerScreen() {
 }
 
 class VaultInnerScreen extends StatefulWidget {
-  const VaultInnerScreen({Key? key}) : super(key: key);
+  final String uid;
+  const VaultInnerScreen({Key? key, required this.uid}) : super(key: key);
   @override
   State<VaultInnerScreen> createState() => _VaultInnerState();
 }
 
 class _VaultInnerState extends State<VaultInnerScreen> {
-   late Future<List<FirebaseFile>> futureFiles;
+  late Future<List<FirebaseFile>> futureFiles;
+
+  AuthService _authService = AuthService();
 
   @override
   void initState() {
+    var uid = widget.uid;
     super.initState();
-
-    futureFiles = FirebaseApi.listAll('Files/');
+    futureFiles = FirebaseApi.listAll('$uid/Files/');
   }
-  @override
 
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBarVaultsInnerScreen(),
-        body: FutureBuilder<List<FirebaseFile>>(
-          future: futureFiles,
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Center(child: CircularProgressIndicator());
-              default:
-                if (snapshot.hasError) {
-                  return Center(child: Text('Some error occurred!'));
-                } else {
-                  final files = snapshot.data!;
-                    return SizedBox(
-                      width: size.width,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: files.length,
-                              itemBuilder: (context, index) {
-                                final file = files[index];
-                                print(file.name);
-                                return buildFile(context, file,size);
-                              },
-                            ),
-                          ),
+      appBar: AppBarVaultsInnerScreen(),
+      body: FutureBuilder<List<FirebaseFile>>(
+        future: futureFiles,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+            default:
+              if (snapshot.hasError) {
+                return Center(child: Text('Some error occurred!'));
+              } else {
+                final files = snapshot.data!;
+                return SizedBox(
+                  width: size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: files.length,
+                          itemBuilder: (context, index) {
+                            final file = files[index];
+                            print(file.name);
+                            return buildFile(context, file, size);
+                          },
+                        ),
+                      ),
                       Center(
                         child: Padding(
-                        padding: EdgeInsets.only(
-                            top: size.height * 0.03, bottom: size.height * 0.03),
-                        child: SizedBox(
-                          height: size.height * 0.05,
-                          width: size.width * 0.50,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> uploadFile()));
-                             },
-                            child: Text('ADD FILE',
-                                style: TextStyle(
-                                    color: kPrimaryColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600)),
-                            style: ButtonStyle(
-                                elevation: MaterialStateProperty.all(5),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                        side: BorderSide(
-                                            color: kPrimaryColor, width: 1))),
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.white)),
-                          ),
+                            padding: EdgeInsets.only(
+                                top: size.height * 0.03,
+                                bottom: size.height * 0.03),
+                            child: SizedBox(
+                              height: size.height * 0.05,
+                              width: size.width * 0.50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => uploadFile()));
+                                },
+                                child: Text('ADD FILE',
+                                    style: TextStyle(
+                                        color: kPrimaryColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600)),
+                                style: ButtonStyle(
+                                    elevation: MaterialStateProperty.all(5),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            side: BorderSide(
+                                                color: kPrimaryColor,
+                                                width: 1))),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.white)),
+                              ),
                         )),
                       ),
                         ],
@@ -135,7 +145,7 @@ class _VaultInnerState extends State<VaultInnerScreen> {
           },
         ),
         );
-        
+
   }
   Widget buildFile(BuildContext context, FirebaseFile filex,Size size) => 
   InkWell(
@@ -166,9 +176,12 @@ class _VaultInnerState extends State<VaultInnerScreen> {
       },
       onLongPress: () async {
         await filex.ref.delete();
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> VaultInnerScreen()));
+        var uid = await _authService.getFileUid();
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> VaultInnerScreen(uid: uid,)));
         },
+      ),
     );
+
   Padding createRecentFileCard(
       Size size, BuildContext context, FirebaseFile filex) {
     return Padding(
@@ -209,7 +222,8 @@ class _VaultInnerState extends State<VaultInnerScreen> {
                             child: Container(
                               padding: EdgeInsets.only(left: 10),
                               child: Text(
-                                filex.name.substring(0,filex.name.lastIndexOf('.')),
+                                filex.name
+                                    .substring(0, filex.name.lastIndexOf('.')),
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w500,

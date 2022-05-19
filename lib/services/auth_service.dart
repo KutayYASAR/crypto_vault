@@ -47,18 +47,14 @@ class AuthService {
         .set({
       'VaultID': ["0", "1", "1", "1", "1", "1", "1", "0"],
     });
-    return user.user;
-  }
 
-  Future<String> getSpecie() async {
-    DocumentReference documentReference = FirebaseFirestore.instance
-        .collection('Vaults')
-        .doc(getCurrentUser()?.uid);
-    String specie = '';
-    await documentReference.get().then((snapshot) {
-      specie = snapshot['Vault Name'].toString();
+    await _firestore.collection("Users").doc(user.user!.uid).set({
+      'name': nameSurname,
+      'vault_uid': user.user!.uid,
+      'email': email,
+      'userUid': user.user!.uid
     });
-    return specie;
+    return user.user;
   }
 
   Future<void> addUser(String email, String nameSurname) async {
@@ -98,6 +94,13 @@ class AuthService {
         .set({
       'VaultID': ["0", "1", "1", "1", "1", "1", "1", "0"],
     });
+
+    await _firestore.collection("Users").doc(user.user!.uid).set({
+      'name': nameSurname,
+      'vault_uid': oldUserId?.uid,
+      'email': email,
+      'userUid': user.user!.uid
+    });
   }
 
   Future<User?> createInviteLink(String email, String nameSurname,
@@ -112,7 +115,7 @@ class AuthService {
     });
   }
 
-  Future<List<String>> getData() async {
+  Future<void> getData() async {
     List<String> name = [];
     await _firestore
         .collection('Vaults')
@@ -120,9 +123,21 @@ class AuthService {
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
         name = doc['Vault Name'];
+        print(name.toString());
       }
     });
-    return name;
+  }
+
+  Future<String> getSpecie() async {
+    DocumentReference documentReference = FirebaseFirestore.instance
+        .collection('Vaults')
+        .doc(getCurrentUser()?.uid);
+    String specie = '';
+    await documentReference.get().then((snapshot) {
+      specie = snapshot['Vault Name'].toString();
+      print(specie);
+    });
+    return specie;
   }
 
   Future<void> updateVaultName(String vaultName) async {
@@ -149,21 +164,57 @@ class AuthService {
     return name;
   }
 
+  Future<String> getFileUid() async {
+    String uid = "";
+    await _firestore
+        .collection('Users')
+        .where('userUid', isEqualTo: getCurrentUser()?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        uid = doc['vault_uid'].toString();
+      }
+    });
+    return uid;
+  }
+
   Future<List<String>> getPeopleName() async {
+    String uid = "";
+    await _firestore
+        .collection('Users')
+        .where('userUid', isEqualTo: getCurrentUser()?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        uid = doc['vault_uid'].toString();
+      }
+    });
+
+    String userName = "";
+    await _firestore
+        .collection('Users')
+        .where('userUid', isEqualTo: getCurrentUser()?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        userName = doc['name'].toString();
+      }
+    });
+
     final user = getCurrentUser()?.uid;
-    List<String> name = [];
+    List<String> name123 = [];
     await FirebaseFirestore.instance
         .collection('Vaults')
-        .doc(user)
+        .doc(uid)
         .collection('Users')
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
-        name.add(doc['name']);
+        name123.add(doc['name']);
       }
-      print(name);
     });
-    return name;
+    name123.remove(userName);
+    return name123;
   }
 
   //Kayıtlı olan kullanıcıyı alan fonksiyon

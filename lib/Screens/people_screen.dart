@@ -67,6 +67,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                /*
                 ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -86,9 +87,9 @@ class _PeopleScreenState extends State<PeopleScreen> {
                   },
                   itemCount: chatsPersonData.length,
                 ),
-                /*
+                */
                 FutureBuilder<List<String>>(
-                  future: _authService.getData1(),
+                  future: _authService.getPeopleName(),
                   builder: (context, snapshot) {
                     List<String> nameList = snapshot.data ?? [];
                     if (snapshot.hasError) print(snapshot.error);
@@ -117,7 +118,6 @@ class _PeopleScreenState extends State<PeopleScreen> {
                         : Center(child: CircularProgressIndicator());
                   },
                 ),
-                */
                 Padding(
                   padding: EdgeInsets.only(
                       top: size.height * 0.03, bottom: size.height * 0.03),
@@ -131,7 +131,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                             MaterialPageRoute(
                                 builder: (context) => AddUserScreen()));
                       },
-                      child: Text('INVITE PEOPLE',
+                      child: Text('ADD USER',
                           style: TextStyle(
                               color: kPrimaryColor,
                               fontSize: 16,
