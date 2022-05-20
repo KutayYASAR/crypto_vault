@@ -8,6 +8,7 @@ import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -94,32 +95,36 @@ class _SignInScreenState extends State<SignInScreen> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 45, 20, 0),
                         child: TextFormField(
-                            controller: _emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        width: 0, style: BorderStyle.none)),
-                                fillColor: kPrimaryLightColor,
-                                filled: true,
-                                hintText: 'E-Mail',
-                                contentPadding:
-                                    EdgeInsets.only(top: 25, bottom: 25),
-                                hintStyle: TextStyle(
-                                    color: Color.fromRGBO(119, 119, 119, 1),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16),
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 20, left: 20),
-                                  child: Icon(
-                                    Icons.mail_outline,
-                                    size: 24,
-                                    color: Color.fromRGBO(119, 119, 119, 1),
-                                  ),
-                                )),
-                            textInputAction: TextInputAction.next),
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                      width: 0, style: BorderStyle.none)),
+                              fillColor: kPrimaryLightColor,
+                              filled: true,
+                              hintText: 'E-Mail',
+                              contentPadding:
+                                  EdgeInsets.only(top: 25, bottom: 25),
+                              hintStyle: TextStyle(
+                                  color: Color.fromRGBO(119, 119, 119, 1),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16),
+                              prefixIcon: Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 20, left: 20),
+                                child: Icon(
+                                  Icons.mail_outline,
+                                  size: 24,
+                                  color: Color.fromRGBO(119, 119, 119, 1),
+                                ),
+                              )),
+                          textInputAction: TextInputAction.next,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'[ ]')),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),

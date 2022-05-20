@@ -52,7 +52,8 @@ class AuthService {
       'name': nameSurname,
       'vault_uid': user.user!.uid,
       'email': email,
-      'userUid': user.user!.uid
+      'userUid': user.user!.uid,
+      'admin': 'true'
     });
     return user.user;
   }
@@ -71,9 +72,6 @@ class AuthService {
 
     final oldUserId = getCurrentUser();
 
-    DocumentReference documentReference =
-        FirebaseFirestore.instance.collection('Vaults').doc(oldUserId?.uid);
-
     var user = await _auth.createUserWithEmailAndPassword(
         email: email, password: phrase);
 
@@ -82,7 +80,11 @@ class AuthService {
         .doc(oldUserId?.uid)
         .collection('Users')
         .doc(nameSurname)
-        .set({'userUid': user.user!.uid, 'email': email, 'name': nameSurname});
+        .set({
+      'userUid': user.user!.uid,
+      'email': email,
+      'name': nameSurname,
+    });
 
     await _firestore
         .collection("Vaults")
@@ -99,8 +101,22 @@ class AuthService {
       'name': nameSurname,
       'vault_uid': oldUserId?.uid,
       'email': email,
-      'userUid': user.user!.uid
+      'userUid': user.user!.uid,
     });
+  }
+
+  Future<String> getAdminStatus() async {
+    String status = "";
+    await _firestore
+        .collection('Users')
+        .where('userUid', isEqualTo: getCurrentUser()?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        status = doc['admin'].toString();
+      }
+    });
+    return status;
   }
 
   Future<User?> createInviteLink(String email, String nameSurname,

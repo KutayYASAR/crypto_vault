@@ -16,6 +16,7 @@ var cardData = [
   [Icons.business_center_rounded, 'Personal Business'],
   [Icons.folder_copy, 'Archive'],
 ];
+
 AuthService _authService = AuthService();
 
 AppBar AppBarVaults() {
@@ -33,9 +34,7 @@ AppBar AppBarVaults() {
         child: Row(
           children: [
             IconButton(
-                onPressed: () {
-                  _authService.signOut();
-                },
+                onPressed: () async {},
                 icon: Icon(
                   Icons.settings,
                   color: kPrimaryColor,

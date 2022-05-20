@@ -6,6 +6,7 @@ import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class CreateVaultScreen extends StatefulWidget {
@@ -158,36 +159,41 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 45, 0, 0),
                                   child: TextField(
-                                      controller: _emailController,
-                                      keyboardType: TextInputType.emailAddress,
-                                      decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: BorderSide(
-                                                  width: 0,
-                                                  style: BorderStyle.none)),
-                                          fillColor: kPrimaryLightColor,
-                                          filled: true,
-                                          hintText: 'E-Mail',
-                                          contentPadding: EdgeInsets.only(
-                                              top: 25, bottom: 25),
-                                          hintStyle: TextStyle(
-                                              color: Color.fromRGBO(
-                                                  119, 119, 119, 1),
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16),
-                                          prefixIcon: Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 20, left: 20),
-                                            child: Icon(
-                                              Icons.mail_outline,
-                                              size: 24,
-                                              color: Color.fromRGBO(
-                                                  119, 119, 119, 1),
-                                            ),
-                                          )),
-                                      textInputAction: TextInputAction.next),
+                                    controller: _emailController,
+                                    keyboardType: TextInputType.emailAddress,
+                                    decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: BorderSide(
+                                                width: 0,
+                                                style: BorderStyle.none)),
+                                        fillColor: kPrimaryLightColor,
+                                        filled: true,
+                                        hintText: 'E-Mail',
+                                        contentPadding: EdgeInsets.only(
+                                            top: 25, bottom: 25),
+                                        hintStyle: TextStyle(
+                                            color: Color.fromRGBO(
+                                                119, 119, 119, 1),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16),
+                                        prefixIcon: Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 20, left: 20),
+                                          child: Icon(
+                                            Icons.mail_outline,
+                                            size: 24,
+                                            color: Color.fromRGBO(
+                                                119, 119, 119, 1),
+                                          ),
+                                        )),
+                                    textInputAction: TextInputAction.next,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.deny(
+                                          RegExp(r'[ ]')),
+                                    ],
+                                  ),
                                 ),
                               );
                             }),
@@ -366,8 +372,8 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                                   _authService
                                       .createVault(
                                           _emailController.text,
-                                          _nameSurnameController.text,
-                                          _vaultNameController.text,
+                                          _nameSurnameController.text.trim(),
+                                          _vaultNameController.text.trim(),
                                           _passwordController.text)
                                       .then((value) {
                                     return Navigator.pushAndRemoveUntil(

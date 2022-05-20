@@ -18,7 +18,8 @@ var permissionData = [
 ];
 
 class PeopleInfoScreen extends StatefulWidget {
-  const PeopleInfoScreen({Key? key}) : super(key: key);
+  final String userName;
+  const PeopleInfoScreen({Key? key, required this.userName}) : super(key: key);
 
   @override
   State<PeopleInfoScreen> createState() => _PeopleInfoScreenState();
@@ -36,6 +37,7 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var userName = widget.userName;
     final sizeWidth = MediaQuery.of(context).size.width;
     final sizeHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -45,7 +47,7 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
           backgroundColor: kPrimaryLightColor,
           centerTitle: true,
           title: Text(
-            'People Name 1',
+            userName,
             style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
           ),
           actions: [
@@ -77,7 +79,6 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                   Column(
                     children: [
                       memberContainer(sizeWidth, sizeHeight),
-                      permissionsColumn(sizeWidth, sizeHeight),
                       vaultsTheyAreInColumn(sizeWidth, sizeHeight)
                     ],
                   ),
@@ -117,80 +118,6 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
             ),
           );
         }));
-  }
-
-  Column permissionsColumn(double sizeWidth, double sizeHeight) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: Container(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: sizeWidth / 20,
-              ),
-              child: Text(
-                'PERMISSIONS',
-                style: TextStyle(
-                    color: kPrimaryColor,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-        ),
-        ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            if (!_isSelectedPermissions.containsKey(index)) {
-              _isSelectedPermissions[index] = false;
-            }
-            return permissionsContainer(context, sizeWidth, sizeHeight, index,
-                permissionData[index][0]);
-          },
-          itemCount: permissionData.length,
-        )
-      ],
-    );
-  }
-
-  InkWell permissionsContainer(BuildContext context, double sizeWidth,
-      double sizeHeight, index, String permissionName) {
-    return InkWell(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 1),
-        child: Container(
-            width: sizeWidth,
-            height: sizeHeight / 15,
-            decoration: BoxDecoration(
-                color: Colors.white, border: Border.all(color: Colors.white)),
-            child: Padding(
-              padding:
-                  EdgeInsets.only(left: sizeWidth / 13, right: sizeWidth / 13),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(permissionName,
-                      style: TextStyle(color: Colors.black, fontSize: 16)),
-                  FlutterSwitch(
-                      width: sizeWidth / 5,
-                      height: sizeHeight / 20,
-                      toggleSize: sizeHeight / 24,
-                      value: _isSelectedPermissions[index],
-                      borderRadius: 20.0,
-                      activeColor: kPrimaryColor,
-                      onToggle: (val) {
-                        setState(() {
-                          _isSelectedPermissions[index] = val;
-                        });
-                      }),
-                ],
-              ),
-            )),
-      ),
-    );
   }
 
   Column vaultsTheyAreInColumn(double sizeWidth, double sizeHeight) {

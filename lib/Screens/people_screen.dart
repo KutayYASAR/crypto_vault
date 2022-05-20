@@ -11,8 +11,6 @@ import 'package:flutter/material.dart';
 
 var chatsPersonData = [
   [Icons.family_restroom, 'People Name 1'],
-  [Icons.family_restroom, 'People Name 2'],
-  [Icons.family_restroom, 'People Name 1'],
 ];
 
 AppBar AppBarPeople() {
@@ -88,6 +86,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                   itemCount: chatsPersonData.length,
                 ),
                 */
+
                 FutureBuilder<List<String>>(
                   future: _authService.getPeopleName(),
                   builder: (context, snapshot) {
@@ -99,17 +98,21 @@ class _PeopleScreenState extends State<PeopleScreen> {
                             shrinkWrap: true,
                             itemCount: nameList.length,
                             itemBuilder: (BuildContext context, int index) {
-                              iconData = chatsPersonData[index][0] as IconData?;
+                              iconData = chatsPersonData[0][0] as IconData?;
                               stringData = nameList[index].toString();
                               return InkWell(
                                 child:
                                     peopleCard(context, iconData, stringData),
-                                onTap: () {
+                                onTap: () async {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              PeopleInfoScreen()));
+                                              PeopleInfoScreen(
+                                                userName:
+                                                    nameList[index].toString(),
+                                              )));
+                                  print(nameList[index].toString());
                                 },
                                 borderRadius: BorderRadius.circular(15),
                               );
@@ -118,36 +121,48 @@ class _PeopleScreenState extends State<PeopleScreen> {
                         : Center(child: CircularProgressIndicator());
                   },
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: size.height * 0.03, bottom: size.height * 0.03),
-                  child: SizedBox(
-                    height: size.height * 0.05,
-                    width: size.width * 0.50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AddUserScreen()));
-                      },
-                      child: Text('ADD USER',
-                          style: TextStyle(
-                              color: kPrimaryColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600)),
-                      style: ButtonStyle(
-                          elevation: MaterialStateProperty.all(5),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      side: BorderSide(
-                                          color: kPrimaryColor, width: 1))),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white)),
-                    ),
-                  ),
+                FutureBuilder<String>(
+                  future: _authService.getAdminStatus(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) print(snapshot.error);
+                    return snapshot.hasData
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                top: size.height * 0.03,
+                                bottom: size.height * 0.03),
+                            child: SizedBox(
+                              height: size.height * 0.05,
+                              width: size.width * 0.50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddUserScreen()));
+                                },
+                                child: Text('ADD USER',
+                                    style: TextStyle(
+                                        color: kPrimaryColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600)),
+                                style: ButtonStyle(
+                                    elevation: MaterialStateProperty.all(5),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            side: BorderSide(
+                                                color: kPrimaryColor,
+                                                width: 1))),
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.white)),
+                              ),
+                            ),
+                          )
+                        : Center(child: Text(''));
+                  },
                 ),
               ],
             ),
