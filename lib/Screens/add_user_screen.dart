@@ -182,7 +182,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                     .fromLTRB(
                                                                 15, 15, 15, 10),
                                                         child: Text(
-                                                          'DıGGaD EdeSaN !',
+                                                          'Caution!',
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.black,
@@ -199,7 +199,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                 right: 20,
                                                                 bottom: 10),
                                                         child: Text(
-                                                          'eGeR BuRaYa BiRiNi EkLeYCeKSeN UyGuLaMaNıN YeNiDeN BaSLaMaSı LaZıMMıs GaRDaS',
+                                                          'IF YOU WANT TO ADD USER TO YOUR VAULT, APP WILL HAVE TO RESTART!',
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.black,
@@ -236,7 +236,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                       context);
                                                                 },
                                                                 child: Text(
-                                                                    'Iptal Et',
+                                                                    'GO BACK',
                                                                     style: TextStyle(
                                                                         color: Colors
                                                                             .white,
@@ -284,7 +284,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                           context);
                                                                 },
                                                                 child: Text(
-                                                                    'Yeniden Baslat',
+                                                                    'RESTART',
                                                                     style: TextStyle(
                                                                         color:
                                                                             kPrimaryColor,

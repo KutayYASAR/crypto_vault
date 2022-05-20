@@ -2,24 +2,29 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:crypto_vault/Screens/chats_inner_screen.dart';
+import 'package:crypto_vault/Screens/invite_people.dart';
 import 'package:crypto_vault/constants.dart';
+import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
 var vaultsData = [
-  ['Family'],
-  ['Estate'],
   ['ID\'s and Personal Data'],
-];
-
-var permissionData = [
-  ['Create Vaults'],
-  ['Start Direct Messages'],
+  ['Passwords'],
+  ['Property & Household'],
+  ['Estate'],
+  ['Family'],
+  ['Health'],
+  ['Personal Business'],
+  ['Archive'],
 ];
 
 class PeopleInfoScreen extends StatefulWidget {
   final String userName;
-  const PeopleInfoScreen({Key? key, required this.userName}) : super(key: key);
+  final List<bool> permissionList;
+  PeopleInfoScreen(
+      {Key? key, required this.userName, required this.permissionList})
+      : super(key: key);
 
   @override
   State<PeopleInfoScreen> createState() => _PeopleInfoScreenState();
@@ -30,13 +35,33 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
   bool statusCreateVaults = false;
   bool statusStartDirectMessages = false;
 
+  AuthService _authService = AuthService();
+
+  Future<void> setAdminStatusInfo(String userName, String newValue) async {
+    if (newValue == 'Admin') {
+      await _authService.setAdminStatus(userName);
+    }
+    if (newValue == 'Member') {
+      await _authService.setMemberStatus(userName);
+    }
+  }
+
+  Future<void> setPermissionListData(permissionList, userName, index) async {
+    if (permissionList[index] == true) {
+      await _authService.setVaultPermissionStatusTrue(userName, index);
+    } else if (permissionList[index] == false) {
+      await _authService.setVaultPermissionStatusFalse(userName, index);
+    }
+  }
+
   var degisken = false;
 
-  final _isSelectedPermissions = Map();
   final _isSelectedVaults = Map();
 
   @override
   Widget build(BuildContext context) {
+    List<bool> permissionList = widget.permissionList;
+    final size = MediaQuery.of(context).size;
     var userName = widget.userName;
     final sizeWidth = MediaQuery.of(context).size.width;
     final sizeHeight = MediaQuery.of(context).size.height;
@@ -78,8 +103,17 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                 children: [
                   Column(
                     children: [
-                      memberContainer(sizeWidth, sizeHeight),
-                      vaultsTheyAreInColumn(sizeWidth, sizeHeight)
+                      FutureBuilder<String>(
+                        future: _authService.getAdminStatus(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) print(snapshot.error);
+                          return snapshot.hasData
+                              ? memberContainer(sizeWidth, sizeHeight, userName)
+                              : Center();
+                        },
+                      ),
+                      vaultsTheyAreInColumn(
+                          sizeWidth, sizeHeight, permissionList, userName)
                     ],
                   ),
                   Padding(
@@ -89,7 +123,7 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                       height: sizeHeight * 0.05,
                       width: sizeWidth * 0.50,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -120,7 +154,8 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
         }));
   }
 
-  Column vaultsTheyAreInColumn(double sizeWidth, double sizeHeight) {
+  Column vaultsTheyAreInColumn(double sizeWidth, double sizeHeight,
+      List<bool> permissionList, String userName) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -146,8 +181,8 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
             if (!_isSelectedVaults.containsKey(index)) {
               _isSelectedVaults[index] = false;
             }
-            return vaultNamesContainer(
-                context, sizeWidth, sizeHeight, index, vaultsData[index][0]);
+            return vaultNamesContainer(context, sizeWidth, sizeHeight, index,
+                vaultsData[index][0], permissionList, userName);
           },
           itemCount: vaultsData.length,
         )
@@ -155,8 +190,14 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
     );
   }
 
-  InkWell vaultNamesContainer(BuildContext context, double sizeWidth,
-      double sizeHeight, index, String vaultName) {
+  InkWell vaultNamesContainer(
+      BuildContext context,
+      double sizeWidth,
+      double sizeHeight,
+      index,
+      String vaultName,
+      List<bool> permissionList,
+      String userName) {
     return InkWell(
       child: Padding(
         padding: const EdgeInsets.only(top: 1),
@@ -177,12 +218,14 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                       width: sizeWidth / 5,
                       height: sizeHeight / 20,
                       toggleSize: sizeHeight / 24,
-                      value: _isSelectedVaults[index],
+                      value: permissionList[index],
                       borderRadius: 20.0,
                       activeColor: kPrimaryColor,
                       onToggle: (val) {
                         setState(() {
-                          _isSelectedVaults[index] = val;
+                          permissionList[index] = val;
+                          setPermissionListData(
+                              permissionList, userName, index);
                         });
                       }),
                 ],
@@ -193,7 +236,8 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
     );
   }
 
-  Padding memberContainer(double sizeWidth, double sizeHeight) {
+  Padding memberContainer(
+      double sizeWidth, double sizeHeight, String userName) {
     return Padding(
       padding: const EdgeInsets.only(top: 1),
       child: Container(
@@ -215,6 +259,7 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
             onChanged: (String? newValue) {
               setState(() {
                 dropdownValue = newValue!;
+                setAdminStatusInfo(userName, newValue);
               });
             },
             items: <String>['Member', 'Admin']

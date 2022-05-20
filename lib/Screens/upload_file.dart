@@ -14,7 +14,8 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class uploadFile extends StatefulWidget {
-  uploadFile({Key? key}) : super(key: key);
+  final int indexOfVault;
+  uploadFile({Key? key, required this.indexOfVault}) : super(key: key);
 
   @override
   State<uploadFile> createState() => _uploadFileState();
@@ -23,6 +24,30 @@ class uploadFile extends StatefulWidget {
 class _uploadFileState extends State<uploadFile> {
   @override
   AuthService _authService = AuthService();
+  String vaultName = '';
+  @override
+  void initState() {
+    super.initState();
+    var indexOfVault = widget.indexOfVault;
+
+    if (indexOfVault == 0) {
+      vaultName = "ID";
+    } else if (indexOfVault == 1) {
+      vaultName = "Passwords";
+    } else if (indexOfVault == 2) {
+      vaultName = "Property";
+    } else if (indexOfVault == 3) {
+      vaultName = "Estate";
+    } else if (indexOfVault == 4) {
+      vaultName = "Family";
+    } else if (indexOfVault == 5) {
+      vaultName = "Health";
+    } else if (indexOfVault == 6) {
+      vaultName = "Personal";
+    } else if (indexOfVault == 7) {
+      vaultName = "Archive";
+    }
+  }
 
   String file = "";
   UploadTask? task;
@@ -34,6 +59,7 @@ class _uploadFileState extends State<uploadFile> {
   }
 
   Widget build(BuildContext context) {
+    var indexOfVault = widget.indexOfVault;
     final fileName = file != null ? basename(file) : 'No File Selected';
     return Scaffold(
       appBar: AppBar(
@@ -44,12 +70,13 @@ class _uploadFileState extends State<uploadFile> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_rounded),
           onPressed: () async {
-            var uid = await _authService.getFileUid();
+            var uid = await _authService.getVaultUid();
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) => VaultInnerScreen(
                           uid: uid,
+                          indexOfVault: indexOfVault,
                         )));
           },
         ),
@@ -99,9 +126,9 @@ class _uploadFileState extends State<uploadFile> {
                   String savefilepth = EncryptData.encrypt_file(file,
                       '626cf59e45b1e57279df12c65f41a56e697c710185a90f51aed814c0d3464c92c4cb9d4e950e9269fce19971bd7a03d02a77a34708fffc5d45f492e5e9f07bf3fffb5958487a6ae8ef26524ce7173d0178e86c04fab339aba108f4b180876f493ded50dc7b4304ffa95b3bef4b46dee17910ed2ef348f0a259a714d737981c7e');
                   var name = basename(savefilepth);
-                  var uid = await _authService.getFileUid();
+                  var uid = await _authService.getVaultUid();
                   print(uid);
-                  uploadFile('$uid/Files/$name', savefilepth);
+                  uploadFile('$uid/Files/$vaultName/$name', savefilepth);
                 });
               },
               child: Text('UPLOAD FILE',
@@ -139,21 +166,19 @@ class _uploadFileState extends State<uploadFile> {
             final percentage = (progress * 100).toStringAsFixed(2);
             if (percentage == '100.00') {
               return Padding(
-                padding: const EdgeInsets.fromLTRB(20,0,20,0),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Text(
-                'Upload Completed. You can go back or upload a new file!',
+                  'Upload Completed. You can go back or upload a new file!',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            } else {
+              return Text(
+                'Uploading: $percentage%',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
                 textAlign: TextAlign.center,
-            ),
               );
-            }
-            else
-            {
-              return Text(
-              'Uploading: $percentage%',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
-              textAlign: TextAlign.center,
-            );
             }
           } else {
             return Container();

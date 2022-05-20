@@ -104,6 +104,9 @@ class _PeopleScreenState extends State<PeopleScreen> {
                                 child:
                                     peopleCard(context, iconData, stringData),
                                 onTap: () async {
+                                  List<bool> permissionList = await _authService
+                                      .getClickedPersonPermissionData(
+                                          nameList[index]);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -111,8 +114,10 @@ class _PeopleScreenState extends State<PeopleScreen> {
                                               PeopleInfoScreen(
                                                 userName:
                                                     nameList[index].toString(),
+                                                permissionList: permissionList,
                                               )));
                                   print(nameList[index].toString());
+                                  print(index);
                                 },
                                 borderRadius: BorderRadius.circular(15),
                               );
@@ -161,7 +166,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                               ),
                             ),
                           )
-                        : Center(child: Text(''));
+                        : Center();
                   },
                 ),
               ],

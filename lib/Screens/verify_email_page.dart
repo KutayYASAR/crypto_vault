@@ -163,7 +163,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                              padding:
+                                  const EdgeInsets.fromLTRB(40, 10, 40, 10),
                               child: SizedBox(
                                 width: double.infinity,
                                 height: 70,

@@ -21,14 +21,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
-AppBar AppBarVaultsInnerScreen() {
+AppBar AppBarVaultsInnerScreen(String vaultNameOfApp) {
   return AppBar(
     foregroundColor: kPrimaryColor,
     elevation: 0.0,
     backgroundColor: kPrimaryLightColor,
     centerTitle: true,
     title: Text(
-      'Vault Name',
+      vaultNameOfApp,
       style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
     ),
     actions: [
@@ -52,7 +52,10 @@ AppBar AppBarVaultsInnerScreen() {
 
 class VaultInnerScreen extends StatefulWidget {
   final String uid;
-  const VaultInnerScreen({Key? key, required this.uid}) : super(key: key);
+  final int indexOfVault;
+  const VaultInnerScreen(
+      {Key? key, required this.uid, required this.indexOfVault})
+      : super(key: key);
   @override
   State<VaultInnerScreen> createState() => _VaultInnerState();
 }
@@ -61,19 +64,50 @@ class _VaultInnerState extends State<VaultInnerScreen> {
   late Future<List<FirebaseFile>> futureFiles;
 
   AuthService _authService = AuthService();
-
+  String vaultNameOfStorage = "";
+  String vaultNameOfApp = "";
   @override
   void initState() {
     var uid = widget.uid;
+    var indexOfVault = widget.indexOfVault;
+
+    if (indexOfVault == 0) {
+      vaultNameOfStorage = "ID";
+      vaultNameOfApp = "ID's and Personal Info";
+    } else if (indexOfVault == 1) {
+      vaultNameOfStorage = "Passwords";
+      vaultNameOfApp = "Passwords";
+    } else if (indexOfVault == 2) {
+      vaultNameOfStorage = "Property";
+      vaultNameOfApp = "Property & Household";
+    } else if (indexOfVault == 3) {
+      vaultNameOfStorage = "Estate";
+      vaultNameOfApp = "Estate";
+    } else if (indexOfVault == 4) {
+      vaultNameOfStorage = "Family";
+      vaultNameOfApp = "Family";
+    } else if (indexOfVault == 5) {
+      vaultNameOfStorage = "Health";
+      vaultNameOfApp = "Health";
+    } else if (indexOfVault == 6) {
+      vaultNameOfStorage = "Personal";
+      vaultNameOfApp = "Personal Business";
+    } else if (indexOfVault == 7) {
+      vaultNameOfStorage = "Archive";
+      vaultNameOfApp = "Archive";
+    }
     super.initState();
-    futureFiles = FirebaseApi.listAll('$uid/Files/');
+    futureFiles = FirebaseApi.listAll('$uid/Files/$vaultNameOfStorage');
   }
 
   @override
   Widget build(BuildContext context) {
+    var indexOfVault = widget.indexOfVault;
+    var uid = widget.uid;
+    print(indexOfVault);
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBarVaultsInnerScreen(),
+      appBar: AppBarVaultsInnerScreen(vaultNameOfApp),
       body: FutureBuilder<List<FirebaseFile>>(
         future: futureFiles,
         builder: (context, snapshot) {
@@ -97,7 +131,8 @@ class _VaultInnerState extends State<VaultInnerScreen> {
                           itemBuilder: (context, index) {
                             final file = files[index];
                             print(file.name);
-                            return buildFile(context, file, size);
+                            return buildFile(
+                                context, file, size, indexOfVault, uid);
                           },
                         ),
                       ),
@@ -114,7 +149,9 @@ class _VaultInnerState extends State<VaultInnerScreen> {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => uploadFile()));
+                                          builder: (context) => uploadFile(
+                                                indexOfVault: indexOfVault,
+                                              )));
                                 },
                                 child: Text('ADD FILE',
                                     style: TextStyle(
@@ -146,7 +183,8 @@ class _VaultInnerState extends State<VaultInnerScreen> {
     );
   }
 
-  Widget buildFile(BuildContext context, FirebaseFile filex, Size size) =>
+  Widget buildFile(BuildContext context, FirebaseFile filex, Size size,
+          int indexOfVault, String uid) =>
       InkWell(
         child: createRecentFileCard(size, context, filex),
         onTap: () async {
@@ -183,12 +221,13 @@ class _VaultInnerState extends State<VaultInnerScreen> {
         },
         onLongPress: () async {
           await filex.ref.delete();
-          var uid = await _authService.getFileUid();
+          var uid = await _authService.getVaultUid();
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (context) => VaultInnerScreen(
                         uid: uid,
+                        indexOfVault: indexOfVault,
                       )));
         },
       );

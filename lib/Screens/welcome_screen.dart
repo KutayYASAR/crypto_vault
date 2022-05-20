@@ -76,7 +76,7 @@ class WelcomeScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(50, 25, 50, 0),
                         child: Text(
-                          'Please sign in to your vault of if it\'s your first time feel free to create a new vault!',
+                          'Please sign in to your vault or if it\'s your first time feel free to create a new vault!',
                           style: TextStyle(
                               color: Color.fromRGBO(129, 129, 129, 1),
                               fontSize: 14,

@@ -77,11 +77,16 @@ class VaultsMainScreen extends StatelessWidget {
                     child: gridElement(iconData, stringData),
                   ),
                   onTap: () async {
-                    var uid = await _authService.getFileUid();
+                    var uid = await _authService.getVaultUid();
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => VaultInnerScreen(uid: uid)));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VaultInnerScreen(
+                          uid: uid,
+                          indexOfVault: index,
+                        ),
+                      ),
+                    );
                   },
                 );
               },
