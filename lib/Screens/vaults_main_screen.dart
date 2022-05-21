@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+
 import 'package:crypto_vault/Screens/vault_inner_screen.dart';
 import 'package:crypto_vault/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 
@@ -14,10 +15,8 @@ var cardData = [
   [Icons.family_restroom, 'Family'],
   [Icons.local_hospital, 'Health'],
   [Icons.business_center_rounded, 'Personal Business'],
-  [Icons.folder_copy, 'Archive'],
+  [Icons.folder_copy, 'Archive']
 ];
-
-AuthService _authService = AuthService();
 
 AppBar AppBarVaults() {
   return AppBar(
@@ -46,6 +45,8 @@ AppBar AppBarVaults() {
   );
 }
 
+bool forceStop = true;
+
 class VaultsMainScreen extends StatelessWidget {
   VaultsMainScreen({Key? key}) : super(key: key);
   AuthService _authService = AuthService();
@@ -60,35 +61,59 @@ class VaultsMainScreen extends StatelessWidget {
           child: Padding(
             padding:
                 const EdgeInsets.only(left: 25, right: 25, top: 25, bottom: 25),
-            child: GridView.builder(
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 15,
-                  crossAxisSpacing: 25,
-                  childAspectRatio: 160 / 128),
-              itemCount: cardData.length,
-              itemBuilder: (BuildContext context, int index) {
-                iconData = cardData[index][0] as IconData?;
-                stringData = cardData[index][1] as String?;
-                return InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: gridElement(iconData, stringData),
-                  ),
-                  onTap: () async {
-                    var uid = await _authService.getVaultUid();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => VaultInnerScreen(
-                          uid: uid,
-                          indexOfVault: index,
-                        ),
-                      ),
-                    );
-                  },
-                );
+            child: FutureBuilder<List<bool>>(
+              future: _authService.getPermissionData(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                List<bool> permissionList = snapshot.data ?? [];
+                List<int> deleting = [];
+                if (forceStop) {
+                  for (var i = 0; i <= 7; i++) {
+                    if (permissionList[i] == false) {
+                      deleting.add(i);
+                    }
+                  }
+                  for (var i = deleting.length - 1; i >= 0; i--) {
+                    cardData.removeAt(deleting[i]);
+                  }
+                  forceStop = false;
+                }
+                return snapshot.hasData
+                    ? GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 15,
+                                crossAxisSpacing: 25,
+                                childAspectRatio: 160 / 128),
+                        itemCount: cardData.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          iconData = cardData[index][0] as IconData?;
+                          stringData = cardData[index][1] as String?;
+                          return InkWell(
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 5),
+                              child: gridElement(iconData, stringData),
+                            ),
+                            onTap: () async {
+                              var uid = await _authService.getVaultUid();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VaultInnerScreen(
+                                    uid: uid,
+                                    indexOfVault: index,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      )
+                    : Center(child: CircularProgressIndicator());
               },
             ),
           ),

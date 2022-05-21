@@ -116,8 +116,6 @@ class _PeopleScreenState extends State<PeopleScreen> {
                                                     nameList[index].toString(),
                                                 permissionList: permissionList,
                                               )));
-                                  print(nameList[index].toString());
-                                  print(index);
                                 },
                                 borderRadius: BorderRadius.circular(15),
                               );

@@ -339,14 +339,14 @@ class AuthService {
   }
 
   Future<List<bool>> getPermissionData() async {
-    String userUid = "";
+    String vaultUid = "";
     await _firestore
         .collection('Users')
         .where('userUid', isEqualTo: getCurrentUser()?.uid)
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
-        userUid = doc['userUid'].toString();
+        vaultUid = doc['vault_uid'].toString();
       }
     });
     String userName = "";
@@ -363,7 +363,7 @@ class AuthService {
     List<bool> data = [];
     await FirebaseFirestore.instance
         .collection('Vaults')
-        .doc(userUid)
+        .doc(vaultUid)
         .collection('Users')
         .doc(userName)
         .collection('Permissions')

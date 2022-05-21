@@ -127,7 +127,6 @@ class _uploadFileState extends State<uploadFile> {
                       '626cf59e45b1e57279df12c65f41a56e697c710185a90f51aed814c0d3464c92c4cb9d4e950e9269fce19971bd7a03d02a77a34708fffc5d45f492e5e9f07bf3fffb5958487a6ae8ef26524ce7173d0178e86c04fab339aba108f4b180876f493ded50dc7b4304ffa95b3bef4b46dee17910ed2ef348f0a259a714d737981c7e');
                   var name = basename(savefilepth);
                   var uid = await _authService.getVaultUid();
-                  print(uid);
                   uploadFile('$uid/Files/$vaultName/$name', savefilepth);
                 });
               },

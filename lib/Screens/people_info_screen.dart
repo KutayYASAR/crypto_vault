@@ -112,8 +112,16 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                               : Center();
                         },
                       ),
-                      vaultsTheyAreInColumn(
-                          sizeWidth, sizeHeight, permissionList, userName)
+                      FutureBuilder<String>(
+                        future: _authService.getAdminStatus(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) print(snapshot.error);
+                          return snapshot.hasData
+                              ? vaultsTheyAreInColumn(sizeWidth, sizeHeight,
+                                  permissionList, userName)
+                              : Center();
+                        },
+                      ),
                     ],
                   ),
                   Padding(

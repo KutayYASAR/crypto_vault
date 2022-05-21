@@ -104,7 +104,6 @@ class _VaultInnerState extends State<VaultInnerScreen> {
   Widget build(BuildContext context) {
     var indexOfVault = widget.indexOfVault;
     var uid = widget.uid;
-    print(indexOfVault);
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBarVaultsInnerScreen(vaultNameOfApp),
