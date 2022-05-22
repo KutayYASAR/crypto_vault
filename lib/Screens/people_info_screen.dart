@@ -20,10 +20,14 @@ var vaultsData = [
 ];
 
 class PeopleInfoScreen extends StatefulWidget {
+  final String adminStatus;
   final String userName;
   final List<bool> permissionList;
   PeopleInfoScreen(
-      {Key? key, required this.userName, required this.permissionList})
+      {Key? key,
+      required this.userName,
+      required this.permissionList,
+      required this.adminStatus})
       : super(key: key);
 
   @override
@@ -60,6 +64,7 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var adminStatus = widget.adminStatus;
     List<bool> permissionList = widget.permissionList;
     final size = MediaQuery.of(context).size;
     var userName = widget.userName;
@@ -106,17 +111,26 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                       FutureBuilder<String>(
                         future: _authService.getAdminStatus(),
                         builder: (context, snapshot) {
+                          bool admindata = false;
                           if (snapshot.hasError) print(snapshot.error);
-                          return snapshot.hasData
-                              ? memberContainer(sizeWidth, sizeHeight, userName)
-                              : Center();
+                          if (snapshot.data == 'Admin') {
+                            admindata = true;
+                          }
+                          return admindata
+                              ? memberContainer(
+                                  sizeWidth, sizeHeight, userName, adminStatus)
+                              : SizedBox.shrink();
                         },
                       ),
                       FutureBuilder<String>(
                         future: _authService.getAdminStatus(),
                         builder: (context, snapshot) {
+                          bool admindata = false;
                           if (snapshot.hasError) print(snapshot.error);
-                          return snapshot.hasData
+                          if (snapshot.data == 'Admin') {
+                            admindata = true;
+                          }
+                          return admindata
                               ? vaultsTheyAreInColumn(sizeWidth, sizeHeight,
                                   permissionList, userName)
                               : Center();
@@ -132,6 +146,7 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                       width: sizeWidth * 0.50,
                       child: ElevatedButton(
                         onPressed: () async {
+                          print(adminStatus);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -244,8 +259,8 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
     );
   }
 
-  Padding memberContainer(
-      double sizeWidth, double sizeHeight, String userName) {
+  Padding memberContainer(double sizeWidth, double sizeHeight, String userName,
+      String adminStatus) {
     return Padding(
       padding: const EdgeInsets.only(top: 1),
       child: Container(
@@ -257,7 +272,7 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
           padding: EdgeInsets.only(left: sizeWidth / 13, right: sizeWidth / 13),
           child: DropdownButton<String>(
             isExpanded: true,
-            value: dropdownValue,
+            value: adminStatus,
             underline: Container(
               height: 0,
             ),

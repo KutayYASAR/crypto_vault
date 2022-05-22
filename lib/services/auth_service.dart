@@ -223,7 +223,10 @@ class AuthService {
       }
     });
 
-    await _firestore.collection('Users').doc(userUid).update({'admin': true});
+    await _firestore
+        .collection('Users')
+        .doc(userUid)
+        .update({'admin': 'Admin'});
   }
 
   Future<void> setMemberStatus(String nameSurname) async {
@@ -254,7 +257,7 @@ class AuthService {
     await _firestore
         .collection('Users')
         .doc(userUid)
-        .update({'admin': FieldValue.delete()});
+        .update({'admin': 'Member'});
   }
 
   Future<void> setVaultPermissionStatusTrue(
@@ -301,6 +304,44 @@ class AuthService {
         .collection('Permissions')
         .doc('Vaults')
         .update({'$index': false});
+  }
+
+  Future<String> getAdminStatusOfClickedPerson(String nameSurname) async {
+    String uid = "";
+    await _firestore
+        .collection('Users')
+        .where('userUid', isEqualTo: getCurrentUser()?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        uid = doc['vault_uid'].toString();
+      }
+    });
+
+    String uidOfPerson = "";
+    await FirebaseFirestore.instance
+        .collection('Vaults')
+        .doc(uid)
+        .collection('Users')
+        .where('name', isEqualTo: '$nameSurname')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        uidOfPerson = doc['userUid'];
+      }
+    });
+
+    String adminStatus = "";
+    await _firestore
+        .collection('Users')
+        .where('userUid', isEqualTo: '$uidOfPerson')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        adminStatus = doc['admin'];
+      }
+    });
+    return adminStatus;
   }
 
   Future<List<bool>> getClickedPersonPermissionData(String nameSurname) async {

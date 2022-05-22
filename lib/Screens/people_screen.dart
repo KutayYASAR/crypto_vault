@@ -107,11 +107,15 @@ class _PeopleScreenState extends State<PeopleScreen> {
                                   List<bool> permissionList = await _authService
                                       .getClickedPersonPermissionData(
                                           nameList[index]);
+                                  String adminStatus = await _authService
+                                      .getAdminStatusOfClickedPerson(
+                                          nameList[index]);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               PeopleInfoScreen(
+                                                adminStatus: adminStatus,
                                                 userName:
                                                     nameList[index].toString(),
                                                 permissionList: permissionList,
