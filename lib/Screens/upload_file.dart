@@ -14,8 +14,8 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class uploadFile extends StatefulWidget {
-  final int indexOfVault;
-  uploadFile({Key? key, required this.indexOfVault}) : super(key: key);
+  final String vaultName;
+  uploadFile({Key? key, required this.vaultName}) : super(key: key);
 
   @override
   State<uploadFile> createState() => _uploadFileState();
@@ -24,28 +24,35 @@ class uploadFile extends StatefulWidget {
 class _uploadFileState extends State<uploadFile> {
   @override
   AuthService _authService = AuthService();
-  String vaultName = '';
+  String vaultNameUpload = '';
   @override
   void initState() {
     super.initState();
-    var indexOfVault = widget.indexOfVault;
+    var vaultName = widget.vaultName;
 
-    if (indexOfVault == 0) {
-      vaultName = "ID";
-    } else if (indexOfVault == 1) {
-      vaultName = "Passwords";
-    } else if (indexOfVault == 2) {
-      vaultName = "Property";
-    } else if (indexOfVault == 3) {
-      vaultName = "Estate";
-    } else if (indexOfVault == 4) {
-      vaultName = "Family";
-    } else if (indexOfVault == 5) {
-      vaultName = "Health";
-    } else if (indexOfVault == 6) {
-      vaultName = "Personal";
-    } else if (indexOfVault == 7) {
-      vaultName = "Archive";
+    if (vaultName == "ID's and Personal Info") {
+      vaultNameUpload = "ID";
+    }
+    if (vaultName == "ID's and Personal Info") {
+      vaultNameUpload = "Passwords";
+    }
+    if (vaultName == "Property & Household") {
+      vaultNameUpload = "Property";
+    }
+    if (vaultName == "Estate") {
+      vaultNameUpload = "Estate";
+    }
+    if (vaultName == "Family") {
+      vaultNameUpload = "Family";
+    }
+    if (vaultName == "Health") {
+      vaultNameUpload = "Health";
+    }
+    if (vaultName == "Personal Business") {
+      vaultNameUpload = "Personal";
+    }
+    if (vaultName == "Archive") {
+      vaultNameUpload = "Archive";
     }
   }
 
@@ -59,7 +66,8 @@ class _uploadFileState extends State<uploadFile> {
   }
 
   Widget build(BuildContext context) {
-    var indexOfVault = widget.indexOfVault;
+    var vaultNameOfStorage = vaultNameUpload;
+    var vaultName = widget.vaultName;
     final fileName = file != null ? basename(file) : 'No File Selected';
     return Scaffold(
       appBar: AppBar(
@@ -76,7 +84,7 @@ class _uploadFileState extends State<uploadFile> {
                 MaterialPageRoute(
                     builder: (context) => VaultInnerScreen(
                           uid: uid,
-                          indexOfVault: indexOfVault,
+                          vaultName: vaultName,
                         )));
           },
         ),
@@ -127,7 +135,8 @@ class _uploadFileState extends State<uploadFile> {
                       '626cf59e45b1e57279df12c65f41a56e697c710185a90f51aed814c0d3464c92c4cb9d4e950e9269fce19971bd7a03d02a77a34708fffc5d45f492e5e9f07bf3fffb5958487a6ae8ef26524ce7173d0178e86c04fab339aba108f4b180876f493ded50dc7b4304ffa95b3bef4b46dee17910ed2ef348f0a259a714d737981c7e');
                   var name = basename(savefilepth);
                   var uid = await _authService.getVaultUid();
-                  uploadFile('$uid/Files/$vaultName/$name', savefilepth);
+                  uploadFile(
+                      '$uid/Files/$vaultNameOfStorage/$name', savefilepth);
                 });
               },
               child: Text('UPLOAD FILE',

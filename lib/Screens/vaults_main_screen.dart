@@ -105,7 +105,7 @@ class VaultsMainScreen extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) => VaultInnerScreen(
                                     uid: uid,
-                                    indexOfVault: index,
+                                    vaultName: cardData[index][1].toString(),
                                   ),
                                 ),
                               );

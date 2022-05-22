@@ -52,9 +52,8 @@ AppBar AppBarVaultsInnerScreen(String vaultNameOfApp) {
 
 class VaultInnerScreen extends StatefulWidget {
   final String uid;
-  final int indexOfVault;
-  const VaultInnerScreen(
-      {Key? key, required this.uid, required this.indexOfVault})
+  final String vaultName;
+  const VaultInnerScreen({Key? key, required this.uid, required this.vaultName})
       : super(key: key);
   @override
   State<VaultInnerScreen> createState() => _VaultInnerState();
@@ -69,30 +68,37 @@ class _VaultInnerState extends State<VaultInnerScreen> {
   @override
   void initState() {
     var uid = widget.uid;
-    var indexOfVault = widget.indexOfVault;
+    var vaultName = widget.vaultName;
 
-    if (indexOfVault == 0) {
+    if (vaultName == "ID's and Personal Info") {
       vaultNameOfStorage = "ID";
       vaultNameOfApp = "ID's and Personal Info";
-    } else if (indexOfVault == 1) {
+    }
+    if (vaultName == "Passwords") {
       vaultNameOfStorage = "Passwords";
       vaultNameOfApp = "Passwords";
-    } else if (indexOfVault == 2) {
+    }
+    if (vaultName == "Property & Household") {
       vaultNameOfStorage = "Property";
       vaultNameOfApp = "Property & Household";
-    } else if (indexOfVault == 3) {
+    }
+    if (vaultName == "Estate") {
       vaultNameOfStorage = "Estate";
       vaultNameOfApp = "Estate";
-    } else if (indexOfVault == 4) {
+    }
+    if (vaultName == "Family") {
       vaultNameOfStorage = "Family";
       vaultNameOfApp = "Family";
-    } else if (indexOfVault == 5) {
+    }
+    if (vaultName == "Health") {
       vaultNameOfStorage = "Health";
       vaultNameOfApp = "Health";
-    } else if (indexOfVault == 6) {
+    }
+    if (vaultName == "Personal Business") {
       vaultNameOfStorage = "Personal";
       vaultNameOfApp = "Personal Business";
-    } else if (indexOfVault == 7) {
+    }
+    if (vaultName == "Archive") {
       vaultNameOfStorage = "Archive";
       vaultNameOfApp = "Archive";
     }
@@ -102,7 +108,7 @@ class _VaultInnerState extends State<VaultInnerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var indexOfVault = widget.indexOfVault;
+    var vaultName = widget.vaultName;
     var uid = widget.uid;
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -131,7 +137,7 @@ class _VaultInnerState extends State<VaultInnerScreen> {
                             final file = files[index];
                             print(file.name);
                             return buildFile(
-                                context, file, size, indexOfVault, uid);
+                                context, file, size, vaultName, uid);
                           },
                         ),
                       ),
@@ -149,7 +155,7 @@ class _VaultInnerState extends State<VaultInnerScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => uploadFile(
-                                                indexOfVault: indexOfVault,
+                                                vaultName: vaultName,
                                               )));
                                 },
                                 child: Text('ADD FILE',
@@ -183,7 +189,7 @@ class _VaultInnerState extends State<VaultInnerScreen> {
   }
 
   Widget buildFile(BuildContext context, FirebaseFile filex, Size size,
-          int indexOfVault, String uid) =>
+          String vaultName, String uid) =>
       InkWell(
         child: createRecentFileCard(size, context, filex),
         onTap: () async {
@@ -226,7 +232,7 @@ class _VaultInnerState extends State<VaultInnerScreen> {
               MaterialPageRoute(
                   builder: (context) => VaultInnerScreen(
                         uid: uid,
-                        indexOfVault: indexOfVault,
+                        vaultName: vaultName,
                       )));
         },
       );
