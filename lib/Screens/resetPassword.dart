@@ -27,6 +27,7 @@ class ResetPasswordKeyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: kPrimaryLightColor,
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         elevation: 0,

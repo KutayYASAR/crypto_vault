@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/add_user_screen.dart';
 import 'package:crypto_vault/Screens/invite_people.dart';
 import 'package:crypto_vault/Screens/people_info_screen.dart';
+import 'package:crypto_vault/Screens/settings_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ var chatsPersonData = [
   [Icons.family_restroom, 'People Name 1'],
 ];
 
-AppBar AppBarPeople() {
+AppBar AppBarPeople(BuildContext context) {
   return AppBar(
     centerTitle: true,
     elevation: 0,
@@ -28,7 +29,12 @@ AppBar AppBarPeople() {
         child: Row(
           children: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SettingsScreen()));
+                },
                 icon: Icon(
                   Icons.settings,
                   color: kPrimaryColor,
@@ -48,134 +54,146 @@ class PeopleScreen extends StatefulWidget {
 }
 
 class _PeopleScreenState extends State<PeopleScreen> {
+  late bool isAdmin;
   AuthService _authService = AuthService();
   IconData? iconData = Icons.abc;
   String? stringData = 'NULL';
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.only(top: 15),
-      child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints viewPortConstraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints:
-                BoxConstraints(minHeight: viewPortConstraints.maxHeight),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                /*
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    iconData = chatsPersonData[index][0] as IconData?;
-                    stringData = chatsPersonData[index][1] as String?;
-                    return InkWell(
-                      child: peopleCard(context, iconData, stringData),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PeopleInfoScreen()));
-                      },
-                      borderRadius: BorderRadius.circular(15),
-                    );
-                  },
-                  itemCount: chatsPersonData.length,
-                ),
-                */
+    return Scaffold(
+      backgroundColor: kPrimaryLightColor,
+      body: Padding(
+        padding: const EdgeInsets.only(top: 15),
+        child: LayoutBuilder(builder:
+            (BuildContext context, BoxConstraints viewPortConstraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(minHeight: viewPortConstraints.maxHeight),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  /*
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      iconData = chatsPersonData[index][0] as IconData?;
+                      stringData = chatsPersonData[index][1] as String?;
+                      return InkWell(
+                        child: peopleCard(context, iconData, stringData),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PeopleInfoScreen()));
+                        },
+                        borderRadius: BorderRadius.circular(15),
+                      );
+                    },
+                    itemCount: chatsPersonData.length,
+                  ),
+                  */
 
-                FutureBuilder<List<String>>(
-                  future: _authService.getPeopleName(),
-                  builder: (context, snapshot) {
-                    List<String> nameList = snapshot.data ?? [];
-                    if (snapshot.hasError) print(snapshot.error);
-                    return snapshot.hasData
-                        ? ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: nameList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              iconData = chatsPersonData[0][0] as IconData?;
-                              stringData = nameList[index].toString();
-                              return InkWell(
-                                child:
-                                    peopleCard(context, iconData, stringData),
-                                onTap: () async {
-                                  List<bool> permissionList = await _authService
-                                      .getClickedPersonPermissionData(
-                                          nameList[index]);
-                                  String adminStatus = await _authService
-                                      .getAdminStatusOfClickedPerson(
-                                          nameList[index]);
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              PeopleInfoScreen(
-                                                adminStatus: adminStatus,
-                                                userName:
-                                                    nameList[index].toString(),
-                                                permissionList: permissionList,
-                                              )));
-                                },
-                                borderRadius: BorderRadius.circular(15),
-                              );
-                            },
-                          )
-                        : Center(child: CircularProgressIndicator());
-                  },
-                ),
-                FutureBuilder<String>(
-                  future: _authService.getAdminStatus(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) print(snapshot.error);
-                    return snapshot.hasData
-                        ? Padding(
-                            padding: EdgeInsets.only(
-                                top: size.height * 0.03,
-                                bottom: size.height * 0.03),
-                            child: SizedBox(
-                              height: size.height * 0.05,
-                              width: size.width * 0.50,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              AddUserScreen()));
-                                },
-                                child: Text('ADD USER',
-                                    style: TextStyle(
-                                        color: kPrimaryColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600)),
-                                style: ButtonStyle(
-                                    elevation: MaterialStateProperty.all(5),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            side: BorderSide(
-                                                color: kPrimaryColor,
-                                                width: 1))),
-                                    backgroundColor: MaterialStateProperty.all(
-                                        Colors.white)),
+                  FutureBuilder<List<String>>(
+                    future: _authService.getPeopleName(),
+                    builder: (context, snapshot) {
+                      List<String> nameList = snapshot.data ?? [];
+                      if (snapshot.hasError) print(snapshot.error);
+                      return snapshot.hasData
+                          ? ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: nameList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                iconData = chatsPersonData[0][0] as IconData?;
+                                stringData = nameList[index].toString();
+                                return InkWell(
+                                  child:
+                                      peopleCard(context, iconData, stringData),
+                                  onTap: () async {
+                                    List<bool> permissionList =
+                                        await _authService
+                                            .getClickedPersonPermissionData(
+                                                nameList[index]);
+                                    String adminStatus = await _authService
+                                        .getAdminStatusOfClickedPerson(
+                                            nameList[index]);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PeopleInfoScreen(
+                                                  adminStatus: adminStatus,
+                                                  userName: nameList[index]
+                                                      .toString(),
+                                                  permissionList:
+                                                      permissionList,
+                                                )));
+                                  },
+                                  borderRadius: BorderRadius.circular(15),
+                                );
+                              },
+                            )
+                          : Center(child: CircularProgressIndicator());
+                    },
+                  ),
+                  FutureBuilder<String>(
+                    future: _authService.getAdminStatus(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) print(snapshot.error);
+                      if (snapshot.data == "Admin") {
+                        isAdmin = true;
+                      } else {
+                        isAdmin = false;
+                      }
+                      return isAdmin
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                  top: size.height * 0.03,
+                                  bottom: size.height * 0.03),
+                              child: SizedBox(
+                                height: size.height * 0.05,
+                                width: size.width * 0.50,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AddUserScreen()));
+                                  },
+                                  child: Text('ADD USER',
+                                      style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600)),
+                                  style: ButtonStyle(
+                                      elevation: MaterialStateProperty.all(5),
+                                      shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              side: BorderSide(
+                                                  color: kPrimaryColor,
+                                                  width: 1))),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.white)),
+                                ),
                               ),
-                            ),
-                          )
-                        : Center();
-                  },
-                ),
-              ],
+                            )
+                          : Center();
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 

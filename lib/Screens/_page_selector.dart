@@ -16,20 +16,6 @@ class pagesSelector extends StatefulWidget {
 class _pagesSelectorState extends State<pagesSelector> {
   int _selectedIndex = 0;
 
-  static List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    VaultsMainScreen(),
-    PeopleScreen(),
-    ChatsScreen()
-  ];
-
-  static List<AppBar> _appbarOptions = <AppBar>[
-    AppBarHome(),
-    AppBarVaults(),
-    AppBarPeople(),
-    AppBarChats(),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -38,6 +24,18 @@ class _pagesSelectorState extends State<pagesSelector> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _widgetOptions = <Widget>[
+      HomeScreen(),
+      VaultsMainScreen(),
+      PeopleScreen(),
+      ChatsScreen()
+    ];
+    List<AppBar> _appbarOptions = <AppBar>[
+      AppBarHome(context),
+      AppBarVaults(context),
+      AppBarPeople(context),
+      AppBarChats(),
+    ];
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: _appbarOptions.elementAt(_selectedIndex),

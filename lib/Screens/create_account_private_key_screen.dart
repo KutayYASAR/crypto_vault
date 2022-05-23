@@ -31,6 +31,7 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: kPrimaryLightColor,
       body: SizedBox(
         height: size.height,
         width: double.infinity,

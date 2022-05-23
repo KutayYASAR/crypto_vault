@@ -71,6 +71,7 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
     final sizeWidth = MediaQuery.of(context).size.width;
     final sizeHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+        backgroundColor: kPrimaryLightColor,
         appBar: AppBar(
           foregroundColor: kPrimaryColor,
           elevation: 0.0,
@@ -80,22 +81,6 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
             userName,
             style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
           ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
-              child: Row(
-                children: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.settings,
-                        color: kPrimaryColor,
-                        size: 30,
-                      )),
-                ],
-              ),
-            )
-          ],
         ),
         body: LayoutBuilder(builder:
             (BuildContext context, BoxConstraints viewPortConstraints) {

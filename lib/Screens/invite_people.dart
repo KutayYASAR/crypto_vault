@@ -39,6 +39,7 @@ class _InvitePeopleState extends State<InvitePeopleScreen> {
     final sizeWidth = MediaQuery.of(context).size.width;
     final sizeHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+        backgroundColor: kPrimaryLightColor,
         appBar: AppBar(
           foregroundColor: kPrimaryColor,
           elevation: 0.0,

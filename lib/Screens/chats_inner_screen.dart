@@ -51,6 +51,7 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimaryLightColor,
       appBar: appBarChatsInnerScreen(),
       body: Column(children: [
         Expanded(

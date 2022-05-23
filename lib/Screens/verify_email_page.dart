@@ -64,6 +64,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
       return CreateAccountPrivateKeyScreen();
     } else {
       return Scaffold(
+        backgroundColor: kPrimaryLightColor,
         appBar: AppBar(
           title: Text("Confirm Your Email"),
           backgroundColor: kPrimaryColor,

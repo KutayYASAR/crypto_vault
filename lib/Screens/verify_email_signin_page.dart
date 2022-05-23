@@ -66,6 +66,7 @@ class _VerifyEmailSignInScreenState extends State<VerifyEmailSignInScreen> {
       return pagesSelector();
     }
     return Scaffold(
+      backgroundColor: kPrimaryLightColor,
       appBar: AppBar(
         title: Text("Confirm Your Email"),
         backgroundColor: kPrimaryColor,

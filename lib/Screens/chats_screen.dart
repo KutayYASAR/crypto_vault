@@ -34,40 +34,43 @@ class _ChatsScreenState extends State<ChatsScreen> {
   String? stringData = 'NULL';
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15),
-      child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints viewPortConstraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints:
-                BoxConstraints(minHeight: viewPortConstraints.maxHeight),
-            child: Column(
-              children: [
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    iconData = chatsPersonData[index][0] as IconData?;
-                    stringData = chatsPersonData[index][1] as String?;
-                    return InkWell(
-                      child: chatsCard(context, iconData, stringData),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChatsInnerScreen()));
-                      },
-                      borderRadius: BorderRadius.circular(15),
-                    );
-                  },
-                  itemCount: chatsPersonData.length,
-                ),
-              ],
+    return Scaffold(
+      backgroundColor: kPrimaryLightColor,
+      body: Padding(
+        padding: const EdgeInsets.only(top: 15),
+        child: LayoutBuilder(builder:
+            (BuildContext context, BoxConstraints viewPortConstraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(minHeight: viewPortConstraints.maxHeight),
+              child: Column(
+                children: [
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      iconData = chatsPersonData[index][0] as IconData?;
+                      stringData = chatsPersonData[index][1] as String?;
+                      return InkWell(
+                        child: chatsCard(context, iconData, stringData),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChatsInnerScreen()));
+                        },
+                        borderRadius: BorderRadius.circular(15),
+                      );
+                    },
+                    itemCount: chatsPersonData.length,
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 

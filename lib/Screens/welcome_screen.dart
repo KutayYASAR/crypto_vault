@@ -1,15 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:io';
-
 import 'package:crypto_vault/Screens/create_vault_screen.dart';
 import 'package:crypto_vault/Screens/signin_screen.dart';
 import 'package:crypto_vault/constants.dart';
-import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-
-import '../src/AES_encryption.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -18,6 +12,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: kPrimaryLightColor,
       resizeToAvoidBottomInset: false,
       body: SizedBox(
         height: size.height,

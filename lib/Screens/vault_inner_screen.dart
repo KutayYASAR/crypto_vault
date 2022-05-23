@@ -112,6 +112,7 @@ class _VaultInnerState extends State<VaultInnerScreen> {
     var uid = widget.uid;
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: kPrimaryLightColor,
       appBar: AppBarVaultsInnerScreen(vaultNameOfApp),
       body: FutureBuilder<List<FirebaseFile>>(
         future: futureFiles,

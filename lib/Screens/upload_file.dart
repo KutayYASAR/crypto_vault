@@ -70,6 +70,7 @@ class _uploadFileState extends State<uploadFile> {
     var vaultName = widget.vaultName;
     final fileName = file != null ? basename(file) : 'No File Selected';
     return Scaffold(
+      backgroundColor: kPrimaryLightColor,
       appBar: AppBar(
         foregroundColor: kPrimaryColor,
         elevation: 0.0,

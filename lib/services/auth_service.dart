@@ -64,7 +64,7 @@ class AuthService {
       'vault_uid': user.user!.uid,
       'email': email,
       'userUid': user.user!.uid,
-      'admin': 'true',
+      'admin': 'Admin',
     });
     return user.user;
   }
@@ -123,12 +123,71 @@ class AuthService {
       '6': true,
       '7': true,
     });
-
     await _firestore.collection("Users").doc(user.user!.uid).set({
       'name': nameSurname,
       'vault_uid': uid,
       'email': email,
       'userUid': user.user!.uid,
+      'admin': 'Member'
+    });
+  }
+
+  Future changePassword(
+      String currentPassword, String newPassword, BuildContext context) async {
+    final user = FirebaseAuth.instance.currentUser;
+    final cred = EmailAuthProvider.credential(
+        email: user?.email as String, password: currentPassword);
+
+    user?.reauthenticateWithCredential(cred).then((value) {
+      user.updatePassword(newPassword).then((_) {
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Center(child: const Text('Attention')),
+            content: const Text('Your Password Has Been Changed.'),
+            actions: <Widget>[
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ),
+            ],
+          ),
+        );
+      }).catchError((error) {
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Center(child: const Text('Attention')),
+            content: Text('Password must be atleast 6 characters.'),
+            actions: <Widget>[
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ),
+            ],
+          ),
+        );
+      });
+    }).catchError((err) {
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Center(child: const Text('Attention')),
+          content: Text('Wrong Password.'),
+          actions: <Widget>[
+            Center(
+              child: TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ),
+          ],
+        ),
+      );
     });
   }
 
@@ -431,7 +490,7 @@ class AuthService {
 
   //çıkış yap fonksiyonu
   Future<void> signOut() async {
-    FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut();
     runApp(new MaterialApp(
       home: new WelcomeScreen(),
     ));
