@@ -2,7 +2,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:crypto_vault/Screens/chats_inner_screen.dart';
+import 'package:crypto_vault/Screens/messages.dart';
 import 'package:crypto_vault/constants.dart';
+import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 var chatsPersonData = [
@@ -30,6 +32,7 @@ class ChatsScreen extends StatefulWidget {
 }
 
 class _ChatsScreenState extends State<ChatsScreen> {
+  AuthService _authService = AuthService();
   IconData? iconData = Icons.abc;
   String? stringData = 'NULL';
   @override
@@ -54,11 +57,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
                       stringData = chatsPersonData[index][1] as String?;
                       return InkWell(
                         child: chatsCard(context, iconData, stringData),
-                        onTap: () {
+                        onTap: () async{
+                          var clickedPersonUid = await _authService.getClickedPersonUid();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ChatsInnerScreen()));
+                                  builder: (context) => messages(
+                                    whoSent: ,clickedPersonUid:  ,
+                                    
+                                  )));
                         },
                         borderRadius: BorderRadius.circular(15),
                       );

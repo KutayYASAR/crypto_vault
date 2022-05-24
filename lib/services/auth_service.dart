@@ -438,6 +438,20 @@ class AuthService {
     return data;
   }
 
+  Future<String> getClickedPersonUid(String nameSurname) async {
+    String uid = "";
+    await _firestore
+        .collection('Users')
+        .where('name', isEqualTo: nameSurname)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        uid = doc['userUid'];
+      }
+    });
+    return uid;
+  }
+
   Future<List<bool>> getPermissionData() async {
     String vaultUid = "";
     await _firestore
