@@ -102,8 +102,21 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                             admindata = true;
                           }
                           return admindata
-                              ? memberContainer(
-                                  sizeWidth, sizeHeight, userName, adminStatus)
+                              ? FutureBuilder(
+                                  future: _authService
+                                      .getAdminStatusOfClickedPerson(userName),
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                    }
+                                    String? adminData =
+                                        (snapshot.data ?? "") as String?;
+                                    if (snapshot.hasError)
+                                      print(snapshot.error);
+                                    return memberContainer(sizeWidth,
+                                        sizeHeight, userName, adminData!);
+                                  })
                               : SizedBox.shrink();
                         },
                       ),
@@ -264,9 +277,10 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
             icon: Icon(Icons.arrow_drop_down),
             elevation: 16,
             style: TextStyle(color: Colors.black, fontSize: 16),
-            onChanged: (String? newValue) {
+            onChanged: (String? newValue) async {
               setState(() {
                 dropdownValue = newValue!;
+
                 setAdminStatusInfo(userName, newValue);
               });
             },
