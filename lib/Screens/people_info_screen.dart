@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:crypto_vault/Screens/chats_inner_screen.dart';
+import 'package:crypto_vault/Screens/chat_inner_screen.dart';
 import 'package:crypto_vault/Screens/invite_people.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
@@ -131,11 +131,20 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                       width: sizeWidth * 0.50,
                       child: ElevatedButton(
                         onPressed: () async {
-                          print(adminStatus);
+                          var clickedPersonUid =
+                              await _authService.getClickedPersonUid(userName);
+                          var whoSent =
+                              await _authService.getCurrentUser()!.uid;
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ChatsInnerScreen()));
+                                  builder: (context) => ChatsInnerScreen(
+                                        whoSent: whoSent,
+                                        clickedPersonUid: clickedPersonUid,
+                                        userName: userName,
+                                      )));
+                          await _authService.createChats(
+                              clickedPersonUid, userName);
                         },
                         child: Text('DIRECT MESSAGE',
                             style: TextStyle(

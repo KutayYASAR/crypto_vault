@@ -257,6 +257,66 @@ class AuthService {
     return name;
   }
 
+  Future<String> getClickedPersonUid(String name) async {
+    String uid = "";
+    await _firestore
+        .collection('Users')
+        .where('name', isEqualTo: name)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        uid = doc['userUid'];
+      }
+    });
+    return uid;
+  }
+
+  Future<List<String>> getPeopleChats() async {
+    List<String> chatNameList = [];
+    await _firestore
+        .collection('Chats')
+        .doc(getCurrentUser()?.uid)
+        .collection('Chats')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        chatNameList.add(doc['name']);
+      }
+    });
+    return chatNameList;
+  }
+
+  Future createChats(String chatPersonUid, String chatPersonName) async {
+    var currentUserName = await getCurrentUserName();
+    var uid = await getCurrentUser()?.uid;
+    await _firestore
+        .collection('Chats')
+        .doc(getCurrentUser()?.uid)
+        .collection('Chats')
+        .doc(chatPersonUid)
+        .set({'chatPersonUid': chatPersonUid, 'name': chatPersonName});
+    await _firestore
+        .collection('Chats')
+        .doc(chatPersonUid)
+        .collection('Chats')
+        .doc(getCurrentUser()?.uid)
+        .set({'chatPersonUid': '$uid', 'name': '$currentUserName'});
+  }
+
+  Future<String> getCurrentUserName() async {
+    String name = "";
+    await _firestore
+        .collection('Users')
+        .where('userUid', isEqualTo: getCurrentUser()?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        name = doc['name'];
+      }
+    });
+    return name;
+  }
+
   Future<void> setAdminStatus(String nameSurname) async {
     String vaultUid = "";
     await _firestore
@@ -436,20 +496,6 @@ class AuthService {
       }
     });
     return data;
-  }
-
-  Future<String> getClickedPersonUid(String nameSurname) async {
-    String uid = "";
-    await _firestore
-        .collection('Users')
-        .where('name', isEqualTo: nameSurname)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        uid = doc['userUid'];
-      }
-    });
-    return uid;
   }
 
   Future<List<bool>> getPermissionData() async {

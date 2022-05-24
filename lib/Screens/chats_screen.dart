@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:crypto_vault/Screens/chats_inner_screen.dart';
+import 'package:crypto_vault/Screens/chat_inner_screen.dart';
 import 'package:crypto_vault/Screens/messages.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
@@ -9,8 +9,6 @@ import 'package:flutter/material.dart';
 
 var chatsPersonData = [
   [Icons.chat_bubble, 'Chat Name 1'],
-  [Icons.chat_bubble, 'Chat Name 2'],
-  [Icons.chat_bubble, 'Chat Name 3'],
 ];
 
 AppBar AppBarChats() {
@@ -49,29 +47,53 @@ class _ChatsScreenState extends State<ChatsScreen> {
                   BoxConstraints(minHeight: viewPortConstraints.maxHeight),
               child: Column(
                 children: [
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      iconData = chatsPersonData[index][0] as IconData?;
-                      stringData = chatsPersonData[index][1] as String?;
-                      return InkWell(
-                        child: chatsCard(context, iconData, stringData),
-                        onTap: () async{
-                          var clickedPersonUid = await _authService.getClickedPersonUid();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => messages(
-                                    whoSent: ,clickedPersonUid:  ,
-                                    
-                                  )));
-                        },
-                        borderRadius: BorderRadius.circular(15),
-                      );
-                    },
-                    itemCount: chatsPersonData.length,
-                  ),
+                  FutureBuilder<List<String>>(
+                      future: _authService.getPeopleChats(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        List<String> chatNameList = snapshot.data ?? [];
+                        if (snapshot.hasError) print(snapshot.error);
+                        return snapshot.hasData
+                            ? ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  iconData = chatsPersonData[0][0] as IconData?;
+                                  stringData = chatNameList[index].toString();
+                                  return InkWell(
+                                    child: chatsCard(
+                                        context, iconData, stringData),
+                                    onTap: () async {
+                                      var clickedPersonUid = await _authService
+                                          .getClickedPersonUid(
+                                              chatNameList[index]);
+                                      var whoSent = await _authService
+                                          .getCurrentUser()!
+                                          .uid;
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChatsInnerScreen(
+                                                    whoSent: whoSent,
+                                                    clickedPersonUid:
+                                                        clickedPersonUid,
+                                                    userName:
+                                                        chatNameList[index],
+                                                  )));
+                                      print(chatNameList);
+                                    },
+                                    borderRadius: BorderRadius.circular(15),
+                                  );
+                                },
+                                itemCount: chatNameList.length,
+                              )
+                            : Center(
+                                child: CircularProgressIndicator(),
+                              );
+                      })
                 ],
               ),
             ),
