@@ -66,6 +66,14 @@ class AuthService {
       'userUid': user.user!.uid,
       'admin': 'Admin',
     });
+
+    await _firestore
+        .collection('Vault Chats')
+        .doc(getCurrentUser()?.uid)
+        .collection('Users')
+        .doc(getCurrentUser()?.uid)
+        .set({'uid': getCurrentUser()?.uid, 'name': nameSurname});
+
     return user.user;
   }
 
@@ -130,6 +138,13 @@ class AuthService {
       'userUid': user.user!.uid,
       'admin': 'Member'
     });
+
+    await _firestore
+        .collection('Vault Chats')
+        .doc(uid)
+        .collection('Users')
+        .doc(user.user!.uid)
+        .set({'uid': user.user!.uid, 'name': nameSurname});
   }
 
   Future changePassword(
@@ -284,6 +299,32 @@ class AuthService {
       }
     });
     return chatNameList;
+  }
+
+  Future<String> getVaultChat() async {
+    String uid = "";
+    await _firestore
+        .collection('Users')
+        .where('userUid', isEqualTo: getCurrentUser()?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        uid = doc['vault_uid'].toString();
+      }
+    });
+
+    String groupchatName = "";
+    await _firestore
+        .collection('Group Chats')
+        .doc(uid)
+        .collection('Chats')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        groupchatName = doc['name'];
+      }
+    });
+    return groupchatName;
   }
 
   Future createChats(String chatPersonUid, String chatPersonName) async {

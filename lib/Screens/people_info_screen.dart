@@ -135,6 +135,8 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                               await _authService.getClickedPersonUid(userName);
                           var whoSent =
                               await _authService.getCurrentUser()!.uid;
+                          var currentUserName =
+                              await _authService.getCurrentUserName();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -142,6 +144,7 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                                         whoSent: whoSent,
                                         clickedPersonUid: clickedPersonUid,
                                         userName: userName,
+                                        currentUserName: currentUserName,
                                       )));
                           await _authService.createChats(
                               clickedPersonUid, userName);

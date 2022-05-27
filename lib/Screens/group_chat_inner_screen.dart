@@ -9,23 +9,21 @@ import 'package:crypto_vault/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ChatsInnerScreen extends StatefulWidget {
-  String clickedPersonUid;
+class GroupChatInnerScreen extends StatefulWidget {
   String whoSent;
-  final String userName;
-  final String currentUserName;
-  ChatsInnerScreen(
+  String currentUserName;
+  String vaultUid;
+  GroupChatInnerScreen(
       {Key? key,
       required this.whoSent,
-      required this.clickedPersonUid,
-      required this.userName,
-      required this.currentUserName})
+      required this.currentUserName,
+      required this.vaultUid})
       : super(key: key);
   @override
-  _ChatsInnerScreenState createState() => _ChatsInnerScreenState();
+  _GroupChatInnerScreenState createState() => _GroupChatInnerScreenState();
 }
 
-class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
+class _GroupChatInnerScreenState extends State<GroupChatInnerScreen> {
   AuthService _authService = AuthService();
 
   final fs = FirebaseFirestore.instance;
@@ -41,15 +39,16 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
   @override
   Widget build(BuildContext context) {
     var whoSent = widget.whoSent;
-    var clickedPersonUid = widget.clickedPersonUid;
-    var userName = widget.userName;
     var currentUserName = widget.currentUserName;
-    String firebaseNameField = "";
+    var vaultUid = widget.vaultUid;
+    String nameText = "";
+
+    AuthService _authService = AuthService();
 
     Stream<QuerySnapshot> _messageStream = FirebaseFirestore.instance
+        .collection('Vault Messages')
+        .doc(vaultUid)
         .collection('Messages')
-        .doc(whoSent)
-        .collection(clickedPersonUid)
         .orderBy('time')
         .snapshots();
 
@@ -62,7 +61,7 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
         backgroundColor: kPrimaryLightColor,
         centerTitle: true,
         title: Text(
-          userName,
+          'Vault Chat',
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -99,6 +98,11 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
                           DateTime d = t.toDate();
                           var whoSentPerson;
                           print(d.toString());
+                          if (currentUserName == qs['sender']) {
+                            nameText = "";
+                          } else {
+                            nameText = qs['sender'];
+                          }
                           return Padding(
                             padding: const EdgeInsets.only(top: 8, bottom: 8),
                             child: Column(
@@ -110,6 +114,20 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
                                   width: 300,
                                   child: Column(
                                     children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 6),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              nameText,
+                                              style: const TextStyle(
+                                                  color: kTextDarkColor,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 16),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                       Card(
                                         elevation: 5,
                                         clipBehavior: Clip.antiAlias,
@@ -199,21 +217,9 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
                     onPressed: () async {
                       if (message.text.isNotEmpty) {
                         fs
+                            .collection('Vault Messages')
+                            .doc(vaultUid)
                             .collection('Messages')
-                            .doc(whoSent)
-                            .collection(clickedPersonUid)
-                            .doc()
-                            .set({
-                          'message': message.text.trim(),
-                          'time': DateTime.now(),
-                          'whoSent': whoSent,
-                          'sender': currentUserName
-                        });
-
-                        fs
-                            .collection('Messages')
-                            .doc(clickedPersonUid)
-                            .collection(whoSent)
                             .doc()
                             .set({
                           'message': message.text.trim(),
