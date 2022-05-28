@@ -19,7 +19,6 @@ class CreateVaultScreen extends StatefulWidget {
 class _CreateVaultScreenState extends State<CreateVaultScreen>
     with TickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
-  bool _isEmailValid = false;
 
   final TextEditingController _nameSurnameController = TextEditingController();
 
@@ -159,7 +158,7 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 45, 0, 0),
-                                  child: TextField(
+                                  child: TextFormField(
                                     controller: _emailController,
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
@@ -210,7 +209,7 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                  child: TextField(
+                                  child: TextFormField(
                                       controller: _nameSurnameController,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
@@ -255,7 +254,7 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                  child: TextField(
+                                  child: TextFormField(
                                       controller: _vaultNameController,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
@@ -300,7 +299,7 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                  child: TextField(
+                                  child: TextFormField(
                                     obscureText: _isPasswordObscure,
                                     controller: _passwordController,
                                     decoration: InputDecoration(
@@ -356,20 +355,45 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                             height: 70,
                             child: ElevatedButton(
                               onPressed: () async {
-                                int Navigation = 0;
-                                if (_emailController.value.text.isEmpty)
+                                bool _isEverythingValid = false;
+                                if (_emailController.text.isEmpty) {
                                   controllerEmail.forward(from: 0.0);
-                                else if (_nameSurnameController
-                                    .value.text.isEmpty)
+                                  Fluttertoast.showToast(
+                                      msg: 'Email Alanı Boş Olamaz.',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 1,
+                                      fontSize: 16.0);
+                                } else if (_nameSurnameController
+                                    .text.isEmpty) {
                                   controllernameSurname.forward(from: 0.0);
-                                else if (_vaultNameController
-                                    .value.text.isEmpty)
+                                  Fluttertoast.showToast(
+                                      msg: 'İsim Soyisim Alanı Boş Olamaz.',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 1,
+                                      fontSize: 16.0);
+                                } else if (_vaultNameController.text.isEmpty) {
                                   controllerVaultName.forward(from: 0.0);
-                                else if (_passwordController.value.text.isEmpty)
+                                  Fluttertoast.showToast(
+                                      msg: 'Kasa İsmi Alanı Boş Olamaz.',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 1,
+                                      fontSize: 16.0);
+                                } else if (_passwordController.text.isEmpty) {
                                   controllerPassword.forward(from: 0.0);
-                                _isEmailValid = EmailValidator.validate(
-                                    _emailController.text);
-                                if (_isEmailValid) {
+                                  Fluttertoast.showToast(
+                                      msg: 'Şifre Alanı Boş Olamaz.',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 1,
+                                      fontSize: 16.0);
+                                } else {
+                                  _isEverythingValid = true;
+                                }
+
+                                if (_isEverythingValid) {
                                   _authService
                                       .createVault(
                                           _emailController.text,
@@ -383,67 +407,38 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                                             builder: (context) =>
                                                 VerifyEmailScreen()),
                                         (route) => false);
+                                  }).catchError((dynamic error) {
+                                    if (error.code.contains('invalid-email')) {
+                                      Fluttertoast.showToast(
+                                          msg: 'Mail Adresi Geçersizdir.',
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.TOP,
+                                          timeInSecForIosWeb: 1,
+                                          fontSize: 16.0);
+                                      controllerEmail.forward(from: 0.0);
+                                    }
+                                    if (error.code
+                                        .contains('email-already-in-use')) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              'Bu Mail Adresi Kullanılmaktadır.',
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.TOP,
+                                          timeInSecForIosWeb: 1,
+                                          fontSize: 16.0);
+                                      controllerEmail.forward(from: 0.0);
+                                    }
+                                    if (error.code.contains('weak-password')) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              'Şifreniz En Az 6 Karakter Olmalıdır.',
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.TOP,
+                                          timeInSecForIosWeb: 1,
+                                          fontSize: 16.0);
+                                      controllerPassword.forward(from: 0.0);
+                                    }
                                   });
-                                } else if (_emailController.text.isEmpty) {
-                                  Navigation = 1;
-                                  controllerEmail.forward(from: 0.0);
-                                } else if (_nameSurnameController
-                                    .text.isEmpty) {
-                                  Navigation = 3;
-                                  controllernameSurname.forward(from: 0.0);
-                                } else if (_vaultNameController.text.isEmpty) {
-                                  Navigation = 4;
-                                  controllerVaultName.forward(from: 0.0);
-                                } else if (_passwordController.text.isEmpty) {
-                                  Navigation = 5;
-                                  controllerPassword.forward(from: 0.0);
-                                } else {
-                                  Navigation = 2;
-                                }
-                                switch (Navigation) {
-                                  case 1:
-                                    Fluttertoast.showToast(
-                                        msg: 'Email Alanı Boş Olamaz',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.TOP,
-                                        timeInSecForIosWeb: 1,
-                                        fontSize: 16.0);
-                                    break;
-                                  case 3:
-                                    Fluttertoast.showToast(
-                                        msg: 'İsim Soyisim Alanı Boş Olamaz',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.TOP,
-                                        timeInSecForIosWeb: 1,
-                                        fontSize: 16.0);
-                                    break;
-                                  case 4:
-                                    Fluttertoast.showToast(
-                                        msg: 'Kasa İsmi Alanı Boş Olamaz',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.TOP,
-                                        timeInSecForIosWeb: 1,
-                                        fontSize: 16.0);
-                                    break;
-                                  case 5:
-                                    Fluttertoast.showToast(
-                                        msg:
-                                            'Şifre Alanı Boş Veya 6 Karakterden Kısa Olamaz',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.TOP,
-                                        timeInSecForIosWeb: 1,
-                                        fontSize: 16.0);
-                                    break;
-                                  case 2:
-                                    Fluttertoast.showToast(
-                                        msg:
-                                            'Lütfen Geçerli Bir Mail Adresi Giriniz',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.TOP,
-                                        timeInSecForIosWeb: 1,
-                                        fontSize: 16.0);
-                                    break;
-                                  default:
                                 }
                               },
                               child: Text('CREATE A VAULT',

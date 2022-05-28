@@ -301,32 +301,6 @@ class AuthService {
     return chatNameList;
   }
 
-  Future<String> getVaultChat() async {
-    String uid = "";
-    await _firestore
-        .collection('Users')
-        .where('userUid', isEqualTo: getCurrentUser()?.uid)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        uid = doc['vault_uid'].toString();
-      }
-    });
-
-    String groupchatName = "";
-    await _firestore
-        .collection('Group Chats')
-        .doc(uid)
-        .collection('Chats')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        groupchatName = doc['name'];
-      }
-    });
-    return groupchatName;
-  }
-
   Future createChats(String chatPersonUid, String chatPersonName) async {
     var currentUserName = await getCurrentUserName();
     var uid = await getCurrentUser()?.uid;

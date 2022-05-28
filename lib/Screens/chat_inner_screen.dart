@@ -98,7 +98,6 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
                           Timestamp t = qs['time'];
                           DateTime d = t.toDate();
                           var whoSentPerson;
-                          print(d.toString());
                           return Padding(
                             padding: const EdgeInsets.only(top: 8, bottom: 8),
                             child: Column(
@@ -120,9 +119,12 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 15, 20, 15),
                                             child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 SizedBox(
-                                                  width: 200,
+                                                  width: 150,
                                                   child: Text(
                                                     qs['message'],
                                                     style: const TextStyle(
@@ -132,11 +134,9 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
                                                         fontSize: 16),
                                                   ),
                                                 ),
-                                                Text(
-                                                  d.hour.toString() +
-                                                      ":" +
-                                                      d.minute.toString(),
-                                                ),
+                                                Text(d.hour.toString() +
+                                                    ":" +
+                                                    d.minute.toString()),
                                               ],
                                             )),
                                       ),

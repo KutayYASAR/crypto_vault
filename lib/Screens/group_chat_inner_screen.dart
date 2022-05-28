@@ -97,7 +97,6 @@ class _GroupChatInnerScreenState extends State<GroupChatInnerScreen> {
                           Timestamp t = qs['time'];
                           DateTime d = t.toDate();
                           var whoSentPerson;
-                          print(d.toString());
                           if (currentUserName == qs['sender']) {
                             nameText = "";
                           } else {
@@ -138,9 +137,12 @@ class _GroupChatInnerScreenState extends State<GroupChatInnerScreen> {
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 15, 20, 15),
                                             child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 SizedBox(
-                                                  width: 200,
+                                                  width: 150,
                                                   child: Text(
                                                     qs['message'],
                                                     style: const TextStyle(
