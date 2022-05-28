@@ -105,6 +105,7 @@ class HomeScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     AuthService _authService = AuthService();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: kPrimaryLightColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -18,17 +18,47 @@ class SignInScreen extends StatefulWidget {
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends State<SignInScreen>
+    with TickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
   bool _isEmailValid = false;
 
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordObscure = true;
+  late AnimationController controllerEmail;
+  late AnimationController controllerPassword;
+
+  @override
+  void initState() {
+    controllerEmail = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+    controllerPassword = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+    super.initState();
+  }
 
   AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
+    final Animation<double> offsetAnimationEmail = Tween(begin: 0.0, end: 24.0)
+        .chain(CurveTween(curve: Curves.elasticIn))
+        .animate(controllerEmail)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          controllerEmail.reverse();
+        }
+      });
+    final Animation<double> offsetAnimationPassword =
+        Tween(begin: 0.0, end: 24.0)
+            .chain(CurveTween(curve: Curves.elasticIn))
+            .animate(controllerPassword)
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              controllerPassword.reverse();
+            }
+          });
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kPrimaryLightColor,
@@ -93,83 +123,108 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     width: double.infinity,
                     child: Column(children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 45, 20, 0),
-                        child: TextFormField(
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                      width: 0, style: BorderStyle.none)),
-                              fillColor: kPrimaryLightColor,
-                              filled: true,
-                              hintText: 'E-Mail',
-                              contentPadding:
-                                  EdgeInsets.only(top: 25, bottom: 25),
-                              hintStyle: TextStyle(
-                                  color: Color.fromRGBO(119, 119, 119, 1),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16),
-                              prefixIcon: Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 20, left: 20),
-                                child: Icon(
-                                  Icons.mail_outline,
-                                  size: 24,
-                                  color: Color.fromRGBO(119, 119, 119, 1),
+                      AnimatedBuilder(
+                          animation: offsetAnimationEmail,
+                          builder: (buildContext, child) {
+                            return Container(
+                              padding: EdgeInsets.only(
+                                  left: offsetAnimationEmail.value + 24,
+                                  right: 24 - offsetAnimationEmail.value),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 45, 0, 0),
+                                child: TextFormField(
+                                  controller: _emailController,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                              width: 0,
+                                              style: BorderStyle.none)),
+                                      fillColor: kPrimaryLightColor,
+                                      filled: true,
+                                      hintText: 'E-Mail',
+                                      contentPadding:
+                                          EdgeInsets.only(top: 25, bottom: 25),
+                                      hintStyle: TextStyle(
+                                          color:
+                                              Color.fromRGBO(119, 119, 119, 1),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16),
+                                      prefixIcon: Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 20, left: 20),
+                                        child: Icon(
+                                          Icons.mail_outline,
+                                          size: 24,
+                                          color:
+                                              Color.fromRGBO(119, 119, 119, 1),
+                                        ),
+                                      )),
+                                  textInputAction: TextInputAction.next,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.deny(
+                                        RegExp(r'[ ]')),
+                                  ],
                                 ),
-                              )),
-                          textInputAction: TextInputAction.next,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.deny(RegExp(r'[ ]')),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                        child: TextField(
-                          obscureText: _isPasswordObscure,
-                          controller: _passwordController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(
-                                    width: 0, style: BorderStyle.none)),
-                            fillColor: kPrimaryLightColor,
-                            filled: true,
-                            hintText: 'Password',
-                            contentPadding:
-                                EdgeInsets.only(top: 25, bottom: 25),
-                            hintStyle: TextStyle(
-                                color: Color.fromRGBO(119, 119, 119, 1),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16),
-                            prefixIcon: Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 20, left: 20),
-                              child: Icon(
-                                Icons.pin_outlined,
-                                size: 24,
-                                color: Color.fromRGBO(119, 119, 119, 1),
                               ),
-                            ),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                  _isPasswordObscure
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Color.fromRGBO(119, 119, 119, 1)),
-                              onPressed: () {
-                                setState(() {
-                                  _isPasswordObscure = !_isPasswordObscure;
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
+                            );
+                          }),
+                      AnimatedBuilder(
+                          animation: offsetAnimationPassword,
+                          builder: (buildContext, child) {
+                            return Container(
+                              padding: EdgeInsets.only(
+                                  left: offsetAnimationPassword.value + 24.0,
+                                  right: 24.0 - offsetAnimationPassword.value),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                child: TextField(
+                                  obscureText: _isPasswordObscure,
+                                  controller: _passwordController,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(
+                                            width: 0, style: BorderStyle.none)),
+                                    fillColor: kPrimaryLightColor,
+                                    filled: true,
+                                    hintText: 'Password',
+                                    contentPadding:
+                                        EdgeInsets.only(top: 25, bottom: 25),
+                                    hintStyle: TextStyle(
+                                        color: Color.fromRGBO(119, 119, 119, 1),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16),
+                                    prefixIcon: Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 20, left: 20),
+                                      child: Icon(
+                                        Icons.pin_outlined,
+                                        size: 24,
+                                        color: Color.fromRGBO(119, 119, 119, 1),
+                                      ),
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                          _isPasswordObscure
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                          color:
+                                              Color.fromRGBO(119, 119, 119, 1)),
+                                      onPressed: () {
+                                        setState(() {
+                                          _isPasswordObscure =
+                                              !_isPasswordObscure;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 25, 20, 0),
                         child: SizedBox(
@@ -177,9 +232,28 @@ class _SignInScreenState extends State<SignInScreen> {
                           height: 70,
                           child: ElevatedButton(
                             onPressed: () {
-                              _isEmailValid = EmailValidator.validate(
-                                  _emailController.text);
-                              if (_isEmailValid) {
+                              bool _isEverythingValid = false;
+                              if (_emailController.text.isEmpty) {
+                                controllerEmail.forward(from: 0.0);
+                                Fluttertoast.showToast(
+                                    msg:
+                                        'Lütfen Hesabınızın Mail Adresini Giriniz.',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 1,
+                                    fontSize: 16.0);
+                              } else if (_passwordController.text.isEmpty) {
+                                controllerPassword.forward(from: 0.0);
+                                Fluttertoast.showToast(
+                                    msg: 'Şifre Alanı Boş Olamaz.',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 1,
+                                    fontSize: 16.0);
+                              } else {
+                                _isEverythingValid = true;
+                              }
+                              if (_isEverythingValid) {
                                 _authService
                                     .signIn(_emailController.text,
                                         _passwordController.text)
@@ -190,28 +264,35 @@ class _SignInScreenState extends State<SignInScreen> {
                                           builder: (context) =>
                                               VerifyEmailSignInScreen()),
                                       (route) => false);
+                                }).catchError((dynamic error) {
+                                  if (error.code.contains('invalid-email')) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Mail Adresi Geçersizdir.',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 1,
+                                        fontSize: 16.0);
+                                    controllerEmail.forward(from: 0.0);
+                                  }
+                                  if (error.code.contains('user-not-found')) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Hesap Bulunamadı.',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 1,
+                                        fontSize: 16.0);
+                                    controllerEmail.forward(from: 0.0);
+                                  }
+                                  if (error.code.contains('wrong-password')) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Yanlış Şifre.',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 1,
+                                        fontSize: 16.0);
+                                    controllerPassword.forward(from: 0.0);
+                                  }
                                 });
-                              } else if (_emailController.text.isEmpty) {
-                                Fluttertoast.showToast(
-                                    msg: 'Email Alanı Boş Olamaz',
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.TOP,
-                                    timeInSecForIosWeb: 1,
-                                    fontSize: 16.0);
-                              } else if (_passwordController.text.isEmpty) {
-                                Fluttertoast.showToast(
-                                    msg: 'Şifre Alanı Boş Olamaz',
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.TOP,
-                                    timeInSecForIosWeb: 1,
-                                    fontSize: 16.0);
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: 'Hesap Bulunamadı',
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.TOP,
-                                    timeInSecForIosWeb: 1,
-                                    fontSize: 16.0);
                               }
                             },
                             child: Text('SIGN IN',
@@ -242,7 +323,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                           ResetPasswordScreen()));
                             },
                             child: Text(
-                              'Forgot Your Password ?',
+                              'Forgot Your Password?',
                               style: TextStyle(
                                   color: kPrimaryColor,
                                   fontSize: 18,
