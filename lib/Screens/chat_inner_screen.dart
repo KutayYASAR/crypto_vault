@@ -97,55 +97,122 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
                           QueryDocumentSnapshot qs = snapshot.data!.docs[index];
                           Timestamp t = qs['time'];
                           DateTime d = t.toDate();
-                          var whoSentPerson;
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8, bottom: 8),
-                            child: Column(
-                              crossAxisAlignment: whoSent == qs['whoSent']
-                                  ? CrossAxisAlignment.end
-                                  : CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 300,
+                          bool cardPerson;
+                          if (whoSent == qs['whoSent']) {
+                            cardPerson = true;
+                          } else {
+                            cardPerson = false;
+                          }
+                          return cardPerson
+                              ? Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, bottom: 8),
                                   child: Column(
+                                    crossAxisAlignment: whoSent == qs['whoSent']
+                                        ? CrossAxisAlignment.end
+                                        : CrossAxisAlignment.start,
                                     children: [
-                                      Card(
-                                        elevation: 5,
-                                        clipBehavior: Clip.antiAlias,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 15, 20, 15),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                SizedBox(
-                                                  width: 150,
-                                                  child: Text(
-                                                    qs['message'],
-                                                    style: const TextStyle(
-                                                        color: kTextDarkColor,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontSize: 16),
-                                                  ),
-                                                ),
-                                                Text(d.hour.toString() +
-                                                    ":" +
-                                                    d.minute.toString()),
-                                              ],
-                                            )),
+                                      SizedBox(
+                                        width: 300,
+                                        child: Column(
+                                          children: [
+                                            Card(
+                                              elevation: 2,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                  side: BorderSide(
+                                                      color: kPrimaryColor,
+                                                      width: 1),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          20, 15, 20, 15),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 200,
+                                                        child: Text(
+                                                          qs['message'],
+                                                          style: const TextStyle(
+                                                              color:
+                                                                  kTextDarkColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontSize: 13),
+                                                        ),
+                                                      ),
+                                                      Text(d.hour.toString() +
+                                                          ":" +
+                                                          d.minute.toString()),
+                                                    ],
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
+                                )
+                              : Padding(
+                                  padding:
+                                      const EdgeInsets.only(top: 8, bottom: 8),
+                                  child: Column(
+                                    crossAxisAlignment: whoSent == qs['whoSent']
+                                        ? CrossAxisAlignment.end
+                                        : CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: 300,
+                                        child: Column(
+                                          children: [
+                                            Card(
+                                              elevation: 5,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                              ),
+                                              child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          20, 15, 20, 15),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 200,
+                                                        child: Text(
+                                                          qs['message'],
+                                                          style: const TextStyle(
+                                                              color:
+                                                                  kTextDarkColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontSize: 13),
+                                                        ),
+                                                      ),
+                                                      Text(d.hour.toString() +
+                                                          ":" +
+                                                          d.minute.toString()),
+                                                    ],
+                                                  )),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
                         },
                       );
                     },
@@ -178,12 +245,12 @@ class _ChatsInnerScreenState extends State<ChatsInnerScreen> {
                         hintText: 'message',
                         enabled: true,
                         focusedBorder: OutlineInputBorder(
-                          borderSide: new BorderSide(color: kPrimaryColor),
-                          borderRadius: new BorderRadius.circular(30),
+                          borderSide: BorderSide(color: kPrimaryColor),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: new BorderSide(color: kPrimaryColor),
-                          borderRadius: new BorderRadius.circular(30),
+                          borderSide: BorderSide(color: kPrimaryColor),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                       ),
                       validator: (value) {},

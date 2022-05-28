@@ -3,6 +3,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/add_user_screen.dart';
+import 'package:crypto_vault/Screens/chat_inner_screen.dart';
 import 'package:crypto_vault/Screens/invite_people.dart';
 import 'package:crypto_vault/Screens/people_info_screen.dart';
 import 'package:crypto_vault/Screens/settings_screen.dart';
@@ -120,17 +121,46 @@ class _PeopleScreenState extends State<PeopleScreen> {
                                     String adminStatus = await _authService
                                         .getAdminStatusOfClickedPerson(
                                             nameList[index]);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                PeopleInfoScreen(
-                                                  adminStatus: adminStatus,
-                                                  userName: nameList[index]
-                                                      .toString(),
-                                                  permissionList:
-                                                      permissionList,
-                                                )));
+                                    String adminStatusOfUser =
+                                        await _authService.getAdminStatus();
+                                    var clickedPersonUid =
+                                        await _authService.getClickedPersonUid(
+                                            nameList[index].toString());
+                                    var whoSent = await _authService
+                                        .getCurrentUser()!
+                                        .uid;
+                                    var currentUserName =
+                                        await _authService.getCurrentUserName();
+                                    if (adminStatusOfUser == 'Admin') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PeopleInfoScreen(
+                                                    adminStatus: adminStatus,
+                                                    userName: nameList[index]
+                                                        .toString(),
+                                                    permissionList:
+                                                        permissionList,
+                                                  )));
+                                    } else {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChatsInnerScreen(
+                                                    whoSent: whoSent,
+                                                    clickedPersonUid:
+                                                        clickedPersonUid,
+                                                    userName: nameList[index]
+                                                        .toString(),
+                                                    currentUserName:
+                                                        currentUserName,
+                                                  )));
+                                      await _authService.createChats(
+                                          clickedPersonUid,
+                                          nameList[index].toString());
+                                    }
                                   },
                                   borderRadius: BorderRadius.circular(15),
                                 );

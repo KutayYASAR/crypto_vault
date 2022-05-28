@@ -1,12 +1,20 @@
 // ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/settings_screen.dart';
 import 'package:crypto_vault/constants.dart';
+import 'package:crypto_vault/models/firebase_file.dart';
 import 'package:crypto_vault/services/auth_service.dart';
+import 'package:crypto_vault/src/AES_encryption.dart';
+import 'package:file_saver/file_saver.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 var CardsCreate = [
   ['File Example1'],
@@ -97,8 +105,21 @@ AppBar AppBarHome(BuildContext context) {
   );
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late Future<List<FirebaseFile>> futureFiles;
+  AuthService _authService = AuthService();
+  @override
+  void initState() {
+    super.initState();
+    futureFiles = _authService.listAllRecent();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -301,15 +322,29 @@ class HomeScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return createRecentFileCard(
-                      size, context, CardsCreate[index][0]);
-                },
-                itemCount: CardsCreate.length,
-              ),
+              FutureBuilder<List<FirebaseFile>>(
+                  future: futureFiles,
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+                      default:
+                        if (snapshot.hasError) {
+                          return Center(child: Text('Some error occurred!'));
+                        } else {
+                          final files = snapshot.data!;
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: files.length,
+                            itemBuilder: (context, index) {
+                              final file = files[index];
+                              print(file.name);
+                              return buildFile(context, file, size);
+                            },
+                          );
+                        }
+                    }
+                  }),
             ],
           ),
           Center(
@@ -341,10 +376,47 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget buildFile(BuildContext context, FirebaseFile filex, Size size) =>
+      InkWell(
+        child: createRecentFileCard(size, context, filex),
+        onTap: () async {
+          final isref = filex.ref;
+          final dir = await getApplicationDocumentsDirectory();
+          final file = File('${dir.path}/${isref.name}');
+          var snackBar = SnackBar(
+            content: Text('Download has started.'),
+            duration: const Duration(milliseconds: 200),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          await isref.writeToFile(file);
+          print(file.path);
+          Future.delayed(Duration(milliseconds: 200), () {
+            snackBar = SnackBar(
+                content:
+                    Text('Download has finished.Dencryption has started.'));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          });
+          Future.delayed(Duration(milliseconds: 500), () async {
+            var f2Path = EncryptData.decrypt_file(file.path,
+                '626cf59e45b1e57279df12c65f41a56e697c710185a90f51aed814c0d3464c92c4cb9d4e950e9269fce19971bd7a03d02a77a34708fffc5d45f492e5e9f07bf3fffb5958487a6ae8ef26524ce7173d0178e86c04fab339aba108f4b180876f493ded50dc7b4304ffa95b3bef4b46dee17910ed2ef348f0a259a714d737981c7e');
+            final file2 = File(f2Path);
+            var data = file2.readAsBytesSync();
+            String path = await FileSaver.instance.saveAs(
+                basename(f2Path).split('.').first,
+                data,
+                basename(f2Path).split('.').last,
+                MimeType.OTHER);
+            print(path);
+            file.delete();
+            file2.delete();
+          });
+        },
+      );
 }
 
 Padding createRecentFileCard(
-    Size size, BuildContext context, String cardText1) {
+    Size size, BuildContext context, FirebaseFile filex) {
   return Padding(
     padding: const EdgeInsets.only(top: 10),
     child: Row(
@@ -379,14 +451,18 @@ Padding createRecentFileCard(
                             color: kPrimaryLightColor,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Text(
-                            cardText1,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
-                                color: kTextDarkColor),
+                        Flexible(
+                          child: Container(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              filex.name
+                                  .substring(0, filex.name.lastIndexOf('.')),
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color: kTextDarkColor),
+                            ),
                           ),
                         ),
                       ],

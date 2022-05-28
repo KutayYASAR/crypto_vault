@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:crypto_vault/Screens/chats_screen.dart';
 import 'package:crypto_vault/Screens/homeScreen.dart';
 import 'package:crypto_vault/Screens/people_screen.dart';
@@ -34,7 +36,7 @@ class _pagesSelectorState extends State<pagesSelector> {
       AppBarHome(context),
       AppBarVaults(context),
       AppBarPeople(context),
-      AppBarChats(),
+      AppBarChats(context),
     ];
     return Scaffold(
       resizeToAvoidBottomInset: false,

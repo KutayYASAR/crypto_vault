@@ -4,6 +4,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/chat_inner_screen.dart';
 import 'package:crypto_vault/Screens/group_chat_inner_screen.dart';
+import 'package:crypto_vault/Screens/settings_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -12,15 +13,36 @@ var chatsPersonData = [
   [Icons.chat_bubble, 'Chat Name 1'],
 ];
 
-AppBar AppBarChats() {
+AppBar AppBarChats(BuildContext context) {
   return AppBar(
-      centerTitle: true,
-      elevation: 0,
-      backgroundColor: kPrimaryLightColor,
-      title: Text(
-        'Chats',
-        style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
-      ));
+    centerTitle: true,
+    elevation: 0,
+    backgroundColor: kPrimaryLightColor,
+    title: Text(
+      'Chats',
+      style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
+    ),
+    actions: [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
+        child: Row(
+          children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SettingsScreen()));
+                },
+                icon: Icon(
+                  Icons.settings,
+                  color: kPrimaryColor,
+                )),
+          ],
+        ),
+      )
+    ],
+  );
 }
 
 class ChatsScreen extends StatefulWidget {

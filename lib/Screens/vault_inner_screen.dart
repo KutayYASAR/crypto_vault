@@ -3,6 +3,7 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
 import 'package:crypto_vault/Screens/upload_file.dart';
 import 'package:crypto_vault/models/api/firebase_api.dart';
@@ -151,7 +152,8 @@ class _VaultInnerState extends State<VaultInnerScreen> {
                               height: size.height * 0.05,
                               width: size.width * 0.50,
                               child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                  print(await _authService.getRecentFiles());
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -227,6 +229,18 @@ class _VaultInnerState extends State<VaultInnerScreen> {
         },
         onLongPress: () async {
           await filex.ref.delete();
+
+          String vaultUid = await _authService.getVaultUid();
+          String fileName = filex.ref.name;
+          String pathOfStorage =
+              '$vaultUid/Files/$vaultNameOfStorage/$fileName';
+          await FirebaseFirestore.instance
+              .collection('Vaults')
+              .doc(vaultUid)
+              .collection('Files')
+              .doc(fileName + vaultNameOfStorage)
+              .delete();
+
           var uid = await _authService.getVaultUid();
           Navigator.pushReplacement(
               context,

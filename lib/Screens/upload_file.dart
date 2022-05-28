@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/vault_inner_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/models/api/firebase_api.dart';
@@ -32,26 +33,19 @@ class _uploadFileState extends State<uploadFile> {
 
     if (vaultName == "ID's and Personal Info") {
       vaultNameUpload = "ID";
-    }
-    if (vaultName == "ID's and Personal Info") {
+    } else if (vaultName == "Passwords") {
       vaultNameUpload = "Passwords";
-    }
-    if (vaultName == "Property & Household") {
+    } else if (vaultName == "Property & Household") {
       vaultNameUpload = "Property";
-    }
-    if (vaultName == "Estate") {
+    } else if (vaultName == "Estate") {
       vaultNameUpload = "Estate";
-    }
-    if (vaultName == "Family") {
+    } else if (vaultName == "Family") {
       vaultNameUpload = "Family";
-    }
-    if (vaultName == "Health") {
+    } else if (vaultName == "Health") {
       vaultNameUpload = "Health";
-    }
-    if (vaultName == "Personal Business") {
+    } else if (vaultName == "Personal Business") {
       vaultNameUpload = "Personal";
-    }
-    if (vaultName == "Archive") {
+    } else if (vaultName == "Archive") {
       vaultNameUpload = "Archive";
     }
   }
@@ -138,6 +132,16 @@ class _uploadFileState extends State<uploadFile> {
                   var uid = await _authService.getVaultUid();
                   uploadFile(
                       '$uid/Files/$vaultNameOfStorage/$name', savefilepth);
+                  String pathOfStorage = '$uid/Files/$vaultNameOfStorage/$name';
+                  String vaultUid = await _authService.getVaultUid();
+                  if (name.length > 0) {
+                    await FirebaseFirestore.instance
+                        .collection('Vaults')
+                        .doc(vaultUid)
+                        .collection('Files')
+                        .doc(name + vaultNameOfStorage)
+                        .set({'path': pathOfStorage, 'time': DateTime.now()});
+                  }
                 });
               },
               child: Text('UPLOAD FILE',

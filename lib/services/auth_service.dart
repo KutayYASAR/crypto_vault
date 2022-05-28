@@ -4,7 +4,9 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/welcome_screen.dart';
+import 'package:crypto_vault/models/firebase_file.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -232,6 +234,43 @@ class AuthService {
       }
     });
     return uid;
+  }
+
+  Future<List<Reference>> getRecentFiles() async {
+    var vaultUid = await getVaultUid();
+    List<Reference> recentFiles = [];
+    int count = 0;
+    await _firestore
+        .collection('Vaults')
+        .doc(vaultUid)
+        .collection('Files')
+        .orderBy('time', descending: true)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        recentFiles.add(FirebaseStorage.instance.ref(doc['path']));
+        if (count >= 2) {
+          break;
+        }
+        count++;
+      }
+      count = 0;
+    });
+
+    return recentFiles;
+  }
+
+  Future<List<String>> _getDownloadLinks(List<Reference> refs) =>
+      Future.wait(refs.map((ref) => ref.getDownloadURL()).toList());
+
+  Future<List<FirebaseFile>> listAllRecent() async {
+    var recentFiles = await getRecentFiles();
+    List<FirebaseFile> fileList = [];
+    final urls = await _getDownloadLinks(recentFiles);
+    for (var ref in recentFiles) {
+      fileList.add(FirebaseFile(ref: ref, name: ref.name));
+    }
+    return fileList;
   }
 
   Future<List<String>> getPeopleName() async {
