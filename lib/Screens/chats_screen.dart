@@ -1,14 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:crypto_vault/Screens/chats_inner_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_vault/Screens/chat_inner_screen.dart';
+import 'package:crypto_vault/Screens/group_chat_inner_screen.dart';
 import 'package:crypto_vault/constants.dart';
+import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 var chatsPersonData = [
   [Icons.chat_bubble, 'Chat Name 1'],
-  [Icons.chat_bubble, 'Chat Name 2'],
-  [Icons.chat_bubble, 'Chat Name 3'],
 ];
 
 AppBar AppBarChats() {
@@ -30,6 +31,7 @@ class ChatsScreen extends StatefulWidget {
 }
 
 class _ChatsScreenState extends State<ChatsScreen> {
+  AuthService _authService = AuthService();
   IconData? iconData = Icons.abc;
   String? stringData = 'NULL';
   @override
@@ -46,25 +48,118 @@ class _ChatsScreenState extends State<ChatsScreen> {
                   BoxConstraints(minHeight: viewPortConstraints.maxHeight),
               child: Column(
                 children: [
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      iconData = chatsPersonData[index][0] as IconData?;
-                      stringData = chatsPersonData[index][1] as String?;
-                      return InkWell(
-                        child: chatsCard(context, iconData, stringData),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ChatsInnerScreen()));
-                        },
-                        borderRadius: BorderRadius.circular(15),
-                      );
+                  InkWell(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: Card(
+                        elevation: 5,
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.chat_bubble,
+                                  size: 32,
+                                  color: kTextDarkColor,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: Text(
+                                    'Vault Chat',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16),
+                                  ),
+                                ),
+                                const Spacer(),
+                                const Icon(
+                                  Icons.arrow_right_outlined,
+                                  color: kPrimaryColor,
+                                  size: 30,
+                                ),
+                              ],
+                            )),
+                      ),
+                    ),
+                    onTap: () async {
+                      var whoSent = await _authService.getCurrentUser()!.uid;
+                      var currentUserName =
+                          await _authService.getCurrentUserName();
+                      String vaultUid = "";
+                      await FirebaseFirestore.instance
+                          .collection('Users')
+                          .where('userUid',
+                              isEqualTo: _authService.getCurrentUser()?.uid)
+                          .get()
+                          .then((QuerySnapshot querySnapshot) {
+                        for (var doc in querySnapshot.docs) {
+                          vaultUid = doc['vault_uid'].toString();
+                        }
+                      });
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GroupChatInnerScreen(
+                                    whoSent: whoSent,
+                                    currentUserName: currentUserName,
+                                    vaultUid: vaultUid,
+                                  )));
                     },
-                    itemCount: chatsPersonData.length,
+                    borderRadius: BorderRadius.circular(15),
                   ),
+                  FutureBuilder<List<String>>(
+                      future: _authService.getPeopleChats(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        List<String> chatNameList = snapshot.data ?? [];
+                        if (snapshot.hasError) print(snapshot.error);
+                        return snapshot.hasData
+                            ? ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  iconData = chatsPersonData[0][0] as IconData?;
+                                  stringData = chatNameList[index].toString();
+                                  return InkWell(
+                                    child: chatsCard(
+                                        context, iconData, stringData),
+                                    onTap: () async {
+                                      var clickedPersonUid = await _authService
+                                          .getClickedPersonUid(
+                                              chatNameList[index]);
+                                      var whoSent = await _authService
+                                          .getCurrentUser()!
+                                          .uid;
+                                      var currentUserName = await _authService
+                                          .getCurrentUserName();
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChatsInnerScreen(
+                                                      whoSent: whoSent,
+                                                      clickedPersonUid:
+                                                          clickedPersonUid,
+                                                      userName:
+                                                          chatNameList[index],
+                                                      currentUserName:
+                                                          currentUserName)));
+                                      print(chatNameList);
+                                    },
+                                    borderRadius: BorderRadius.circular(15),
+                                  );
+                                },
+                                itemCount: chatNameList.length,
+                              )
+                            : Center(
+                                child: CircularProgressIndicator(),
+                              );
+                      })
                 ],
               ),
             ),
