@@ -1,10 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/add_user_screen.dart';
 import 'package:crypto_vault/Screens/chat_inner_screen.dart';
-import 'package:crypto_vault/Screens/invite_people.dart';
 import 'package:crypto_vault/Screens/people_info_screen.dart';
 import 'package:crypto_vault/Screens/settings_screen.dart';
 import 'package:crypto_vault/constants.dart';
@@ -253,7 +251,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                 ),
                 const Spacer(),
                 const Icon(
-                  Icons.arrow_right_outlined,
+                  Icons.keyboard_arrow_right,
                   color: kPrimaryColor,
                   size: 30,
                 ),

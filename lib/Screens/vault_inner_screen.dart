@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 AppBar AppBarVaultsInnerScreen(String vaultNameOfApp) {
   return AppBar(
@@ -196,6 +197,9 @@ class _VaultInnerState extends State<VaultInnerScreen> {
       InkWell(
         child: createRecentFileCard(size, context, filex),
         onTap: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          var phrase = prefs.getString('phrase');
+          var seed = KeyGenerator.phraseToSeed(phrase!);
           final isref = filex.ref;
           final dir = await getApplicationDocumentsDirectory();
           final file = File('${dir.path}/${isref.name}');
@@ -213,8 +217,7 @@ class _VaultInnerState extends State<VaultInnerScreen> {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           });
           Future.delayed(Duration(milliseconds: 500), () async {
-            var f2Path = EncryptData.decrypt_file(file.path,
-                '626cf59e45b1e57279df12c65f41a56e697c710185a90f51aed814c0d3464c92c4cb9d4e950e9269fce19971bd7a03d02a77a34708fffc5d45f492e5e9f07bf3fffb5958487a6ae8ef26524ce7173d0178e86c04fab339aba108f4b180876f493ded50dc7b4304ffa95b3bef4b46dee17910ed2ef348f0a259a714d737981c7e');
+            var f2Path = EncryptData.decrypt_file(file.path, seed);
             final file2 = File(f2Path);
             var data = file2.readAsBytesSync();
             String path = await FileSaver.instance.saveAs(

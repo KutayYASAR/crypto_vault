@@ -98,7 +98,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                 ),
                                 const Spacer(),
                                 const Icon(
-                                  Icons.arrow_right_outlined,
+                                  Icons.keyboard_arrow_right,
                                   color: kPrimaryColor,
                                   size: 30,
                                 ),
@@ -217,7 +217,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                 ),
                 const Spacer(),
                 const Icon(
-                  Icons.arrow_right_outlined,
+                  Icons.keyboard_arrow_right,
                   color: kPrimaryColor,
                   size: 30,
                 ),

@@ -8,11 +8,13 @@ import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/models/api/firebase_api.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:crypto_vault/src/AES_encryption.dart';
+import 'package:crypto_vault/src/keyGenerator.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class uploadFile extends StatefulWidget {
   final String vaultName;
@@ -121,13 +123,15 @@ class _uploadFileState extends State<uploadFile> {
             height: 70,
             child: ElevatedButton(
               onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                var phrase = prefs.getString('phrase');
+                var seed = KeyGenerator.phraseToSeed(phrase!);
                 final snackBar = SnackBar(
                     content: Text(
                         'Encryption has started. App may freeze dont worry!'));
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 Future.delayed(Duration(milliseconds: 300), () async {
-                  String savefilepth = EncryptData.encrypt_file(file,
-                      '626cf59e45b1e57279df12c65f41a56e697c710185a90f51aed814c0d3464c92c4cb9d4e950e9269fce19971bd7a03d02a77a34708fffc5d45f492e5e9f07bf3fffb5958487a6ae8ef26524ce7173d0178e86c04fab339aba108f4b180876f493ded50dc7b4304ffa95b3bef4b46dee17910ed2ef348f0a259a714d737981c7e');
+                  String savefilepth = EncryptData.encrypt_file(file, seed);
                   var name = basename(savefilepth);
                   var uid = await _authService.getVaultUid();
                   uploadFile(

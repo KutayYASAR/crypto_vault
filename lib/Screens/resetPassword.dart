@@ -111,7 +111,7 @@ class ResetPasswordKeyScreen extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              CreateAccountPrivateKeyScreen()));
+                                              ResetPasswordKeyScreen()));
                                 },
                                 child: const Text('RESET PASSWORD',
                                     style: TextStyle(

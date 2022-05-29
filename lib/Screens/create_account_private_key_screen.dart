@@ -4,31 +4,38 @@ import 'package:crypto_vault/Screens/_page_selector.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/Screens/resetPassword.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-String text =
-    'Android iOS Fuschia Linux Windows MacOS Android iOS Fuschia Linux Windows MacOS Android iOS Fuschia Linux Windows MacOS Android iOS Fuschia Linux Windows MacOS';
-List result = text.split(' ');
-
-var privateKeyData = [
-  [result[0], result[1]],
-  [result[2], result[3]],
-  [result[4], result[5]],
-  [result[6], result[7]],
-  [result[8], result[9]],
-  [result[10], result[11]],
-  [result[12], result[13]],
-  [result[14], result[15]],
-  [result[16], result[17]],
-  [result[18], result[19]],
-  [result[20], result[21]],
-  [result[22], result[23]],
-];
-
-class CreateAccountPrivateKeyScreen extends StatelessWidget {
-  const CreateAccountPrivateKeyScreen({Key? key}) : super(key: key);
+class CreateAccountPrivateKeyScreen extends StatefulWidget {
+  final String phrase;
+  CreateAccountPrivateKeyScreen({Key? key, required this.phrase})
+      : super(key: key);
 
   @override
+  State<CreateAccountPrivateKeyScreen> createState() =>
+      _CreateAccountPrivateKeyScreenState();
+}
+
+class _CreateAccountPrivateKeyScreenState
+    extends State<CreateAccountPrivateKeyScreen> {
+  @override
   Widget build(BuildContext context) {
+    var phrase = widget.phrase;
+    List result = phrase.split(' ');
+    var privateKeyCreateData = [
+      [result[0], result[1]],
+      [result[2], result[3]],
+      [result[4], result[5]],
+      [result[6], result[7]],
+      [result[8], result[9]],
+      [result[10], result[11]],
+      [result[12], result[13]],
+      [result[14], result[15]],
+      [result[16], result[17]],
+      [result[18], result[19]],
+      [result[20], result[21]],
+      [result[22], result[23]],
+    ];
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kPrimaryLightColor,
@@ -110,8 +117,8 @@ class CreateAccountPrivateKeyScreen extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) {
                             return createAccountPrivateKeyCard(
                                 context,
-                                privateKeyData[index][0],
-                                privateKeyData[index][1]);
+                                privateKeyCreateData[index][0],
+                                privateKeyCreateData[index][1]);
                           },
                           itemCount: privateKeyData.length,
                         ),

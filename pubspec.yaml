@@ -47,6 +47,7 @@ dependencies:
   fluttertoast: ^8.0.9
   flutter_riverpod: ^2.0.0-dev.5
   flutter_phoenix: ^1.0.0
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:

@@ -1,17 +1,12 @@
 // ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/settings_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/models/firebase_file.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:crypto_vault/src/AES_encryption.dart';
 import 'package:file_saver/file_saver.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -338,7 +333,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemCount: files.length,
                             itemBuilder: (context, index) {
                               final file = files[index];
-                              print(file.name);
                               return buildFile(context, file, size);
                             },
                           );

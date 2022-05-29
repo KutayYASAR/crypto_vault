@@ -1,13 +1,22 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
 import 'package:crypto_vault/Screens/verify_email_page.dart';
 import 'package:crypto_vault/constants.dart';
+import 'package:crypto_vault/models/api/firebase_api.dart';
 import 'package:crypto_vault/services/auth_service.dart';
+import 'package:crypto_vault/src/AES_encryption.dart';
+import 'package:crypto_vault/src/keyGenerator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:path/path.dart';
 
 class CreateVaultScreen extends StatefulWidget {
   CreateVaultScreen({Key? key}) : super(key: key);
@@ -30,6 +39,38 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
   late AnimationController controllernameSurname;
   late AnimationController controllerVaultName;
   late AnimationController controllerPassword;
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/check.txt');
+  }
+
+  Future<File> writeCounter(String counter) async {
+    final file = await _localFile;
+
+    // Write the file
+    return file.writeAsString(counter);
+  }
+
+  Future<String> readCounter() async {
+    try {
+      final file = await _localFile;
+
+      // Read the file
+      final contents = await file.readAsString();
+
+      return contents;
+    } catch (e) {
+      // If encountering an error, return 0
+      return '0';
+    }
+  }
 
   @override
   void initState() {
@@ -400,12 +441,40 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                                           _nameSurnameController.text.trim(),
                                           _vaultNameController.text.trim(),
                                           _passwordController.text)
-                                      .then((value) {
+                                      .then((value) async {
+                                    String phrase =
+                                        KeyGenerator.randomPhraseGenerator();
+
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    prefs.setString('phrase', phrase);
+
+                                    writeCounter('true');
+
+                                    var vaultUid =
+                                        await _authService.getVaultUid();
+
+                                    var seed =
+                                        KeyGenerator.phraseToSeed(phrase);
+
+                                    String savefilepth =
+                                        EncryptData.encrypt_file(
+                                            await _localPath + '/check.txt',
+                                            seed);
+
+                                    var name = basename(savefilepth);
+
+                                    FirebaseApi.uploadFile(
+                                        '$vaultUid/check/$name',
+                                        File(savefilepth));
+
                                     return Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                VerifyEmailScreen()),
+                                                VerifyEmailScreen(
+                                                  phrase: phrase,
+                                                )),
                                         (route) => false);
                                   }).catchError((dynamic error) {
                                     if (error.code.contains('invalid-email')) {

@@ -5,8 +5,8 @@ import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -19,6 +19,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
   var isSwitched = false;
 
   AuthService _authService = AuthService();
+
+  bool _darkMode = false;
+
+  void loadCounter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _darkMode = (prefs.getBool('dark') ?? false);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadCounter();
+  }
+
+  void _changeDarkMode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _darkMode = !_darkMode;
+      prefs.setBool('dark', _darkMode);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +88,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      print(_darkMode);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -103,18 +127,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           width: size.width / 6,
                           height: size.height / 30,
                           toggleSize: size.height / 35,
-                          value: isSwitched,
+                          value: _darkMode,
                           borderRadius: 20.0,
                           activeColor: kPrimaryColor,
-                          onToggle: (val) {
+                          onToggle: (val) async {
+                            final prefs = await SharedPreferences.getInstance();
                             setState(() {
-                              isSwitched = val;
+                              _changeDarkMode();
                             });
-                            if (isSwitched == true) {
-                              print('dark mode');
-                            } else if (isSwitched == false) {
-                              print('purple');
-                            }
                           },
                         ),
                       ],
@@ -131,6 +151,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: ElevatedButton(
                     onPressed: () async {
                       await _authService.signOut();
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.setBool('dark', false);
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                               builder: (context) => WelcomeScreen()),

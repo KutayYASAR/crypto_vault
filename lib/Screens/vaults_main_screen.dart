@@ -5,6 +5,7 @@ import 'package:crypto_vault/Screens/vault_inner_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_vault/services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 AppBar AppBarVaults(BuildContext context) {
   return AppBar(

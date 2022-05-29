@@ -10,7 +10,8 @@ import 'package:crypto_vault/constants.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
-  const VerifyEmailScreen({Key? key}) : super(key: key);
+  final String phrase;
+  VerifyEmailScreen({Key? key, required this.phrase}) : super(key: key);
 
   @override
   State<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
@@ -60,8 +61,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   }
 
   Widget build(BuildContext context) {
+    var phrase = widget.phrase;
     if (isEmailVerified) {
-      return CreateAccountPrivateKeyScreen();
+      return CreateAccountPrivateKeyScreen(phrase: phrase);
     } else {
       return Scaffold(
         backgroundColor: kPrimaryLightColor,
