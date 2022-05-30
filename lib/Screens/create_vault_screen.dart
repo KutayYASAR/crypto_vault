@@ -449,6 +449,9 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                                         await SharedPreferences.getInstance();
                                     prefs.setString('phrase', phrase);
 
+                                    prefs.setString(
+                                        'email', _emailController.text);
+
                                     writeCounter('true');
 
                                     var vaultUid =

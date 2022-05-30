@@ -2,6 +2,7 @@
 
 import 'package:crypto_vault/Screens/_page_selector.dart';
 import 'package:crypto_vault/Screens/reset_password_screen.dart';
+import 'package:crypto_vault/Screens/user_phrase_entry_screen.dart';
 import 'package:crypto_vault/Screens/verify_email_page.dart';
 import 'package:crypto_vault/Screens/verify_email_signin_page.dart';
 import 'package:crypto_vault/constants.dart';
@@ -10,6 +11,7 @@ import 'package:crypto_vault/services/auth_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   SignInScreen({Key? key}) : super(key: key);
@@ -257,13 +259,28 @@ class _SignInScreenState extends State<SignInScreen>
                                 _authService
                                     .signIn(_emailController.text,
                                         _passwordController.text)
-                                    .then((value) {
-                                  return Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              VerifyEmailSignInScreen()),
-                                      (route) => false);
+                                    .then((value) async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  String? prefsEmail = prefs.getString('email');
+                                  if (prefsEmail ==
+                                      _emailController.text.trim()) {
+                                    return Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                VerifyEmailSignInScreen()),
+                                        (route) => false);
+                                  } else {
+                                    prefs.setString(
+                                        'email', _emailController.text);
+                                    return Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                UserPhraseEntryScreen()),
+                                        (route) => false);
+                                  }
                                 }).catchError((dynamic error) {
                                   if (error.code.contains('invalid-email')) {
                                     Fluttertoast.showToast(
@@ -320,7 +337,7 @@ class _SignInScreenState extends State<SignInScreen>
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          ResetPasswordScreen()));
+                                          UserPhraseEntryScreen()));
                             },
                             child: Text(
                               'Forgot Your Password?',
