@@ -171,7 +171,6 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                                           chatNameList[index],
                                                       currentUserName:
                                                           currentUserName)));
-                                      print(chatNameList);
                                     },
                                     borderRadius: BorderRadius.circular(15),
                                   );

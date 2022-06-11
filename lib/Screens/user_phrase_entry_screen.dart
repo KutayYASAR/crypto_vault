@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:crypto_vault/Screens/_page_selector.dart';
+import 'package:crypto_vault/Screens/verify_email_signin_page.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/src/keyGenerator.dart';
 import 'package:flutter/material.dart';
@@ -7,36 +9,66 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'create_account_private_key_screen.dart';
 
-class UserPhraseEntryScreen extends StatelessWidget {
-  UserPhraseEntryScreen({Key? key}) : super(key: key);
+class UserPhraseEntryScreen extends StatefulWidget {
+  String email;
+  UserPhraseEntryScreen({Key? key, required this.email}) : super(key: key);
 
+  @override
+  State<UserPhraseEntryScreen> createState() => _UserPhraseEntryScreenState();
+}
+
+class _UserPhraseEntryScreenState extends State<UserPhraseEntryScreen> {
   final TextEditingController phraseController0 = TextEditingController();
+
   final TextEditingController phraseController1 = TextEditingController();
+
   final TextEditingController phraseController2 = TextEditingController();
+
   final TextEditingController phraseController3 = TextEditingController();
+
   final TextEditingController phraseController4 = TextEditingController();
+
   final TextEditingController phraseController5 = TextEditingController();
+
   final TextEditingController phraseController6 = TextEditingController();
+
   final TextEditingController phraseController7 = TextEditingController();
+
   final TextEditingController phraseController8 = TextEditingController();
+
   final TextEditingController phraseController9 = TextEditingController();
+
   final TextEditingController phraseController10 = TextEditingController();
+
   final TextEditingController phraseController11 = TextEditingController();
+
   final TextEditingController phraseController12 = TextEditingController();
+
   final TextEditingController phraseController13 = TextEditingController();
+
   final TextEditingController phraseController14 = TextEditingController();
+
   final TextEditingController phraseController15 = TextEditingController();
+
   final TextEditingController phraseController16 = TextEditingController();
+
   final TextEditingController phraseController17 = TextEditingController();
+
   final TextEditingController phraseController18 = TextEditingController();
+
   final TextEditingController phraseController19 = TextEditingController();
+
   final TextEditingController phraseController20 = TextEditingController();
+
   final TextEditingController phraseController21 = TextEditingController();
+
   final TextEditingController phraseController22 = TextEditingController();
+
   final TextEditingController phraseController23 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    var email = widget.email;
     String phrase = "";
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -79,7 +111,7 @@ class UserPhraseEntryScreen extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 14,
-                          fontWeight: FontWeight.w300),
+                          fontWeight: FontWeight.w400),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -100,7 +132,7 @@ class UserPhraseEntryScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 2),
+                          padding: const EdgeInsets.only(top: 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -892,7 +924,7 @@ class UserPhraseEntryScreen extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 20, bottom: 15),
+                          padding: const EdgeInsets.only(top: 15, bottom: 15),
                           child: Container(
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.7,
@@ -949,8 +981,15 @@ class UserPhraseEntryScreen extends StatelessWidget {
                                   SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
                                   //prefs.setString('phrase', phrase);
+                                  //prefs.setString( 'email', email);
                                   String seed =
                                       KeyGenerator.phraseToSeed(phrase);
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              pagesSelector()),
+                                      (route) => false);
                                 },
                                 child: const Text('Enter Private Key',
                                     style: TextStyle(

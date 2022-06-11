@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, curly_braces_in_flow_control_structures
 
 import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
+import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:email_validator/email_validator.dart';
@@ -280,9 +281,15 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                       _nameSurnameController
                                                                           .text);
 
-                                                                  await Phoenix
-                                                                      .rebirth(
-                                                                          context);
+                                                                  await _authService
+                                                                      .signOut();
+                                                                  Navigator.of(context).pushAndRemoveUntil(
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              WelcomeScreen()),
+                                                                      (Route<dynamic>
+                                                                              route) =>
+                                                                          false);
                                                                 },
                                                                 child: Text(
                                                                     'RESTART',

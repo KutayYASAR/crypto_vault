@@ -109,7 +109,7 @@ class _SignInScreenState extends State<SignInScreen>
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w300),
+                                  fontWeight: FontWeight.w400),
                               textAlign: TextAlign.center,
                             ),
                           )
@@ -133,7 +133,7 @@ class _SignInScreenState extends State<SignInScreen>
                                   left: offsetAnimationEmail.value + 24,
                                   right: 24 - offsetAnimationEmail.value),
                               child: Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 45, 0, 0),
+                                padding: const EdgeInsets.fromLTRB(0, 35, 0, 0),
                                 child: TextFormField(
                                   controller: _emailController,
                                   keyboardType: TextInputType.emailAddress,
@@ -272,13 +272,11 @@ class _SignInScreenState extends State<SignInScreen>
                                                 VerifyEmailSignInScreen()),
                                         (route) => false);
                                   } else {
-                                    prefs.setString(
-                                        'email', _emailController.text);
                                     return Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                UserPhraseEntryScreen()),
+                                                UserPhraseEntryScreen(email: _emailController.text)),
                                         (route) => false);
                                   }
                                 }).catchError((dynamic error) {
@@ -330,14 +328,14 @@ class _SignInScreenState extends State<SignInScreen>
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 25, bottom: 30),
+                        padding: const EdgeInsets.only(top: 25, bottom: 25),
                         child: TextButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          UserPhraseEntryScreen()));
+                                          ResetPasswordScreen()));
                             },
                             child: Text(
                               'Forgot Your Password?',

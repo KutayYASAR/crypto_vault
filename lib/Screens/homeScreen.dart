@@ -11,12 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
-var CardsCreate = [
-  ['File Example1'],
-  ['File Example2'],
-  ['File Example3']
-];
-
 List<Map<String, dynamic>> progressItemsBackground = [
   {'color': Color.fromRGBO(196, 196, 196, 1), 'progress': 1}
 ];

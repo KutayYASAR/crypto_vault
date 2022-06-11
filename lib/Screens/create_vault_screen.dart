@@ -173,7 +173,7 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w300),
+                                    fontWeight: FontWeight.w400),
                                 textAlign: TextAlign.center,
                               ),
                             )
@@ -390,7 +390,7 @@ class _CreateVaultScreenState extends State<CreateVaultScreen>
                               );
                             }),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 45, 20, 45),
+                          padding: const EdgeInsets.fromLTRB(20, 30, 20, 45),
                           child: SizedBox(
                             width: double.infinity,
                             height: 70,

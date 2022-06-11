@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:crypto_vault/Screens/_page_selector.dart';
 import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
+import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,6 @@ class _VerifyEmailSignInScreenState extends State<VerifyEmailSignInScreen> {
     return Scaffold(
       backgroundColor: kPrimaryLightColor,
       appBar: AppBar(
-        title: Text("Confirm Your Email"),
         backgroundColor: kPrimaryColor,
         elevation: 0.0,
       ),
@@ -87,15 +87,12 @@ class _VerifyEmailSignInScreenState extends State<VerifyEmailSignInScreen> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Container(
-                    height: 110,
-                    width: 110,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Colors.white,
-                    ),
+                Container(
+                  height: 110,
+                  width: 110,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: Colors.white,
                   ),
                 ),
                 const Padding(
@@ -119,26 +116,26 @@ class _VerifyEmailSignInScreenState extends State<VerifyEmailSignInScreen> {
                     width: double.infinity,
                     child: Column(children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
-                        child: Text('Please Verify Your Gmail ',
+                        padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
+                        child: Text('Please Verify Your Email ',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w800)),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(50, 20, 50, 0),
+                        padding: const EdgeInsets.fromLTRB(50, 15, 50, 0),
                         child: Text(
                           'Verification email has been sent to your mail.',
                           style: TextStyle(
                               color: Color.fromRGBO(129, 129, 129, 1),
                               fontSize: 14,
-                              fontWeight: FontWeight.w300),
+                              fontWeight: FontWeight.w400),
                           textAlign: TextAlign.center,
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+                        padding: const EdgeInsets.fromLTRB(40, 30, 40, 5),
                         child: SizedBox(
                           width: double.infinity,
                           height: 70,
@@ -163,13 +160,17 @@ class _VerifyEmailSignInScreenState extends State<VerifyEmailSignInScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                        padding: const EdgeInsets.fromLTRB(40, 10, 40, 0),
                         child: SizedBox(
                           width: double.infinity,
                           height: 70,
                           child: ElevatedButton(
                             onPressed: () async {
-                              await Phoenix.rebirth(context);
+                              await _authService.signOut();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => WelcomeScreen()),
+                                  (Route<dynamic> route) => false);
                             },
                             child: Text('Go Back',
                                 style: TextStyle(
