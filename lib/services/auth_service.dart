@@ -30,7 +30,7 @@ class AuthService {
     await _firestore
         .collection("Vaults")
         .doc(user.user!.uid)
-        .set({'Vault Name': vaultName});
+        .set({'Vault Name': vaultName, 'vault_uid': user.user!.uid});
 
     await _firestore
         .collection("Vaults")
@@ -234,6 +234,45 @@ class AuthService {
       }
     });
     return uid;
+  }
+
+  Future<String> getVaultUidFromEmail(String email) async {
+    String uid = "";
+    await _firestore
+        .collection('Users')
+        .where('email', isEqualTo: email)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        uid = doc['vault_uid'].toString();
+      }
+    });
+    return uid;
+  }
+
+  Future<String> getVaultName() async {
+    String uid = "";
+    await _firestore
+        .collection('Users')
+        .where('userUid', isEqualTo: getCurrentUser()?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        uid = doc['vault_uid'].toString();
+      }
+    });
+
+    String name = "";
+    await FirebaseFirestore.instance
+        .collection('Vaults')
+        .where('vault_uid', isEqualTo: uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        name = doc['Vault Name'];
+      }
+    });
+    return name;
   }
 
   Future<List<Reference>> getRecentFiles() async {
@@ -644,24 +683,6 @@ class AuthService {
       print(specie);
     });
     return specie;
-  }
-  */
-
-  /*
-  Future<List<String>> getVaultName() async {
-    final user = getCurrentUser()?.uid;
-    List<String> name = [];
-    await FirebaseFirestore.instance
-        .collection('Vaults')
-        .where('uid', isEqualTo: '$user')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        name.add(doc['Vault Name']);
-        print(name);
-      }
-    });
-    return name;
   }
   */
 

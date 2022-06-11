@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/chats_screen.dart';
 import 'package:crypto_vault/Screens/homeScreen.dart';
 import 'package:crypto_vault/Screens/people_screen.dart';
 import 'package:crypto_vault/Screens/vaults_main_screen.dart';
 
 import 'package:crypto_vault/constants.dart';
+import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class pagesSelector extends StatefulWidget {
@@ -23,6 +25,8 @@ class _pagesSelectorState extends State<pagesSelector> {
       _selectedIndex = index;
     });
   }
+
+  AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {

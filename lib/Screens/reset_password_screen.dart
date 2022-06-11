@@ -1,11 +1,18 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:crypto_vault/Screens/resetPassword.dart';
+import 'package:crypto_vault/Screens/user_phrase_entry_screen.dart';
 import 'package:crypto_vault/constants.dart';
+import 'package:crypto_vault/services/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
-  const ResetPasswordScreen({Key? key}) : super(key: key);
+  ResetPasswordScreen({Key? key}) : super(key: key);
+
+  final TextEditingController _emailController = TextEditingController();
+
+  AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +83,7 @@ class ResetPasswordScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 45, 20, 0),
                         child: TextField(
+                          controller: _emailController,
                           decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -107,12 +115,17 @@ class ResetPasswordScreen extends StatelessWidget {
                           width: double.infinity,
                           height: 70,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              String uid =
+                                  await _authService.getVaultUidFromEmail(
+                                      _emailController.text.trim());
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          ResetPasswordKeyScreen()));
+                                    builder: (context) => UserPhraseEntryScreen(
+                                        email: _emailController.text.trim(),
+                                        uid: uid),
+                                  ));
                             },
                             child: Text('CONTINUE',
                                 style: TextStyle(

@@ -212,8 +212,7 @@ class _VaultInnerState extends State<VaultInnerScreen> {
           print(file.path);
           Future.delayed(Duration(milliseconds: 200), () {
             snackBar = SnackBar(
-                content:
-                    Text('Download has finished.Dencryption has started.'));
+                content: Text('Download has finished.Decryption has started.'));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           });
           Future.delayed(Duration(milliseconds: 500), () async {

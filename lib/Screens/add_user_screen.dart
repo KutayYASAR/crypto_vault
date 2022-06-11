@@ -5,6 +5,7 @@ import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -23,6 +24,15 @@ class _AddUserScreenState extends State<AddUserScreen> {
   final TextEditingController _nameSurnameController = TextEditingController();
 
   AuthService _authService = AuthService();
+
+  Future passwordReset() async {
+    await FirebaseAuth.instance
+        .sendPasswordResetEmail(email: _emailController.text.trim())
+        .then((value) async {})
+        .catchError((dynamic error) {
+      print(error);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -213,6 +223,25 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                               TextAlign.center,
                                                         ),
                                                       ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 20,
+                                                                right: 20,
+                                                                bottom: 10),
+                                                        child: Text(
+                                                          'PASSWORD RESET MAIL WILL BE SENT TO THE ADDED USER!',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 24,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
                                                       Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -280,6 +309,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                                                                           .text,
                                                                       _nameSurnameController
                                                                           .text);
+
+                                                                  passwordReset();
 
                                                                   await _authService
                                                                       .signOut();

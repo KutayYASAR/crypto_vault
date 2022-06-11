@@ -272,11 +272,16 @@ class _SignInScreenState extends State<SignInScreen>
                                                 VerifyEmailSignInScreen()),
                                         (route) => false);
                                   } else {
+                                    String uid =
+                                        await _authService.getVaultUid();
                                     return Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                UserPhraseEntryScreen(email: _emailController.text)),
+                                                UserPhraseEntryScreen(
+                                                    email:
+                                                        _emailController.text,
+                                                    uid: uid)),
                                         (route) => false);
                                   }
                                 }).catchError((dynamic error) {

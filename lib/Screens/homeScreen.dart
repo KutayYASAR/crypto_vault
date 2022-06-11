@@ -300,17 +300,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 30),
-                child: Text(
-                  'Recent Files',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w300),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              FutureBuilder<List<FirebaseFile>>(
+                  future: futureFiles,
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+                      default:
+                        if (snapshot.hasError) {
+                          return Center(child: Text('Some error occurred!'));
+                        } else {
+                          final files = snapshot.data!;
+                          if (files.isNotEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 30),
+                              child: Text(
+                                'Recent Files',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w300),
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          } else {
+                            return Center();
+                          }
+                        }
+                    }
+                  }),
               FutureBuilder<List<FirebaseFile>>(
                   future: futureFiles,
                   builder: (context, snapshot) {

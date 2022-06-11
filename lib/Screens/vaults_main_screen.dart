@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/settings_screen.dart';
 import 'package:crypto_vault/Screens/vault_inner_screen.dart';
 import 'package:crypto_vault/constants.dart';
@@ -85,7 +86,7 @@ class _VaultsMainScreenState extends State<VaultsMainScreen> {
                 future: _authService.getPermissionData(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
+                    return Center();
                   }
                   List<bool> permissionList = snapshot.data ?? [];
                   List<int> deleting = [];

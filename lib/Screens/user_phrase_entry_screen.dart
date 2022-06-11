@@ -1,17 +1,30 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:crypto_vault/Screens/_page_selector.dart';
 import 'package:crypto_vault/Screens/verify_email_signin_page.dart';
+import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/constants.dart';
+import 'package:crypto_vault/models/api/firebase_api.dart';
+import 'package:crypto_vault/models/firebase_file.dart';
+import 'package:crypto_vault/services/auth_service.dart';
+import 'package:crypto_vault/src/AES_encryption.dart';
 import 'package:crypto_vault/src/keyGenerator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart';
 
 import 'create_account_private_key_screen.dart';
 
 class UserPhraseEntryScreen extends StatefulWidget {
   String email;
-  UserPhraseEntryScreen({Key? key, required this.email}) : super(key: key);
+  String uid;
+  UserPhraseEntryScreen({Key? key, required this.email, required this.uid})
+      : super(key: key);
 
   @override
   State<UserPhraseEntryScreen> createState() => _UserPhraseEntryScreenState();
@@ -65,6 +78,27 @@ class _UserPhraseEntryScreenState extends State<UserPhraseEntryScreen> {
   final TextEditingController phraseController22 = TextEditingController();
 
   final TextEditingController phraseController23 = TextEditingController();
+
+  AuthService _authService = AuthService();
+
+  late Future<List<FirebaseFile>> futureFiles;
+
+  Future passwordReset() async {
+    var email = widget.email;
+    await FirebaseAuth.instance
+        .sendPasswordResetEmail(email: email)
+        .then((value) async {})
+        .catchError((dynamic error) {
+      print(error);
+    });
+  }
+
+  @override
+  void initState() {
+    var uid = widget.uid;
+    super.initState();
+    futureFiles = FirebaseApi.listAll('$uid/check');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -980,16 +1014,152 @@ class _UserPhraseEntryScreenState extends State<UserPhraseEntryScreen> {
                                       "${phraseController23.text.trim()}";
                                   SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
-                                  //prefs.setString('phrase', phrase);
-                                  //prefs.setString( 'email', email);
+
                                   String seed =
                                       KeyGenerator.phraseToSeed(phrase);
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              pagesSelector()),
-                                      (route) => false);
+
+                                  final files = await futureFiles;
+                                  final filex = files[0];
+                                  final dir =
+                                      await getApplicationDocumentsDirectory();
+                                  final file =
+                                      File('${dir.path}/${filex.ref.name}');
+                                  await filex.ref.writeToFile(file);
+
+                                  var f2Path =
+                                      EncryptData.decrypt_file(file.path, seed);
+
+                                  if (f2Path.isEmpty) {
+                                    Fluttertoast.showToast(
+                                        msg: 'Given Phrase is Not Correct.',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 1,
+                                        fontSize: 16.0);
+                                    file.delete();
+                                  } else {
+                                    final fileCheck = File(f2Path);
+                                    final contents =
+                                        await fileCheck.readAsString();
+
+                                    if (contents == 'true') {
+                                      prefs.setString('phrase', phrase);
+                                      prefs.setString('email', email);
+                                      await passwordReset();
+                                      file.delete();
+                                      fileCheck.delete();
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20))),
+                                                contentPadding:
+                                                    EdgeInsets.only(top: 10),
+                                                content: Container(
+                                                  child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  15,
+                                                                  15,
+                                                                  15,
+                                                                  10),
+                                                          child: Text(
+                                                            'Success!',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 36,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w900),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 20,
+                                                                  right: 20,
+                                                                  bottom: 10),
+                                                          child: Text(
+                                                            'PASSWORD RESET MAIL HAS BEEN SENT TO YOUR ACCOUNTS MAIL!',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 24,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .fromLTRB(
+                                                                      10,
+                                                                      10,
+                                                                      5,
+                                                                      20),
+                                                              child: SizedBox(
+                                                                height: 40,
+                                                                width:
+                                                                    size.width *
+                                                                        0.35,
+                                                                child:
+                                                                    ElevatedButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pushAndRemoveUntil(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                WelcomeScreen()),
+                                                                        (route) =>
+                                                                            false);
+                                                                  },
+                                                                  child: Text(
+                                                                      'GO BACK',
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight:
+                                                                              FontWeight.w600)),
+                                                                  style: ButtonStyle(
+                                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              10))),
+                                                                      backgroundColor:
+                                                                          MaterialStateProperty.all(
+                                                                              kPrimaryColor)),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ]),
+                                                ),
+                                              ));
+                                    }
+                                  }
                                 },
                                 child: const Text('Enter Private Key',
                                     style: TextStyle(
