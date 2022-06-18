@@ -2,14 +2,12 @@
 
 import 'dart:io';
 
-import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
 import 'package:crypto_vault/Screens/verify_email_page.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/models/api/firebase_api.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:crypto_vault/src/AES_encryption.dart';
 import 'package:crypto_vault/src/keyGenerator.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';

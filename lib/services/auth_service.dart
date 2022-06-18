@@ -7,7 +7,6 @@ import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/models/firebase_file.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AuthService {
@@ -89,7 +88,6 @@ class AuthService {
             length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
     var phrase = getRandomString(10);
-    print(phrase);
 
     String uid = "";
     await _firestore
@@ -208,20 +206,6 @@ class AuthService {
     });
   }
 
-  Future<String> getAdminStatus() async {
-    String status = "";
-    await _firestore
-        .collection('Users')
-        .where('userUid', isEqualTo: getCurrentUser()?.uid)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        status = doc['admin'].toString();
-      }
-    });
-    return status;
-  }
-
   Future<String> getVaultUid() async {
     String uid = "";
     await _firestore
@@ -248,31 +232,6 @@ class AuthService {
       }
     });
     return uid;
-  }
-
-  Future<String> getVaultName() async {
-    String uid = "";
-    await _firestore
-        .collection('Users')
-        .where('userUid', isEqualTo: getCurrentUser()?.uid)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        uid = doc['vault_uid'].toString();
-      }
-    });
-
-    String name = "";
-    await FirebaseFirestore.instance
-        .collection('Vaults')
-        .where('vault_uid', isEqualTo: uid)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        name = doc['Vault Name'];
-      }
-    });
-    return name;
   }
 
   Future<List<Reference>> getRecentFiles() async {
@@ -393,7 +352,7 @@ class AuthService {
         .doc(chatPersonUid)
         .collection('Chats')
         .doc(getCurrentUser()?.uid)
-        .set({'chatPersonUid': '$uid', 'name': '$currentUserName'});
+        .set({'chatPersonUid': '$uid', 'name': currentUserName});
   }
 
   Future<String> getCurrentUserName() async {
@@ -408,6 +367,20 @@ class AuthService {
       }
     });
     return name;
+  }
+
+  Future<String> getAdminStatus() async {
+    String status = "";
+    await _firestore
+        .collection('Users')
+        .where('userUid', isEqualTo: getCurrentUser()?.uid)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        status = doc['admin'].toString();
+      }
+    });
+    return status;
   }
 
   Future<void> setAdminStatus(String nameSurname) async {
@@ -546,7 +519,7 @@ class AuthService {
     String adminStatus = "";
     await _firestore
         .collection('Users')
-        .where('userUid', isEqualTo: '$uidOfPerson')
+        .where('userUid', isEqualTo: uidOfPerson)
         .get()
         .then((QuerySnapshot querySnapshot) {
       for (var doc in querySnapshot.docs) {
@@ -648,42 +621,4 @@ class AuthService {
       home: new WelcomeScreen(),
     ));
   }
-
-  Future<void> updateVaultName(String vaultName) async {
-    final User user = FirebaseAuth.instance.currentUser!;
-    await _firestore
-        .collection("Vaults")
-        .doc(user.uid)
-        .update({'Vault Name': vaultName});
-  }
-
-  /*
-  Future<void> getData() async {
-    List<String> name = [];
-    await _firestore
-        .collection('Vaults')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      for (var doc in querySnapshot.docs) {
-        name = doc['Vault Name'];
-        print(name.toString());
-      }
-    });
-  }
-  */
-
-  /*
-  Future<String> getSpecie() async {
-    DocumentReference documentReference = FirebaseFirestore.instance
-        .collection('Vaults')
-        .doc(getCurrentUser()?.uid);
-    String specie = '';
-    await documentReference.get().then((snapshot) {
-      specie = snapshot['Vault Name'].toString();
-      print(specie);
-    });
-    return specie;
-  }
-  */
-
 }

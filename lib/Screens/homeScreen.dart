@@ -84,8 +84,9 @@ AppBar AppBarHome(BuildContext context) {
                           builder: (context) => SettingsScreen()));
                 },
                 icon: Icon(
-                  Icons.settings,
+                  Icons.settings_outlined,
                   color: kPrimaryColor,
+                  size: 27,
                 )),
           ],
         ),
@@ -396,7 +397,6 @@ class _HomeScreenState extends State<HomeScreen> {
           );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
           await isref.writeToFile(file);
-          print(file.path);
           Future.delayed(Duration(milliseconds: 200), () {
             snackBar = SnackBar(
                 content:
@@ -413,7 +413,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 data,
                 basename(f2Path).split('.').last,
                 MimeType.OTHER);
-            print(path);
             file.delete();
             file2.delete();
           });
@@ -445,7 +444,7 @@ Padding createRecentFileCard(
                         Padding(
                           padding: const EdgeInsets.only(top: 9, bottom: 9),
                           child: Icon(
-                            Icons.file_copy,
+                            Icons.file_copy_outlined,
                             color: kTextDarkColor,
                             size: 44.0,
                           ),

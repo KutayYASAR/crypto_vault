@@ -2,10 +2,7 @@
 
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   ChangePasswordScreen({Key? key}) : super(key: key);
@@ -16,7 +13,6 @@ class ChangePasswordScreen extends StatefulWidget {
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   final TextEditingController _oldPasswordController = TextEditingController();
-  bool _isEmailValid = false;
 
   final TextEditingController _newPasswordController = TextEditingController();
 
@@ -188,10 +184,76 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             child: ElevatedButton(
                               onPressed: () async {
                                 {
-                                  await _authService.changePassword(
-                                      _oldPasswordController.text,
-                                      _newPasswordController.text,
-                                      context);
+                                  if (_oldPasswordController.text.isEmpty) {
+                                    showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: Center(
+                                            child: const Text('Attention')),
+                                        content: Text(
+                                            'Please Enter Your Old Password.'),
+                                        actions: <Widget>[
+                                          Center(
+                                            child: TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, 'OK'),
+                                              child: const Text('OK'),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  } else if (_newPasswordController
+                                      .text.isEmpty) {
+                                    showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: Center(
+                                            child: const Text('Attention')),
+                                        content: Text(
+                                            'Please Enter Your New Password.'),
+                                        actions: <Widget>[
+                                          Center(
+                                            child: TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, 'OK'),
+                                              child: const Text('OK'),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    if (_newPasswordController.text ==
+                                        _oldPasswordController.text) {
+                                      showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          title: Center(
+                                              child: const Text('Attention')),
+                                          content: Text(
+                                              'Old Password And New Password Cannot Be Same.'),
+                                          actions: <Widget>[
+                                            Center(
+                                              child: TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, 'OK'),
+                                                child: const Text('OK'),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    } else {
+                                      await _authService.changePassword(
+                                          _oldPasswordController.text,
+                                          _newPasswordController.text,
+                                          context);
+                                    }
+                                  }
                                 }
                               },
                               child: Text('CHANGE PASSWORD',

@@ -9,10 +9,6 @@ import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
-var chatsPersonData = [
-  [Icons.chat_bubble, 'Chat Name 1'],
-];
-
 AppBar AppBarChats(BuildContext context) {
   return AppBar(
     centerTitle: true,
@@ -35,8 +31,9 @@ AppBar AppBarChats(BuildContext context) {
                           builder: (context) => SettingsScreen()));
                 },
                 icon: Icon(
-                  Icons.settings,
+                  Icons.settings_outlined,
                   color: kPrimaryColor,
+                  size: 27,
                 )),
           ],
         ),
@@ -83,7 +80,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                             child: Row(
                               children: [
                                 Icon(
-                                  Icons.chat_bubble,
+                                  Icons.chat_outlined,
                                   size: 32,
                                   color: kTextDarkColor,
                                 ),
@@ -139,13 +136,13 @@ class _ChatsScreenState extends State<ChatsScreen> {
                           return Center(child: CircularProgressIndicator());
                         }
                         List<String> chatNameList = snapshot.data ?? [];
-                        if (snapshot.hasError) print(snapshot.error);
+                        if (snapshot.hasError) {}
                         return snapshot.hasData
                             ? ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
-                                  iconData = chatsPersonData[0][0] as IconData?;
+                                  iconData = Icons.chat_outlined;
                                   stringData = chatNameList[index].toString();
                                   return InkWell(
                                     child: chatsCard(

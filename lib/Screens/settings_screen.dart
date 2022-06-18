@@ -20,29 +20,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   AuthService _authService = AuthService();
 
-  bool _darkMode = false;
-
-  void loadCounter() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _darkMode = (prefs.getBool('dark') ?? false);
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadCounter();
-  }
-
-  void _changeDarkMode() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _darkMode = !_darkMode;
-      prefs.setBool('dark', _darkMode);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -73,6 +50,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Icon(
                         Icons.person,
                         color: kPrimaryColor,
+                        size: 27,
                       ),
                       SizedBox(width: 8),
                       Text(
@@ -88,7 +66,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print(_darkMode);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -108,35 +85,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Icons.arrow_forward_ios,
                           color: Colors.grey,
                         )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Dark Mode',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey[600]),
-                        ),
-                        FlutterSwitch(
-                          width: size.width / 6,
-                          height: size.height / 30,
-                          toggleSize: size.height / 35,
-                          value: _darkMode,
-                          borderRadius: 20.0,
-                          activeColor: kPrimaryColor,
-                          onToggle: (val) async {
-                            final prefs = await SharedPreferences.getInstance();
-                            setState(() {
-                              _changeDarkMode();
-                            });
-                          },
-                        ),
                       ],
                     ),
                   ),

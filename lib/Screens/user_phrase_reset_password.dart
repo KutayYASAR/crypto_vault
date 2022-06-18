@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
-import 'package:crypto_vault/Screens/_page_selector.dart';
 import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/models/api/firebase_api.dart';
@@ -16,17 +15,18 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart';
 
-class UserPhraseEntryScreen extends StatefulWidget {
+class UserPhraseResetPassword extends StatefulWidget {
   String email;
   String uid;
-  UserPhraseEntryScreen({Key? key, required this.email, required this.uid})
+  UserPhraseResetPassword({Key? key, required this.email, required this.uid})
       : super(key: key);
 
   @override
-  State<UserPhraseEntryScreen> createState() => _UserPhraseEntryScreenState();
+  State<UserPhraseResetPassword> createState() =>
+      _UserPhraseResetPasswordState();
 }
 
-class _UserPhraseEntryScreenState extends State<UserPhraseEntryScreen> {
+class _UserPhraseResetPasswordState extends State<UserPhraseResetPassword> {
   final TextEditingController phraseController0 = TextEditingController();
 
   final TextEditingController phraseController1 = TextEditingController();
@@ -1042,12 +1042,116 @@ class _UserPhraseEntryScreenState extends State<UserPhraseEntryScreen> {
                                       await passwordReset();
                                       file.delete();
                                       fileCheck.delete();
-                                      Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  pagesSelector()),
-                                          (route) => false);
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20))),
+                                                contentPadding:
+                                                    EdgeInsets.only(top: 10),
+                                                content: Container(
+                                                  child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  15,
+                                                                  15,
+                                                                  15,
+                                                                  10),
+                                                          child: Text(
+                                                            'Success!',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 36,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w900),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 20,
+                                                                  right: 20,
+                                                                  bottom: 10),
+                                                          child: Text(
+                                                            'PASSWORD RESET MAIL HAS BEEN SENT TO YOUR ACCOUNTS MAIL!',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 24,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .fromLTRB(
+                                                                      10,
+                                                                      10,
+                                                                      5,
+                                                                      20),
+                                                              child: SizedBox(
+                                                                height: 40,
+                                                                width:
+                                                                    size.width *
+                                                                        0.35,
+                                                                child:
+                                                                    ElevatedButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pushAndRemoveUntil(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                WelcomeScreen()),
+                                                                        (route) =>
+                                                                            false);
+                                                                  },
+                                                                  child: Text(
+                                                                      'GO BACK',
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight:
+                                                                              FontWeight.w600)),
+                                                                  style: ButtonStyle(
+                                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              10))),
+                                                                      backgroundColor:
+                                                                          MaterialStateProperty.all(
+                                                                              kPrimaryColor)),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ]),
+                                                ),
+                                              ));
                                     }
                                   }
                                 },

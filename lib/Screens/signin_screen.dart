@@ -1,14 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-import 'package:crypto_vault/Screens/_page_selector.dart';
 import 'package:crypto_vault/Screens/reset_password_screen.dart';
 import 'package:crypto_vault/Screens/user_phrase_entry_screen.dart';
-import 'package:crypto_vault/Screens/verify_email_page.dart';
+import 'package:crypto_vault/Screens/user_phrase_reset_password.dart';
 import 'package:crypto_vault/Screens/verify_email_signin_page.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_vault/services/auth_service.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';

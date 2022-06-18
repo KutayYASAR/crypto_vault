@@ -9,10 +9,6 @@ import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
-var chatsPersonData = [
-  [Icons.family_restroom, 'People Name 1'],
-];
-
 AppBar AppBarPeople(BuildContext context) {
   return AppBar(
     centerTitle: true,
@@ -35,8 +31,9 @@ AppBar AppBarPeople(BuildContext context) {
                           builder: (context) => SettingsScreen()));
                 },
                 icon: Icon(
-                  Icons.settings,
+                  Icons.settings_outlined,
                   color: kPrimaryColor,
+                  size: 27,
                 )),
           ],
         ),
@@ -99,14 +96,14 @@ class _PeopleScreenState extends State<PeopleScreen> {
                     future: _authService.getPeopleName(),
                     builder: (context, snapshot) {
                       List<String> nameList = snapshot.data ?? [];
-                      if (snapshot.hasError) print(snapshot.error);
+                      if (snapshot.hasError) {}
                       return snapshot.hasData
                           ? ListView.builder(
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: nameList.length,
                               itemBuilder: (BuildContext context, int index) {
-                                iconData = chatsPersonData[0][0] as IconData?;
+                                iconData = Icons.person;
                                 stringData = nameList[index].toString();
                                 return InkWell(
                                   child:
@@ -170,7 +167,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                   FutureBuilder<String>(
                     future: _authService.getAdminStatus(),
                     builder: (context, snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
+                      if (snapshot.hasError) {}
                       if (snapshot.data == "Admin") {
                         isAdmin = true;
                       } else {

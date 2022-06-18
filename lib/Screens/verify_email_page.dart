@@ -8,7 +8,6 @@ import 'package:crypto_vault/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_vault/constants.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   final String phrase;

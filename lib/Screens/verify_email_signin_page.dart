@@ -3,13 +3,11 @@
 import 'dart:async';
 
 import 'package:crypto_vault/Screens/_page_selector.dart';
-import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
 import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_vault/constants.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class VerifyEmailSignInScreen extends StatefulWidget {
   const VerifyEmailSignInScreen({Key? key}) : super(key: key);

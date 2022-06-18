@@ -2,7 +2,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:crypto_vault/Screens/chat_inner_screen.dart';
-import 'package:crypto_vault/Screens/invite_people.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +96,7 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                         future: _authService.getAdminStatus(),
                         builder: (context, snapshot) {
                           bool admindata = false;
-                          if (snapshot.hasError) print(snapshot.error);
+                          if (snapshot.hasError) {}
                           if (snapshot.data == 'Admin') {
                             admindata = true;
                           }
@@ -112,8 +111,7 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                                     }
                                     String? adminData =
                                         (snapshot.data ?? "") as String?;
-                                    if (snapshot.hasError)
-                                      print(snapshot.error);
+                                    if (snapshot.hasError) {}
                                     return memberContainer(sizeWidth,
                                         sizeHeight, userName, adminData!);
                                   })
@@ -124,7 +122,7 @@ class _PeopleInfoScreenState extends State<PeopleInfoScreen> {
                         future: _authService.getAdminStatus(),
                         builder: (context, snapshot) {
                           bool admindata = false;
-                          if (snapshot.hasError) print(snapshot.error);
+                          if (snapshot.hasError) {}
                           if (snapshot.data == 'Admin') {
                             admindata = true;
                           }

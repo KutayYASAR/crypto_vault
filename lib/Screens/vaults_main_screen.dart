@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/settings_screen.dart';
 import 'package:crypto_vault/Screens/vault_inner_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_vault/services/auth_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 AppBar AppBarVaults(BuildContext context) {
   return AppBar(
@@ -30,8 +28,9 @@ AppBar AppBarVaults(BuildContext context) {
                           builder: (context) => SettingsScreen()));
                 },
                 icon: Icon(
-                  Icons.settings,
+                  Icons.settings_outlined,
                   color: kPrimaryColor,
+                  size: 27,
                 )),
           ],
         ),
@@ -58,14 +57,14 @@ class _VaultsMainScreenState extends State<VaultsMainScreen> {
   void initState() {
     super.initState();
     cardData = [
-      [Icons.credit_card, 'ID\'s and Personal Info'],
+      [Icons.credit_card_outlined, 'ID\'s and Personal Info'],
       [Icons.key, 'Passwords'],
       [Icons.apartment, 'Property & Household'],
       [Icons.real_estate_agent, 'Estate'],
       [Icons.family_restroom, 'Family'],
       [Icons.local_hospital, 'Health'],
-      [Icons.business_center_rounded, 'Personal Business'],
-      [Icons.folder_copy, 'Archive']
+      [Icons.business_center_outlined, 'Personal Business'],
+      [Icons.folder_copy_outlined, 'Archive']
     ];
     forceStop = true;
   }

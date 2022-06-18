@@ -1,14 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:crypto_vault/Screens/resetPassword.dart';
-import 'package:crypto_vault/Screens/user_phrase_entry_screen.dart';
+import 'package:crypto_vault/Screens/user_phrase_reset_password.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({Key? key}) : super(key: key);
+  bool _isEmailValid = false;
 
   final TextEditingController _emailController = TextEditingController();
 
@@ -116,16 +117,37 @@ class ResetPasswordScreen extends StatelessWidget {
                           height: 70,
                           child: ElevatedButton(
                             onPressed: () async {
-                              String uid =
-                                  await _authService.getVaultUidFromEmail(
-                                      _emailController.text.trim());
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => UserPhraseEntryScreen(
-                                        email: _emailController.text.trim(),
-                                        uid: uid),
-                                  ));
+                              _isEmailValid = EmailValidator.validate(
+                                  _emailController.text);
+                              if (_isEmailValid) {
+                                String uid =
+                                    await _authService.getVaultUidFromEmail(
+                                        _emailController.text.trim());
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          UserPhraseResetPassword(
+                                              email:
+                                                  _emailController.text.trim(),
+                                              uid: uid),
+                                    ));
+                              } else if (_emailController.text.isEmpty) {
+                                Fluttertoast.showToast(
+                                    msg: 'Email Alanı Boş Olamaz',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 1,
+                                    fontSize: 16.0);
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg:
+                                        'Lütfen Geçerli Bir Mail Adresi Giriniz',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 1,
+                                    fontSize: 16.0);
+                              }
                             },
                             child: Text('CONTINUE',
                                 style: TextStyle(

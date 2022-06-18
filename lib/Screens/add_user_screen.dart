@@ -1,13 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, curly_braces_in_flow_control_structures
 
-import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
 import 'package:crypto_vault/Screens/welcome_screen.dart';
 import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AddUserScreen extends StatefulWidget {
@@ -29,9 +28,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
     await FirebaseAuth.instance
         .sendPasswordResetEmail(email: _emailController.text.trim())
         .then((value) async {})
-        .catchError((dynamic error) {
-      print(error);
-    });
+        .catchError((dynamic error) {});
   }
 
   @override
@@ -103,32 +100,36 @@ class _AddUserScreenState extends State<AddUserScreen> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 45, 20, 0),
                           child: TextField(
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(
-                                          width: 0, style: BorderStyle.none)),
-                                  fillColor: kPrimaryLightColor,
-                                  filled: true,
-                                  hintText: 'E-Mail',
-                                  contentPadding:
-                                      EdgeInsets.only(top: 25, bottom: 25),
-                                  hintStyle: TextStyle(
-                                      color: Color.fromRGBO(119, 119, 119, 1),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16),
-                                  prefixIcon: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 20, left: 20),
-                                    child: Icon(
-                                      Icons.mail_outline,
-                                      size: 24,
-                                      color: Color.fromRGBO(119, 119, 119, 1),
-                                    ),
-                                  )),
-                              textInputAction: TextInputAction.next),
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        width: 0, style: BorderStyle.none)),
+                                fillColor: kPrimaryLightColor,
+                                filled: true,
+                                hintText: 'E-Mail',
+                                contentPadding:
+                                    EdgeInsets.only(top: 25, bottom: 25),
+                                hintStyle: TextStyle(
+                                    color: Color.fromRGBO(119, 119, 119, 1),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16),
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 20, left: 20),
+                                  child: Icon(
+                                    Icons.mail_outline,
+                                    size: 24,
+                                    color: Color.fromRGBO(119, 119, 119, 1),
+                                  ),
+                                )),
+                            textInputAction: TextInputAction.next,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.deny(RegExp(r'[ ]')),
+                            ],
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),

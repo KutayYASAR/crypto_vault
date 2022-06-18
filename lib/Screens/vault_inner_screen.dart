@@ -4,14 +4,12 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto_vault/Screens/create_account_private_key_screen.dart';
 import 'package:crypto_vault/Screens/upload_file.dart';
 import 'package:crypto_vault/models/api/firebase_api.dart';
 import 'package:crypto_vault/models/firebase_file.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:crypto_vault/src/keyGenerator.dart';
 import 'package:file_saver/file_saver.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as p;
 import 'package:crypto_vault/src/AES_encryption.dart';
 import 'package:bip39/bip39.dart' as bip39;
@@ -138,7 +136,6 @@ class _VaultInnerState extends State<VaultInnerScreen> {
                           itemCount: files.length,
                           itemBuilder: (context, index) {
                             final file = files[index];
-                            print(file.name);
                             return buildFile(
                                 context, file, size, vaultName, uid);
                           },
@@ -154,7 +151,6 @@ class _VaultInnerState extends State<VaultInnerScreen> {
                               width: size.width * 0.50,
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  print(await _authService.getRecentFiles());
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -209,7 +205,6 @@ class _VaultInnerState extends State<VaultInnerScreen> {
           );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
           await isref.writeToFile(file);
-          print(file.path);
           Future.delayed(Duration(milliseconds: 200), () {
             snackBar = SnackBar(
                 content: Text('Download has finished.Decryption has started.'));
@@ -224,7 +219,6 @@ class _VaultInnerState extends State<VaultInnerScreen> {
                 data,
                 basename(f2Path).split('.').last,
                 MimeType.OTHER);
-            print(path);
             file.delete();
             file2.delete();
           });
@@ -278,7 +272,7 @@ class _VaultInnerState extends State<VaultInnerScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 9, bottom: 9),
                             child: Icon(
-                              Icons.file_copy,
+                              Icons.file_copy_outlined,
                               color: kTextDarkColor,
                               size: 44.0,
                             ),

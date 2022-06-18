@@ -2,9 +2,7 @@
 
 import 'package:crypto_vault/Screens/_page_selector.dart';
 import 'package:crypto_vault/constants.dart';
-import 'package:crypto_vault/Screens/resetPassword.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateAccountPrivateKeyScreen extends StatefulWidget {
   final String phrase;
@@ -120,7 +118,7 @@ class _CreateAccountPrivateKeyScreenState
                                 privateKeyCreateData[index][0],
                                 privateKeyCreateData[index][1]);
                           },
-                          itemCount: privateKeyData.length,
+                          itemCount: 12,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20, bottom: 15),

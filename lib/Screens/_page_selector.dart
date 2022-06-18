@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_vault/Screens/chats_screen.dart';
 import 'package:crypto_vault/Screens/homeScreen.dart';
 import 'package:crypto_vault/Screens/people_screen.dart';
