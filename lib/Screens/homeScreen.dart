@@ -6,10 +6,12 @@ import 'package:crypto_vault/constants.dart';
 import 'package:crypto_vault/models/firebase_file.dart';
 import 'package:crypto_vault/services/auth_service.dart';
 import 'package:crypto_vault/src/AES_encryption.dart';
+import 'package:crypto_vault/src/keyGenerator.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 List<Map<String, dynamic>> progressItemsBackground = [
   {'color': Color.fromRGBO(196, 196, 196, 1), 'progress': 1}
@@ -361,7 +363,80 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: size.height * 0.05,
                 width: size.width * 0.50,
                 child: ElevatedButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              contentPadding: EdgeInsets.only(top: 10),
+                              content: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15, 15, 15, 10),
+                                      child: Text(
+                                        'Caution!',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w900),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 20, right: 20, bottom: 10),
+                                      child: Text(
+                                        'This Feature is Not Available.',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w400),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              10, 10, 5, 20),
+                                          child: SizedBox(
+                                            height: 40,
+                                            width: size.width * 0.35,
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('OK',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600)),
+                                              style: ButtonStyle(
+                                                  shape: MaterialStateProperty
+                                                      .all<RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10))),
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          kPrimaryColor)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ]),
+                            ));
+                  },
                   child: Text('EXPAND YOUR VAULT',
                       style: TextStyle(
                           color: kPrimaryColor,
@@ -388,6 +463,9 @@ class _HomeScreenState extends State<HomeScreen> {
       InkWell(
         child: createRecentFileCard(size, context, filex),
         onTap: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          var phrase = prefs.getString('phrase');
+          var seed = KeyGenerator.phraseToSeed(phrase!);
           final isref = filex.ref;
           final dir = await getApplicationDocumentsDirectory();
           final file = File('${dir.path}/${isref.name}');
@@ -399,13 +477,11 @@ class _HomeScreenState extends State<HomeScreen> {
           await isref.writeToFile(file);
           Future.delayed(Duration(milliseconds: 200), () {
             snackBar = SnackBar(
-                content:
-                    Text('Download has finished.Dencryption has started.'));
+                content: Text('Download has finished.Decryption has started.'));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           });
           Future.delayed(Duration(milliseconds: 500), () async {
-            var f2Path = EncryptData.decrypt_file(file.path,
-                '626cf59e45b1e57279df12c65f41a56e697c710185a90f51aed814c0d3464c92c4cb9d4e950e9269fce19971bd7a03d02a77a34708fffc5d45f492e5e9f07bf3fffb5958487a6ae8ef26524ce7173d0178e86c04fab339aba108f4b180876f493ded50dc7b4304ffa95b3bef4b46dee17910ed2ef348f0a259a714d737981c7e');
+            var f2Path = EncryptData.decrypt_file(file.path, seed);
             final file2 = File(f2Path);
             var data = file2.readAsBytesSync();
             String path = await FileSaver.instance.saveAs(

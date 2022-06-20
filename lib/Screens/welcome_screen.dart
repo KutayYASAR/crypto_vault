@@ -38,6 +38,7 @@ class WelcomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: Colors.white,
                     ),
+                    child: Image.asset('lib/assets/cryptovaulticon.png'),
                   ),
                 ),
                 const Padding(

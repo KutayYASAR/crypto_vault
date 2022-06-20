@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.crypto_vault">
    <application
-        android:label="crypto_vault"
+        android:label="Crypto Vault"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

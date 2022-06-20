@@ -1051,7 +1051,7 @@ class _UserPhraseEntryScreenState extends State<UserPhraseEntryScreen> {
                                     }
                                   }
                                 },
-                                child: const Text('Enter Private Key',
+                                child: const Text('Submit',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,

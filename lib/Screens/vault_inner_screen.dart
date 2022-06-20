@@ -31,22 +31,6 @@ AppBar AppBarVaultsInnerScreen(String vaultNameOfApp) {
       vaultNameOfApp,
       style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
     ),
-    actions: [
-      Padding(
-        padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
-        child: Row(
-          children: [
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.search,
-                  color: kPrimaryColor,
-                  size: 30,
-                )),
-          ],
-        ),
-      )
-    ],
   );
 }
 

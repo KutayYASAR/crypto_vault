@@ -185,68 +185,310 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               onPressed: () async {
                                 {
                                   if (_oldPasswordController.text.isEmpty) {
-                                    showDialog<String>(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AlertDialog(
-                                        title: Center(
-                                            child: const Text('Attention')),
-                                        content: Text(
-                                            'Please Enter Your Old Password.'),
-                                        actions: <Widget>[
-                                          Center(
-                                            child: TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context, 'OK'),
-                                              child: const Text('OK'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(20))),
+                                              contentPadding:
+                                                  EdgeInsets.only(top: 10),
+                                              content: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                              .fromLTRB(
+                                                          15, 15, 15, 10),
+                                                      child: Text(
+                                                        'Attention',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 30,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 20,
+                                                          right: 20,
+                                                          bottom: 10),
+                                                      child: Text(
+                                                        'Please Enter Your Old Password.',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  10,
+                                                                  10,
+                                                                  5,
+                                                                  20),
+                                                          child: SizedBox(
+                                                            height: 40,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.35,
+                                                            child:
+                                                                ElevatedButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Text('OK',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600)),
+                                                              style: ButtonStyle(
+                                                                  shape: MaterialStateProperty.all<
+                                                                          RoundedRectangleBorder>(
+                                                                      RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              10))),
+                                                                  backgroundColor:
+                                                                      MaterialStateProperty
+                                                                          .all(
+                                                                              kPrimaryColor)),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ]),
+                                            ));
                                   } else if (_newPasswordController
                                       .text.isEmpty) {
-                                    showDialog<String>(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AlertDialog(
-                                        title: Center(
-                                            child: const Text('Attention')),
-                                        content: Text(
-                                            'Please Enter Your New Password.'),
-                                        actions: <Widget>[
-                                          Center(
-                                            child: TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context, 'OK'),
-                                              child: const Text('OK'),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(20))),
+                                              contentPadding:
+                                                  EdgeInsets.only(top: 10),
+                                              content: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                              .fromLTRB(
+                                                          15, 15, 15, 10),
+                                                      child: Text(
+                                                        'Attention',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 30,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 20,
+                                                          right: 20,
+                                                          bottom: 10),
+                                                      child: Text(
+                                                        'Please Enter Your New Password.',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  10,
+                                                                  10,
+                                                                  5,
+                                                                  20),
+                                                          child: SizedBox(
+                                                            height: 40,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.35,
+                                                            child:
+                                                                ElevatedButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: Text('OK',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600)),
+                                                              style: ButtonStyle(
+                                                                  shape: MaterialStateProperty.all<
+                                                                          RoundedRectangleBorder>(
+                                                                      RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              10))),
+                                                                  backgroundColor:
+                                                                      MaterialStateProperty
+                                                                          .all(
+                                                                              kPrimaryColor)),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ]),
+                                            ));
                                   } else {
                                     if (_newPasswordController.text ==
                                         _oldPasswordController.text) {
-                                      showDialog<String>(
-                                        context: context,
-                                        builder: (BuildContext context) =>
-                                            AlertDialog(
-                                          title: Center(
-                                              child: const Text('Attention')),
-                                          content: Text(
-                                              'Old Password And New Password Cannot Be Same.'),
-                                          actions: <Widget>[
-                                            Center(
-                                              child: TextButton(
-                                                onPressed: () => Navigator.pop(
-                                                    context, 'OK'),
-                                                child: const Text('OK'),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20))),
+                                                contentPadding:
+                                                    EdgeInsets.only(top: 10),
+                                                content: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                15, 15, 15, 10),
+                                                        child: Text(
+                                                          'Attention',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 30,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w900),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 20,
+                                                                right: 20,
+                                                                bottom: 10),
+                                                        child: Text(
+                                                          'Old Password And New Password Cannot Be Same.',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 24,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .fromLTRB(
+                                                                    10,
+                                                                    10,
+                                                                    5,
+                                                                    20),
+                                                            child: SizedBox(
+                                                              height: 40,
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.35,
+                                                              child:
+                                                                  ElevatedButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                    'OK',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
+                                                                style: ButtonStyle(
+                                                                    shape: MaterialStateProperty.all<
+                                                                            RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                10))),
+                                                                    backgroundColor:
+                                                                        MaterialStateProperty.all(
+                                                                            kPrimaryColor)),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ]),
+                                              ));
                                     } else {
                                       await _authService.changePassword(
                                           _oldPasswordController.text,
